@@ -51,11 +51,17 @@ public class Intake extends Subsystem {
         RobotState state = RobotState.getInstance();
 
         if (leftBumper) {
-            state.intakeState = IntakeState.Intake;
+            if (state.intakeState == IntakeState.Intake) {
+                state.intakeState = IntakeState.Idle;
+            } else {
+                state.intakeState = IntakeState.Intake;
+            }
         } else if (rightBumper) {
-            state.intakeState = IntakeState.Expel;
-        } else {
-            state.intakeState = IntakeState.Idle;
+            if (state.intakeState == IntakeState.Expel) {
+                state.intakeState = IntakeState.Idle;
+            } else {
+                state.intakeState = IntakeState.Expel;
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ public class Lift extends Subsystem{
         RobotHardware hardware = robot.RobotHardware;
         RobotConfiguration config = RobotConfiguration.getInstance();
 
+        state.liftState = LiftState.Idle;
     }
 
     @Override

@@ -37,10 +37,10 @@ public class RobotHardware {
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        leftFront = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
+        leftBack = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
+        rightBack = hardwareMap.get(DcMotorEx.class, "backRightMotor");
+        rightFront = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
 
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -50,11 +50,11 @@ public class RobotHardware {
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-        leftLiftServo = hardwareMap.get(Servo.class, "rightLiftServo");
-        rightLiftServo = hardwareMap.get(Servo.class, "leftLiftServo");
+        leftLiftServo = hardwareMap.get(Servo.class, "S1");
+        rightLiftServo = hardwareMap.get(Servo.class, "S2");
 
-        leftIntakeServo = hardwareMap.get(CRServo.class, "leftIntakeServo");
-        rightIntakeServo = hardwareMap.get(CRServo.class, "rightIntakeServo");
+        leftIntakeServo = hardwareMap.get(CRServo.class, "F2");
+        rightIntakeServo = hardwareMap.get(CRServo.class, "F1");
 
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
     }
