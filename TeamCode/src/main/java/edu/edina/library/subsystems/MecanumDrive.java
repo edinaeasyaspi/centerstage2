@@ -28,6 +28,29 @@ public class MecanumDrive extends Subsystem {
         this.rightStickX = ScaleMotorCube(rightStickX);
     }
 
+    public void setTrajectory(double positionX, double positionY, double toRadians)
+    {
+      //  TrajectoryBuilder trajectoryBuilder = new TrajectoryBuilder(new Pose2d(0,0,0));
+        //trajectoryBuilder.lineToXLinearHeading(new Pose2d(25, 0, Math.toRadians(0)));
+
+//        drive.trajectoryBuilder(new Pose2d())//-35,61
+//                .lineToLinearHeading(new Pose2d(25, 0, Math.toRadians(0)))
+    }
+    public void driveToPose(double positionX, double positionY, double angle){
+        Pose2d myPose = new Pose2d(positionX, positionY, Math.toRadians(angle));
+
+        drive.setDrivePowers(new PoseVelocity2d(
+                new Vector2d(
+                        -positionX,
+                        -positionY
+                ),
+                (angle)
+        ));
+
+        drive.updatePoseEstimate();
+    }
+
+
     @Override
     public void init() { }
 
