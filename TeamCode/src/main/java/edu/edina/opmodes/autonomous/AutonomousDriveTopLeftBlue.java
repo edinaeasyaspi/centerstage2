@@ -25,7 +25,7 @@ public class AutonomousDriveTopLeftBlue extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        //robot.start();
+        robot.start();
 
         waitForStart();
 
