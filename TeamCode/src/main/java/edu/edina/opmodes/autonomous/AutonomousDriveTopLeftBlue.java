@@ -17,7 +17,7 @@ import edu.edina.library.util.Robot;
  * This is a simple routine to test translational drive capabilities.
  */
 @Config
-@Autonomous(group = "drive")
+@Autonomous(name="TopLeftBlue", group = "autonomous")
 public class AutonomousDriveTopLeftBlue extends LinearOpMode {
     protected Robot robot;
     public double DISTANCE1 = 24;
@@ -25,11 +25,20 @@ public class AutonomousDriveTopLeftBlue extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        robot.start();
+        robot = new Robot(telemetry, hardwareMap, false);
+        robot.init();
+
+     //   robot.start();
 
         waitForStart();
 
-        robot.MecanumDrive.driveToPose(24,0,0);
+        int i=0;
+        while(i<=172)
+        {
+            robot.MecanumDrive.driveToPose(-100,0,0);
+            i = i+1;
+        }
+
 
 ////        drive.turn(Math.toRadians(90));
 ////        drive.followTrajectory(autonomousTrajectory);
