@@ -13,12 +13,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import edu.edina.library.subsystems.MecanumDrive;
 import edu.edina.library.util.Robot;
 
-/*
- * This is a simple routine to test translational drive capabilities.
- */
 @Config
-@Autonomous(name="BottomLeftBlue", group = "autonomous")
-public class AutonomousDriveBottomLeftBlue extends LinearOpMode {
+@Autonomous(name="BottomRightRed", group = "autonomous")
+public class AutonomousDriveBottomRightRed extends LinearOpMode {
     protected Robot robot;
     public double DISTANCE1 = 24;
 
@@ -36,7 +33,7 @@ public class AutonomousDriveBottomLeftBlue extends LinearOpMode {
 
         while(i<=8)
         {
-            robot.MecanumDrive.driveToPose(0,100,0);
+            robot.MecanumDrive.driveToPose(0,-100,0);
             i = i+1;
         }
 
@@ -57,5 +54,5 @@ public class AutonomousDriveBottomLeftBlue extends LinearOpMode {
 //            }
 
     }
+
 }
-//}
