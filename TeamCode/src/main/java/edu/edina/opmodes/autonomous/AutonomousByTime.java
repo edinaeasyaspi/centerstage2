@@ -1,5 +1,4 @@
-
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package edu.edina.opmodes.autonomous;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -9,9 +8,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name="Robot: Auto Drive By Time", group="Robot")
+@Autonomous(name="Robot: Auto drive by time", group="Robot")
 @Disabled
-public class RobotAutoDriveByTime_Linear extends LinearOpMode {
+public class AutonomousByTime extends LinearOpMode {
 
 
     private DcMotor       frontLeftMotor  = null;
@@ -24,8 +23,8 @@ public class RobotAutoDriveByTime_Linear extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
 
-    static final double     FORWARD_SPEED = 0.6;
-    static final double     TURN_SPEED    = 0.5;
+    static final double     FORWARD_SPEED = 1.0;
+    static final double     TURN_SPEED    = 1.0;
 
     @Override
     public void runOpMode() {
