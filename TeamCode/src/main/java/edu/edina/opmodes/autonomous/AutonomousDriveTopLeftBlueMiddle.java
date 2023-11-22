@@ -48,7 +48,7 @@ public class AutonomousDriveTopLeftBlueMiddle extends LinearOpMode {
         }
 
         i=0;
-        while(i<=183)
+        while(i<=366)
         {
             robot.MecanumDrive.driveToPose(-100,0,0);
             i = i+1;
