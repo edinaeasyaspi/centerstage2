@@ -1,5 +1,4 @@
-
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package edu.edina.opmodes.autonomous;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -9,9 +8,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name="Robot: Auto Drive By Time", group="Robot")
+@Autonomous(name="Robot: Auto drive by time", group="Robot")
 @Disabled
-public class RobotAutoDriveByTime_Linear extends LinearOpMode {
+public class AutonomousByTime extends LinearOpMode {
 
 
     private DcMotor       frontLeftMotor  = null;
@@ -24,8 +23,8 @@ public class RobotAutoDriveByTime_Linear extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
 
-    static final double     FORWARD_SPEED = 0.6;
-    static final double     TURN_SPEED    = 0.5;
+    static final double     FORWARD_SPEED = 1.0;
+    static final double     TURN_SPEED    = 1.0;
 
     @Override
     public void runOpMode() {
@@ -59,7 +58,7 @@ public class RobotAutoDriveByTime_Linear extends LinearOpMode {
         backLeftMotor.setPower(FORWARD_SPEED);
         backRightMotor.setPower(FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
+        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
@@ -70,18 +69,18 @@ public class RobotAutoDriveByTime_Linear extends LinearOpMode {
         backLeftMotor.setPower(TURN_SPEED);
         backRightMotor.setPower(-TURN_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.3)) {
+        while (opModeIsActive() && (runtime.seconds() < 1)) {
             telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
 
-        // Step 3:  Drive Backward for 1 Second
-        frontLeftMotor.setPower(-FORWARD_SPEED);
-        frontRightMotor.setPower(-FORWARD_SPEED);
-        backLeftMotor.setPower(-FORWARD_SPEED);
-        backRightMotor.setPower(-FORWARD_SPEED);
+        // Step 3:  Drive forward for 1 Second
+        frontLeftMotor.setPower(FORWARD_SPEED);
+        frontRightMotor.setPower(FORWARD_SPEED);
+        backLeftMotor.setPower(FORWARD_SPEED);
+        backRightMotor.setPower(FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
+        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }

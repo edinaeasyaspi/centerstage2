@@ -3,8 +3,9 @@ package edu.edina.library.subsystems;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import edu.edina.library.util.Robot;
-import edu.edina.library.util.RobotConfiguration;
 
 public class MecanumDrive extends Subsystem {
     private double leftStickX;
@@ -14,7 +15,7 @@ public class MecanumDrive extends Subsystem {
     private org.firstinspires.ftc.teamcode.MecanumDrive drive;
     private Robot robot;
 
-    public MecanumDrive(Robot robot) {
+    public MecanumDrive(HardwareMap robot) {
         drive = new org.firstinspires.ftc.teamcode.MecanumDrive(robot.RobotHardware.leftFront,
                 robot.RobotHardware.leftBack, robot.RobotHardware.rightBack, robot.RobotHardware.rightFront,
                 robot.RobotHardware.imu, robot.RobotHardware.voltageSensor, new Pose2d(0, 0, 0));

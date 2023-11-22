@@ -17,18 +17,25 @@ import edu.edina.library.util.Robot;
  * This is a simple routine to test translational drive capabilities.
  */
 @Config
-@Autonomous(name="TopLeftBlue", group = "autonomous")
+@Autonomous(group = "drive")
 public class AutonomousDriveTopLeftBlue extends LinearOpMode {
+    public double DISTANCE1 = 96;
     protected Robot robot;
-    public double DISTANCE1 = 24;
-
+    
     @Override
     public void runOpMode() throws InterruptedException {
+       // Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
 
         robot = new Robot(telemetry, hardwareMap, false);
         robot.init();
 
-     //   robot.start();
+        //   robot.start();
+
+      //  Pose2d poseEstimate = drive.getPoseEstimate();
+      //  telemetry.addData("finalX", poseEstimate.getX());
+      //  telemetry.addData("finalY", poseEstimate.getY());
+      //  telemetry.addData("finalHeading", poseEstimate.getHeading());
+      //  telemetry.update();
 
         waitForStart();
 
@@ -52,7 +59,7 @@ public class AutonomousDriveTopLeftBlue extends LinearOpMode {
 ////        drive.followTrajectory(autonomousTrajectory);
 
 //            while (opModeIsActive() && !isStopRequested()) {
-
+//                drive.followTrajectory(autonomousTrajectory);
 //
 //            }
 
