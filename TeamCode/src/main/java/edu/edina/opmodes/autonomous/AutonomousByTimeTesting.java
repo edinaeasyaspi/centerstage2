@@ -129,6 +129,12 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         frontRightMotor.setPower(0);
         backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
+        liftMotor.setPower(0);
+        leftIntakeServo.setPower(0);
+        rightIntakeServo.setPower(0);
+        leftLiftServo.setPosition(0);
+        rightLiftServo.setPosition(0);
+
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
