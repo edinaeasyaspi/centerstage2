@@ -27,7 +27,7 @@ public class AutonomousDriveTopLeftBlue extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
 
 
-        Trajectory autonomousTrajectory = drive.trajectoryBuilder(new Pose2d())//-35,61
+        Trajectory autonomousTrajectory = drive.setTrajectory(new Pose2d())//-35,61
                 .lineToLinearHeading(new Pose2d(25, 0, Math.toRadians(0)))
 
                 // .splineTo(new Vector2d(-24,6), Math.toRadians(0))
