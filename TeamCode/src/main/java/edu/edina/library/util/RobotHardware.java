@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 public class RobotHardware {
 
-    public final DcMotorEx leftFront, leftBack, rightBack, rightFront;
+    public final DcMotorEx leftFrontMotor, leftBackMotor, rightBackMotor, rightFrontMotor;
 
     public final VoltageSensor voltageSensor;
 
@@ -37,10 +37,10 @@ public class RobotHardware {
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
-        leftBack = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
-        rightBack = hardwareMap.get(DcMotorEx.class, "backRightMotor");
-        rightFront = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
+        leftFrontMotor = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
+        leftBackMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
+        rightBackMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
+        rightFrontMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
 
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(

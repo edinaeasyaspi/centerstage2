@@ -1,15 +1,20 @@
 package edu.edina.opmodes.autonomous;
 
 
+import com.qualcomm.hardware.motors.NeveRest40Gearmotor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
+
 @Autonomous(name="Robot: Auto drive by time", group="Robot")
-@Disabled
+
 public class AutonomousByTimeTesting extends LinearOpMode {
 
 
@@ -19,6 +24,11 @@ public class AutonomousByTimeTesting extends LinearOpMode {
     private DcMotor       frontRightMotor = null;
 
     private DcMotor        backRightMotor = null;
+    private DcMotor liftMotor = null;
+    private Servo   leftLiftServo = null;
+    private Servo   rightLiftServo = null;
+    private CRServo leftIntakeServo = null;
+    private CRServo rightIntakeServo = null;
 
     private ElapsedTime     runtime = new ElapsedTime();
 
@@ -30,10 +40,16 @@ public class AutonomousByTimeTesting extends LinearOpMode {
     public void runOpMode() {
 
         // Initialize the drive system variables.
-        frontLeftMotor  = hardwareMap.get(DcMotor.class, "frontLefMotor");
+        frontLeftMotor  = hardwareMap.get(DcMotor.class, "frontLeftMotor");
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
+        liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
+        leftLiftServo = hardwareMap.get(Servo.class, "S1");
+        rightLiftServo = hardwareMap.get(Servo.class, "S2");
+        leftIntakeServo = hardwareMap.get(CRServo.class, "F2");
+        rightIntakeServo = hardwareMap.get(CRServo.class, "F1");
+
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
@@ -69,7 +85,7 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         backLeftMotor.setPower(TURN_SPEED);
         backRightMotor.setPower(-TURN_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1)) {
+        while (opModeIsActive() && (runtime.seconds() < 0.8)) {
             telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
@@ -84,6 +100,29 @@ public class AutonomousByTimeTesting extends LinearOpMode {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
+
+        liftMotor.setPower(FORWARD_SPEED);
+        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
+            telemetry.addData("Lift", "Leg 4: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+        leftLiftServo.setPosition(0.9);
+        rightLiftServo.setPosition(0.9);
+        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
+            telemetry.addData("Servo Swing", "Leg 5: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+        leftIntakeServo.setPower(1);
+        rightIntakeServo.setPower(1);
+        while (opModeIsActive() && (runtime.seconds() < 3)) {
+            telemetry.addData("IntakeServo", "Leg 6: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+
+
 
         // Step 4:  Stop
         frontLeftMotor.setPower(0);
