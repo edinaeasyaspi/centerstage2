@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="Robot: Auto drive by time", group="Robot")
 @Disabled
-public class AutonomousByTime extends LinearOpMode {
+public class AutonomousByTimeTesting extends LinearOpMode {
 
 
     private DcMotor       frontLeftMotor  = null;
