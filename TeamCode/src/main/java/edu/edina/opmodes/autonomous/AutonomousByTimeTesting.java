@@ -68,27 +68,18 @@ public class AutonomousByTimeTesting extends LinearOpMode {
 
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
-        // Step 1:  Drive forward for 3 seconds
+        // Step 1:  Strafe right for 3 seconds
         frontLeftMotor.setPower(FORWARD_SPEED);
-        frontRightMotor.setPower(FORWARD_SPEED);
-        backLeftMotor.setPower(FORWARD_SPEED);
+        frontRightMotor.setPower(-FORWARD_SPEED);
+        backLeftMotor.setPower(-FORWARD_SPEED);
         backRightMotor.setPower(FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
+        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
 
-        // Step 2:  Spin right for 1.3 seconds
-        frontLeftMotor.setPower(TURN_SPEED);
-        frontRightMotor.setPower(-TURN_SPEED);
-        backLeftMotor.setPower(TURN_SPEED);
-        backRightMotor.setPower(-TURN_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 0.8)) {
-            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+        // Step 2:
 
         // Step 3:  Drive forward for 1 Second
         frontLeftMotor.setPower(FORWARD_SPEED);
@@ -96,33 +87,74 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         backLeftMotor.setPower(FORWARD_SPEED);
         backRightMotor.setPower(FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
+        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
-        }
 
-        liftMotor.setPower(FORWARD_SPEED);
-        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
-            telemetry.addData("Lift", "Leg 4: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
 
-        leftLiftServo.setPosition(0.9);
-        rightLiftServo.setPosition(0.9);
-        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
-            telemetry.addData("Servo Swing", "Leg 5: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
         }
 
         leftIntakeServo.setPower(1);
         rightIntakeServo.setPower(1);
-        while (opModeIsActive() && (runtime.seconds() < 3)) {
+        while (opModeIsActive() && (runtime.seconds() < 1)) {
             telemetry.addData("IntakeServo", "Leg 6: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
 
+        // Step 1: Turn 180 degrees
+        frontLeftMotor.setPower(TURN_SPEED);
+        frontRightMotor.setPower(-TURN_SPEED);
+        backLeftMotor.setPower(TURN_SPEED);
+        backRightMotor.setPower(-TURN_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
+            telemetry.addData("Path", "Turn 180: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+        liftMotor.setPower(FORWARD_SPEED);
+        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
+            telemetry.addData("Lift", "Leg 4: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+
+        }
 
 
+        leftLiftServo.setPosition(1.0);
+        rightLiftServo.setPosition(1.0);
+        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
+            telemetry.addData("Servo Swing", "Leg 5: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+
+        }
+
+
+        leftIntakeServo.setPower(-1);
+        rightIntakeServo.setPower(-1);
+        while (opModeIsActive() && (runtime.seconds() < 8)) {
+            telemetry.addData("IntakeServo", "Leg 6: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+        frontLeftMotor.setPower(-FORWARD_SPEED);
+        frontRightMotor.setPower(FORWARD_SPEED);
+        backLeftMotor.setPower(FORWARD_SPEED);
+        backRightMotor.setPower(-FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
+            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+        frontLeftMotor.setPower(-FORWARD_SPEED);
+        frontRightMotor.setPower(-FORWARD_SPEED);
+        backLeftMotor.setPower(-FORWARD_SPEED);
+        backRightMotor.setPower(-FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
+            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
 
         // Step 4:  Stop
         frontLeftMotor.setPower(0);
