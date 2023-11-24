@@ -85,16 +85,16 @@ public void runOpMode() {
     //sleep(1500); // Sleep for 1.5 seconds
 
     // Move leftLiftServo to position 0.0
-    leftLiftServo.setPosition(0.0);
+    //leftLiftServo.setPosition(0.0);
     sleep(3000);  // Sleep for 1 second
 
 // Move rightLiftServo to position 1.0
-    rightLiftServo.setPosition(1.0);
+    //rightLiftServo.setPosition(1.0);
     sleep(3000);  // Sleep for 1 second
 
-    telemetry.addData("Left Servo Position", leftLiftServo.getPosition());
-    telemetry.addData("Right Servo Position", rightLiftServo.getPosition());
-    telemetry.update();
+    //telemetry.addData("Left Servo Position", leftLiftServo.getPosition());
+    //telemetry.addData("Right Servo Position", rightLiftServo.getPosition());
+    //telemetry.update();
 
 
 
