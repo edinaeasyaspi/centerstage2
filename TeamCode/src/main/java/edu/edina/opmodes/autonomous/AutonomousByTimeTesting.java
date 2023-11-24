@@ -33,7 +33,7 @@ public class AutonomousByTimeTesting extends LinearOpMode {
 
 
     static final double     FORWARD_SPEED = 1.0;
-    static final double     TURN_SPEED    = 0.3;
+    static final double     TURN_SPEED    = 1.0;
 
     @Override
     public void runOpMode() {
@@ -79,7 +79,7 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         }
 
 
-        // Step 3:  Drive forward for 1 Second
+        // Step 3:  Drive forward for 2 Seconds
         frontLeftMotor.setPower(FORWARD_SPEED);
         frontRightMotor.setPower(FORWARD_SPEED);
         backLeftMotor.setPower(FORWARD_SPEED);
