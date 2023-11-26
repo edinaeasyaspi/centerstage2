@@ -22,13 +22,14 @@ public class AutonomousByTimeTesting extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
+    // Constants for tuning (calibrate based on your robot)
     static final double FORWARD_SPEED = 1.0;
     static final double TURN_SPEED = 0.3;
+    static final int COUNTS_PER_DEGREE = 10; // Adjust this based on your robot's characteristics
 
     @Override
     public void runOpMode() {
-
-        // Initialize the drive system variables.
+        initializeHardware();
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
@@ -39,76 +40,119 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         leftIntakeServo = hardwareMap.get(CRServo.class, "F2");
         rightIntakeServo = hardwareMap.get(CRServo.class, "F1");
 
-        frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
-        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        backLeftMotor.setDirection(DcMotor.Direction.FORWARD);
-        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
 
-        telemetry.addData("Status", "Ready to run");
-        telemetry.update();
+
 
         waitForStart();
 
-        // Step 1: Strafe right for 3 seconds
-        frontLeftMotor.setPower(FORWARD_SPEED);
-        frontRightMotor.setPower(-FORWARD_SPEED);
-        backLeftMotor.setPower(-FORWARD_SPEED);
-        backRightMotor.setPower(FORWARD_SPEED);
-        sleep(3000); // Sleep for 3 seconds
+        strafeRight(3.0);
+        driveForward(2.0);
+        intakeServoForward(1.0);
+        turnLeft(180.0); // Turning 180 degrees using encoder counts
+        liftMotorUp(3.0);
+        liftServosUp(1.5);
+        intakeServoReverse(8.0);
+        strafeLeft(1.0);
 
-        // Step 2: Drive forward for 2 seconds
-        frontLeftMotor.setPower(FORWARD_SPEED);
-        frontRightMotor.setPower(FORWARD_SPEED);
-        backLeftMotor.setPower(FORWARD_SPEED);
-        backRightMotor.setPower(FORWARD_SPEED);
-        sleep(2000); // Sleep for 2 seconds
-
-        // Step 3: Intake servo for 1 second
-        leftIntakeServo.setPower(1);
-        rightIntakeServo.setPower(1);
-        sleep(1000); // Sleep for 1 second
-
-        // Step 4: Turn 180 degrees for 1.5 seconds
-        frontLeftMotor.setPower(TURN_SPEED);
-        frontRightMotor.setPower(-TURN_SPEED);
-        backLeftMotor.setPower(TURN_SPEED);
-        backRightMotor.setPower(-TURN_SPEED);
-        sleep(1500); // Sleep for 1.5 seconds
-
-        // Step 5: Lift motor for 3 seconds
-        liftMotor.setPower(FORWARD_SPEED);
-        sleep(3000); // Sleep for 3 seconds
-
-        // Step 6: Lift servos for 1.5 seconds
-        leftLiftServo.setPosition(1.0);
-        rightLiftServo.setPosition(1.0);
-        sleep(1500); // Sleep for 1.5 seconds
-
-        // Step 7: Intake servo reverse for 8 seconds
-        leftIntakeServo.setPower(-1);
-        rightIntakeServo.setPower(-1);
-        sleep(8000); // Sleep for 8 seconds
-
-        // Step 8: Strafe left for 1 second
-        frontLeftMotor.setPower(-FORWARD_SPEED);
-        frontRightMotor.setPower(FORWARD_SPEED);
-        backLeftMotor.setPower(FORWARD_SPEED);
-        backRightMotor.setPower(-FORWARD_SPEED);
-        sleep(1000); // Sleep for 1 second
-
-        // Step 9: Stop all motors
-        frontLeftMotor.setPower(0);
-        frontRightMotor.setPower(0);
-        backLeftMotor.setPower(0);
-        backRightMotor.setPower(0);
-        liftMotor.setPower(0);
-        leftIntakeServo.setPower(0);
-        rightIntakeServo.setPower(0);
-        leftLiftServo.setPosition(0);
-        rightLiftServo.setPosition(0);
+        stopAll();
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
         sleep(1000);
+    }
+
+    private void initializeHardware() {
+        // Your existing hardware initialization code remains unchanged
+        // ...
+
+        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+    }
+
+    private void strafeRight(double duration) {
+        setDrivePower(FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED);
+        sleep((long) (duration * 1000));
+    }
+
+    private void driveForward(double duration) {
+        setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
+        sleep((long) (duration * 1000));
+    }
+
+    private void intakeServoForward(double duration) {
+        setIntakeServoPower(1, 1);
+        sleep((long) (duration * 1000));
+    }
+
+    private void turnLeft(double targetDegrees) {
+        int targetCounts = (int) (targetDegrees * COUNTS_PER_DEGREE);
+        resetDriveEncoders();
+
+        while (opModeIsActive() && Math.abs(frontLeftMotor.getCurrentPosition()) < targetCounts) {
+            setDrivePower(-TURN_SPEED, TURN_SPEED, -TURN_SPEED, TURN_SPEED);
+        }
+
+        stopAll();
+    }
+
+    private void liftMotorUp(double duration) {
+        liftMotor.setPower(FORWARD_SPEED);
+        sleep((long) (duration * 1000));
+    }
+
+    private void liftServosUp(double duration) {
+        leftLiftServo.setPosition(1.0);
+        rightLiftServo.setPosition(1.0);
+        sleep((long) (duration * 1000));
+    }
+
+    private void intakeServoReverse(double duration) {
+        setIntakeServoPower(-1, -1);
+        sleep((long) (duration * 1000));
+    }
+
+    private void strafeLeft(double duration) {
+        setDrivePower(-FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, -FORWARD_SPEED);
+        sleep((long) (duration * 1000));
+    }
+
+    private void stopAll() {
+        setDrivePower(0, 0, 0, 0);
+        liftMotor.setPower(0);
+        setIntakeServoPower(0, 0);
+        leftLiftServo.setPosition(0);
+        rightLiftServo.setPosition(0);
+    }
+
+    private void setDrivePower(double frontLeft, double frontRight, double backLeft, double backRight) {
+        frontLeftMotor.setPower(frontLeft);
+        frontRightMotor.setPower(frontRight);
+        backLeftMotor.setPower(backLeft);
+        backRightMotor.setPower(backRight);
+    }
+
+    private void setIntakeServoPower(double leftPower, double rightPower) {
+        leftIntakeServo.setPower(leftPower);
+        rightIntakeServo.setPower(rightPower);
+    }
+
+    private void resetDriveEncoders() {
+        // Reset encoder positions
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // Set the mode to run with encoders
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }

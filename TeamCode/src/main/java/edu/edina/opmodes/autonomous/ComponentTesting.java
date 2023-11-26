@@ -69,16 +69,17 @@ public void runOpMode() {
     //rightIntakeServo.setPower(1);
     //sleep(3000); // Sleep for 1 second
 
-    //frontLeftMotor.setPower(TURN_SPEED);
-   // frontRightMotor.setPower(-TURN_SPEED);
-   // backLeftMotor.setPower(TURN_SPEED);
-   // backRightMotor.setPower(-TURN_SPEED);
-   // sleep(1175); // Sleep for 1.5 seconds
 
-    //final double  FORWARD_SPEED = 1.0;
 
-    //liftMotor.setPower(FORWARD_SPEED);
-    //sleep(1200); // Sleep for 3 seconds
+    frontLeftMotor.setPower(TURN_SPEED);
+   frontRightMotor.setPower(-TURN_SPEED);
+    backLeftMotor.setPower(TURN_SPEED);
+    backRightMotor.setPower(-TURN_SPEED);
+    sleep(780); // Sleep for 0.78 seconds
+
+
+    liftMotor.setPower(FORWARD_SPEED);
+    sleep(700); // Sleep for half a second
 
     //leftLiftServo.setPosition(0);
     //rightLiftServo.setPosition(1.0);
@@ -86,11 +87,11 @@ public void runOpMode() {
 
     // Move leftLiftServo to position 0.0
     //leftLiftServo.setPosition(0.0);
-    sleep(3000);  // Sleep for 1 second
+  // sleep(3000);  // Sleep for 1 second
 
-// Move rightLiftServo to position 1.0
-    //rightLiftServo.setPosition(1.0);
-    sleep(3000);  // Sleep for 1 second
+    //leftLiftServo.setPosition(1.0);
+    //rightLiftServo.setPosition(0.0);
+    //sleep(3000);  // Sleep for 1 second
 
     //telemetry.addData("Left Servo Position", leftLiftServo.getPosition());
     //telemetry.addData("Right Servo Position", rightLiftServo.getPosition());
