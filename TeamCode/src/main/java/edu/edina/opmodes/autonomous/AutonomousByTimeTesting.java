@@ -1,5 +1,6 @@
 package edu.edina.opmodes.autonomous;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -7,9 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "Robot: Auto Drive By Time", group = "Autonomous")
+@Autonomous(name = "Robot: Autonomous Drive by time", group = "Autonomous")
 public class AutonomousByTimeTesting extends LinearOpMode {
-
 
     private DcMotor frontLeftMotor = null;
     private DcMotor backLeftMotor = null;
@@ -26,11 +26,32 @@ public class AutonomousByTimeTesting extends LinearOpMode {
     static final double FORWARD_SPEED = 1.0;
     static final double TURN_SPEED = 1.0;
 
-
     @Override
     public void runOpMode() {
+        initializeHardware();
 
-        // Initialize the drive system variables.
+        waitForStart();
+
+        strafeRight(1.0);
+        driveForward(2.0);
+        turn(-TURN_SPEED, 1.0);
+        extendLiftMotor((short) 2.0);
+        intakeServoForward(0.5);
+        moveLiftServosBack((short) 2.0);
+        reverseIntakeServos((short) 1.2);
+        swingBackLiftServos((short)2.0);
+        lowerLiftMotor((short) 2.0);
+        strafeLeft(1.0);
+        goBackward(1.0);
+
+        stopAll();
+
+        telemetry.addData("Path", "Complete");
+        telemetry.update();
+        sleep(1000);
+    }
+
+    private void initializeHardware() {
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
@@ -45,121 +66,105 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+    }
 
-        telemetry.addData("Status", "Ready to run");
-        telemetry.update();
+    private void strafeRight(double duration) {
+        setDrivePower(FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED);
+        sleep((long) (duration * 1000));
+    }
 
-        waitForStart();
+    private void driveForward(double duration) {
+        setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
+        sleep((long) (duration * 2000));
+    }
 
-        //Step 1: Strafe right for 3 seconds
-        frontLeftMotor.setPower(FORWARD_SPEED);
-        frontRightMotor.setPower(-FORWARD_SPEED);
-        backLeftMotor.setPower(-FORWARD_SPEED);
-        backRightMotor.setPower(FORWARD_SPEED);
-        sleep(2500); // Sleep for 3 seconds
+    private void intakeServoForward(double duration) {
+        setIntakeServoPower(1, 1);
+        sleep((long) (duration * 1000));
+    }
 
-        frontLeftMotor.setPower(FORWARD_SPEED);
-        frontRightMotor.setPower(FORWARD_SPEED);
-        backLeftMotor.setPower(FORWARD_SPEED);
-        backRightMotor.setPower(FORWARD_SPEED);
-        sleep(3000); // Sleep for 3 seconds
+    private void strafeLeft(double duration) {
+        setDrivePower(-FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, -FORWARD_SPEED);
+        sleep((long) (duration * 1000));
+    }
 
-        frontLeftMotor.setPower(0);
+    private void turn(double power, double duration) {
+        frontLeftMotor.setPower(power);
+        backLeftMotor.setPower(power);
+        frontRightMotor.setPower(-power);
+        backRightMotor.setPower(-power);
+        sleep((long) (duration * 1100));
+
         frontRightMotor.setPower(0);
-        backLeftMotor.setPower(0);
-        backRightMotor.setPower(0);
-        sleep(1000); // Sleep for 1 second
-
-        frontLeftMotor.setPower(-FORWARD_SPEED);
-        frontRightMotor.setPower(FORWARD_SPEED);
-        backLeftMotor.setPower(FORWARD_SPEED);
-        backRightMotor.setPower(-FORWARD_SPEED);
-        sleep(500); // Sleep for half a second
-
         frontLeftMotor.setPower(0);
-        frontRightMotor.setPower(0);
-        backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
-        sleep(1000); // Sleep for 2 seconds
-
-        frontLeftMotor.setPower(-TURN_SPEED);
-        frontRightMotor.setPower(TURN_SPEED);
-        backLeftMotor.setPower(TURN_SPEED);
-        backRightMotor.setPower(-TURN_SPEED);
-        sleep(1000); // Sleep for 2 seconds
-
-
-
-
-
-
-
-        // Step 3: Intake servo for 1 second
-        leftIntakeServo.setPower(-1);
-        rightIntakeServo.setPower(1);
-        sleep(3000); // Sleep for 1 second
-
-
-
-        frontLeftMotor.setPower(TURN_SPEED);
-        frontRightMotor.setPower(-TURN_SPEED);
-        backLeftMotor.setPower(TURN_SPEED);
-        backRightMotor.setPower(-TURN_SPEED);
-        sleep(1); // Sleep for 0.78 seconds
-
-        frontLeftMotor.setPower(0);
-        frontRightMotor.setPower(0);
         backLeftMotor.setPower(0);
-        backRightMotor.setPower(0);
-        sleep(3000); // Sleep for 3 seconds
-
-
-
-
-        liftMotor.setPower(FORWARD_SPEED);
-        sleep(100); // Sleep for 4/10s of a second
-
-        leftLiftServo.setPosition(0);
-        rightLiftServo.setPosition(1.0);
-        sleep(1500); // Sleep for 1.5 seconds
-
-        //Move leftLiftServo to position 0.0
-        leftLiftServo.setPosition(0.0);
-        sleep(3000);  // Sleep for 1 second
-
-        leftLiftServo.setPosition(1.0);
-        rightLiftServo.setPosition(0.0);
-        sleep(3000);  // Sleep for 1 second
-
-        telemetry.addData("Left Servo Position", leftLiftServo.getPosition());
-        telemetry.addData("Right Servo Position", rightLiftServo.getPosition());
-        telemetry.update();
-
-        leftLiftServo.setPosition(0.0);  // Set to 0.0 for one direction
-        rightLiftServo.setPosition(1.0); // Set to 1.0 for the opposite direction
-        sleep(2000);
-
-
-        leftIntakeServo.setPower(1);
-        rightIntakeServo.setPower(-1);
-        sleep(4000); // Sleep for 8 seconds
-
-        liftMotor.setPower(-FORWARD_SPEED);
-        sleep(100);
-
-        frontLeftMotor.setPower(-FORWARD_SPEED);
-        frontRightMotor.setPower(FORWARD_SPEED);
-        backLeftMotor.setPower(FORWARD_SPEED);
-        backRightMotor.setPower(-FORWARD_SPEED);
-        sleep(1000);
-
-        frontLeftMotor.setPower(-FORWARD_SPEED);
-        frontRightMotor.setPower(-FORWARD_SPEED);
-        backLeftMotor.setPower(-FORWARD_SPEED);
-        backRightMotor.setPower(-FORWARD_SPEED);
-        sleep(1000);
 
     }
+
+    private void extendLiftMotor(short duration) {
+        liftMotor.setPower(FORWARD_SPEED);
+        sleep((short) (duration * 1500));
+
+        stopAll();
+    }
+
+    private void moveLiftServosBack(short duration) {
+        leftLiftServo.setPosition(1.0);
+        rightLiftServo.setPosition(0.0);
+        sleep((short) (duration * 2000));
+
+
+
+        telemetry.addData("Left Lift Servo Position", leftLiftServo.getPosition());
+        telemetry.addData("Right Lift Servo Position", rightLiftServo.getPosition());
+        telemetry.update();
+
+    }
+
+    private void reverseIntakeServos(short duration) {
+        setIntakeServoPower(1, -1);
+        sleep((short) (duration * 1200));
+
+        stopAll();
+    }
+
+    private void swingBackLiftServos(short duration) {
+        leftLiftServo.setPosition(0.0);
+        rightLiftServo.setPosition(1.0);
+        sleep((short) (duration * 2000));
+    }
+
+    private void lowerLiftMotor(double duration) {
+        liftMotor.setPower(-FORWARD_SPEED);
+        sleep((short) (duration * 800));
+
+        liftMotor.setPower(0);
+    }
+
+    private void goBackward(double duration) {
+        setDrivePower(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED);
+        sleep((long) (duration * 1000));
+    }
+
+
+    private void stopAll() {
+        setDrivePower(0, 0, 0, 0);
+        liftMotor.setPower(0);
+        setIntakeServoPower(0, 0);
+        leftLiftServo.setPosition(1);
+        rightLiftServo.setPosition(1);
+    }
+
+    private void setDrivePower(double frontLeft, double frontRight, double backLeft, double backRight) {
+        frontLeftMotor.setPower(frontLeft);
+        frontRightMotor.setPower(frontRight);
+        backLeftMotor.setPower(backLeft);
+        backRightMotor.setPower(backRight);
+    }
+
+    private void setIntakeServoPower(double leftPower, double rightPower) {
+        leftIntakeServo.setPower(leftPower);
+        rightIntakeServo.setPower(rightPower);
+    }
 }
-
-
