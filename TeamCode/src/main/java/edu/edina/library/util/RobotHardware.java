@@ -5,6 +5,7 @@ import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -23,6 +24,8 @@ public class RobotHardware {
     public final VoltageSensor voltageSensor;
 
     public final IMU imu;
+
+    public final ColorSensor colorSensor;
 
     public final Servo leftLiftServo, rightLiftServo;
 
@@ -57,5 +60,6 @@ public class RobotHardware {
         rightIntakeServo = hardwareMap.get(CRServo.class, "F1");
 
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
+        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
     }
 }
