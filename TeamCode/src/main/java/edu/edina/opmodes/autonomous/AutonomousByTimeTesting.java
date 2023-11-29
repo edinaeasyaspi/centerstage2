@@ -34,15 +34,14 @@ public class AutonomousByTimeTesting extends LinearOpMode {
 
         strafeRight(1.3);
         driveForward(1.9);
-        turn(-TURN_SPEED, 1.2);
+        turn(-TURN_SPEED, 1.14);
+        goBackward1((short) 0.8);
         extendLiftMotor((short) 2.0);
-        intakeServoForward(0.5);
         moveLiftServosBack((short) 2.0);
         reverseIntakeServos((short) 1.2);
         swingBackLiftServos((short)2.0);
         lowerLiftMotor((short) 2.0);
-        strafeLeft(1.0);
-        goBackward(1.0);
+
 
         stopAll();
 
@@ -78,10 +77,6 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         sleep((long) (duration * 2000));
     }
 
-    private void intakeServoForward(double duration) {
-        setIntakeServoPower(1, 1);
-        sleep((long) (duration * 1000));
-    }
 
     private void strafeLeft(double duration) {
         setDrivePower(-FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, -FORWARD_SPEED);
@@ -94,19 +89,27 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         frontRightMotor.setPower(-power);
         backRightMotor.setPower(-power);
         sleep((long) (duration * 1100));
+        
+
+    }
+    private void goBackward1(short duration) {
+        setDrivePower(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED);
+        sleep((short) (duration * 800));
 
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
         backRightMotor.setPower(0);
         backLeftMotor.setPower(0);
 
+
     }
+
 
     private void extendLiftMotor(short duration) {
         liftMotor.setPower(FORWARD_SPEED);
-        sleep((short) (duration * 1500));
+        sleep((short) (duration * 1000));
 
-        stopAll();
+        liftMotor.setPower(0);
     }
 
     private void moveLiftServosBack(short duration) {
