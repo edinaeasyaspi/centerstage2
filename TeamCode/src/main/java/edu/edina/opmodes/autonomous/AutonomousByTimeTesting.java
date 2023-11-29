@@ -32,7 +32,7 @@ public class AutonomousByTimeTesting extends LinearOpMode {
 
         waitForStart();
 
-        strafeRight(1.0);
+        strafeLeft(1.0);
         driveForward(2.0);
         turn(-TURN_SPEED, 1.1);
         extendLiftMotor((short) 2.0);
@@ -67,11 +67,7 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
     }
-
-    private void strafeRight(double duration) {
-        setDrivePower(FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED);
-        sleep((long) (duration * 1000));
-    }
+    
 
     private void driveForward(double duration) {
         setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
