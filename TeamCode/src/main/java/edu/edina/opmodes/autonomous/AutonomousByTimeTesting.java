@@ -32,15 +32,13 @@ public class AutonomousByTimeTesting extends LinearOpMode {
 
         waitForStart();
 
-        strafeLeft(1.3);
-        driveForward(1.85);
-        turn(-TURN_SPEED, 1.14);
-        goBackward1((short) 0.8);
-        extendLiftMotor((short) 2.0);
+        strafeRight(1.289);
+        goBackward((short) 1.5);
+        extendLiftMotor((short) 1.5);
         moveLiftServosBack((short) 2.0);
         reverseIntakeServos((short) 1.2);
-        swingBackLiftServos((short)2.0);
-        lowerLiftMotor((short) 2.0);
+        swingBackLiftServos((short) 1.5);
+        lowerLiftMotor((short) 1.4);
 
 
         stopAll();
@@ -69,7 +67,7 @@ public class AutonomousByTimeTesting extends LinearOpMode {
 
     private void strafeRight(double duration) {
         setDrivePower(FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED);
-        sleep((long) (duration * 1000));
+        sleep((long) (duration * 1289));
     }
 
     private void driveForward(double duration) {
@@ -92,14 +90,16 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         
 
     }
-    private void goBackward1(short duration) {
+    private void goBackward(short duration) {
         setDrivePower(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED);
-        sleep((short) (duration * 800));
+        sleep((short) (duration * 1500));
 
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
         backRightMotor.setPower(0);
         backLeftMotor.setPower(0);
+        leftIntakeServo.setPower(0);
+        rightIntakeServo.setPower(0);
 
 
     }
@@ -107,7 +107,7 @@ public class AutonomousByTimeTesting extends LinearOpMode {
 
     private void extendLiftMotor(short duration) {
         liftMotor.setPower(FORWARD_SPEED);
-        sleep((short) (duration * 1000));
+        sleep((short) (duration * 1500));
 
         liftMotor.setPower(0);
     }
@@ -135,12 +135,12 @@ public class AutonomousByTimeTesting extends LinearOpMode {
     private void swingBackLiftServos(short duration) {
         leftLiftServo.setPosition(0.0);
         rightLiftServo.setPosition(1.0);
-        sleep((short) (duration * 2000));
+        sleep((short) (duration * 1500));
     }
 
     private void lowerLiftMotor(double duration) {
         liftMotor.setPower(-FORWARD_SPEED);
-        sleep((short) (duration * 800));
+        sleep((short) (duration * 1400));
 
         liftMotor.setPower(0);
     }
