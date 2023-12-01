@@ -32,8 +32,8 @@ public class AutonomousByTimeTesting extends LinearOpMode {
 
         waitForStart();
 
-        strafeRight(1.3);
-        driveForward(1.9);
+        strafeLeft(1.3);
+        driveForward(1.85);
         turn(-TURN_SPEED, 1.14);
         goBackward1((short) 0.8);
         extendLiftMotor((short) 2.0);
