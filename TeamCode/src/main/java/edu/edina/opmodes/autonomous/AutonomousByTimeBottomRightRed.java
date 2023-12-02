@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "Robot: Autonomous Drive by time", group = "Autonomous")
-public class AutonomousByTimeTesting extends LinearOpMode {
+public class AutonomousByTimeBottomRightRed extends LinearOpMode {
 
     private DcMotor frontLeftMotor = null;
     private DcMotor backLeftMotor = null;
@@ -32,8 +32,8 @@ public class AutonomousByTimeTesting extends LinearOpMode {
 
         waitForStart();
 
-        //strafeRight(1.3);
-        strafeLeft(1.295);
+        strafeRight(1.295);
+        //strafeLeft(1.295);
         driveForward(2.0);
         turn(-TURN_SPEED, 1.0802);
         goBackward1(0.52);
@@ -179,3 +179,4 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         rightIntakeServo.setPower(rightPower);
     }
 }
+
