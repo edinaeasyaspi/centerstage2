@@ -32,17 +32,17 @@ public class AutonomousByTimeTesting extends LinearOpMode {
 
         waitForStart();
 
-        strafeRight(1.3);
+        //strafeRight(1.3);
+        strafeLeft(1.295);
         driveForward(2.0);
-        turn(-TURN_SPEED, 1.1);
+        turn(-TURN_SPEED, 1.0802);
+        goBackward1(0.52);
         extendLiftMotor((short) 2.0);
         intakeServoForward(0.5);
         moveLiftServosBack((short) 2.0);
         reverseIntakeServos((short) 1.2);
         swingBackLiftServos((short)2.0);
         lowerLiftMotor((short) 2.0);
-        strafeLeft(1.0);
-        goBackward(1.0);
 
         stopAll();
 
@@ -93,7 +93,7 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         backLeftMotor.setPower(power);
         frontRightMotor.setPower(-power);
         backRightMotor.setPower(-power);
-        sleep((long) (duration * 1100));
+        sleep((long) (duration * 1350));
 
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
@@ -101,6 +101,17 @@ public class AutonomousByTimeTesting extends LinearOpMode {
         backLeftMotor.setPower(0);
 
     }
+    private void goBackward1(double duration) {
+        setDrivePower(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED);
+        sleep((long) (duration * 700));
+
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+        backLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
+
+    };
+
 
     private void extendLiftMotor(short duration) {
         liftMotor.setPower(FORWARD_SPEED);
@@ -110,8 +121,8 @@ public class AutonomousByTimeTesting extends LinearOpMode {
     }
 
     private void moveLiftServosBack(short duration) {
-        leftLiftServo.setPosition(1.0);
-        rightLiftServo.setPosition(0.0);
+        leftLiftServo.setPosition(0.9);
+        rightLiftServo.setPosition(0.1);
         sleep((short) (duration * 2000));
 
 
@@ -130,8 +141,8 @@ public class AutonomousByTimeTesting extends LinearOpMode {
     }
 
     private void swingBackLiftServos(short duration) {
-        leftLiftServo.setPosition(0.0);
-        rightLiftServo.setPosition(1.0);
+        leftLiftServo.setPosition(0.1);
+        rightLiftServo.setPosition(0.9);
         sleep((short) (duration * 2000));
     }
 
