@@ -5,10 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "Robot: Autonomous Drive by time", group = "Autonomous")
+@Autonomous(name = "Robot: Autonomous Drive by time1", group = "Autonomous")
 public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
 
     private DcMotor frontLeftMotor = null;
@@ -33,6 +34,7 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
         waitForStart();
 
         //strafeRight(1.3);
+
         strafeLeft(1.295);
         driveForward(2.0);
         turn(-TURN_SPEED, 1.0802);
@@ -61,6 +63,7 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
         rightLiftServo = hardwareMap.get(Servo.class, "S2");
         leftIntakeServo = hardwareMap.get(CRServo.class, "F2");
         rightIntakeServo = hardwareMap.get(CRServo.class, "F1");
+
 
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotor.Direction.FORWARD);

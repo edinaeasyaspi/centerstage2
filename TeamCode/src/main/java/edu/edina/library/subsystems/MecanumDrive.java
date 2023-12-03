@@ -16,8 +16,8 @@ public class MecanumDrive extends Subsystem {
     private Robot robot;
 
     public MecanumDrive(Robot robot) {
-        drive = new org.firstinspires.ftc.teamcode.MecanumDrive(robot.RobotHardware.leftFrontMotor,
-                robot.RobotHardware.leftBackMotor, robot.RobotHardware.rightBackMotor, robot.RobotHardware.rightFrontMotor,
+        drive = new org.firstinspires.ftc.teamcode.MecanumDrive(robot.RobotHardware.frontLeftMotor,
+                robot.RobotHardware.backLeftMotor, robot.RobotHardware.backRightMotor, robot.RobotHardware.frontRightMotor,
                 robot.RobotHardware.imu, robot.RobotHardware.voltageSensor, new Pose2d(0, 0, 0));
 
         this.robot = robot;

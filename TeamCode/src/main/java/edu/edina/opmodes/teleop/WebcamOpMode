@@ -1,0 +1,48 @@
+package edu.yourteam.teleop;
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.Webcam;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.opencv.core.Mat;
+
+public class WebcamOpMode extends OpMode {
+
+    // Declare the webcam variable
+    public final WebcamName LogitechC270_8034PI;
+
+    Webcam webcam;
+
+    public YourWebcamOpMode() {
+        LogitechC270_8034PI = hardwareMap.get(WebcamName.class, "your_webcam_name");
+    }
+
+    @Override
+    public void init() {
+        // Use the declared webcam name to get the webcam from the hardware map
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(LogitechC270_8034PI);
+
+        // Additional webcam configuration if needed
+        webcam.openCameraDevice();  // Open the camera device
+        webcam.setPipeline(/* Your custom OpenCV pipeline */);  // Set an OpenCV pipeline if needed
+        webcam.startStreaming(/* Resolution, frame rate, and format */);
+    }
+
+    @Override
+    public void loop() {
+        // Access webcam frames
+        Mat frame = webcam.getFrame();
+
+        // Perform image processing using OpenCV or other libraries
+
+        // Display processed frames on telemetry or take robot actions based on the processing results
+        telemetry.addData("Processed Frame", /* Processed information */);
+        telemetry.update();
+    }
+
+    @Override
+    public void stop() {
+        // Release resources when the OpMode is stopped
+        webcam.closeCameraDevice();
+    }
+}

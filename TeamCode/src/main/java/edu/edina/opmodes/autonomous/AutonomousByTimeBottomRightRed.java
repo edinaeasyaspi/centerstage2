@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "Robot: Autonomous Drive by time", group = "Autonomous")
+@Autonomous(name = "Robot: Autonomous Drive by time2", group = "Autonomous")
 public class AutonomousByTimeBottomRightRed extends LinearOpMode {
 
     private DcMotor frontLeftMotor = null;
