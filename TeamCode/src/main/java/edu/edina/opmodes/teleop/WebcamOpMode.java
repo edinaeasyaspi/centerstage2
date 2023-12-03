@@ -11,7 +11,7 @@ import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.SmartGamepad;
 import org.opencv.core.Mat;
 
-public class TeleopOpMode extends OpMode {
+public class WebcamOpMode extends OpMode {
     protected RobotHardware robotHardware;
     protected SmartGamepad driver1Gamepad;
     protected SmartGamepad driver2Gamepad;
@@ -22,7 +22,7 @@ public class TeleopOpMode extends OpMode {
     public void init() {
         driver1Gamepad = new SmartGamepad(gamepad1);
         driver2Gamepad = new SmartGamepad(gamepad2);
-
+        robotHardware = new RobotHardware(hardwareMap);
 
         // Initialize webcam
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -38,12 +38,13 @@ public class TeleopOpMode extends OpMode {
 
     @Override
     public void init_loop() {
-        // Initialization loop logic
+
     }
 
     @Override
     public void start() {
-        // Actions to perform when OpMode starts
+        Mat processedFrame = imageProcessingPipeline.getResultMat();
+
     }
 
     @Override
@@ -57,14 +58,7 @@ public class TeleopOpMode extends OpMode {
         // Perform actions based on processed frames
         // ...
 
-        // Display information on the driver station telemetry
         telemetry.addData("Some Information", "...");
-
-        // For example, display the average color value from the processed frame
-        double averageColorValue = calculateAverageColor(processedFrame);
-        telemetry.addData("Average Color Value", averageColorValue);
-
-        // Update telemetry
         telemetry.update();
     }
 
@@ -78,6 +72,7 @@ public class TeleopOpMode extends OpMode {
     public static class YourImageProcessingPipeline extends OpenCvPipeline {
         private Mat resultMat;
 
+
         @Override
         public Mat processFrame(Mat input) {
             // Implement your image processing here
@@ -90,12 +85,5 @@ public class TeleopOpMode extends OpMode {
         public Mat getResultMat() {
             return resultMat;
         }
-    }
-
-    // Example method to calculate the average color value from a frame
-    private double calculateAverageColor(Mat frame) {
-        // Implement your logic to calculate average color value
-        // This is just a placeholder, replace it with your actual logic
-        return 0.0;
     }
 }

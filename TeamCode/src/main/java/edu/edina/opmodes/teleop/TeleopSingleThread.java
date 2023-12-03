@@ -6,6 +6,8 @@ import edu.edina.library.util.Robot;
 
 @TeleOp(name = "DriveMe", group = "teleop")
 public class TeleopSingleThread extends TeleopOpMode {
+    private Robot robot;
+
     @Override
     public void init() {
         // this line calls the init method in the TeleopOpMode to setup the game pads

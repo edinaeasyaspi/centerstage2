@@ -19,6 +19,7 @@ import java.util.regex.Pattern
 
 apply plugin: 'com.android.application'
 
+
 android {
 
     compileSdkVersion 29
@@ -44,6 +45,8 @@ android {
             keyPassword 'android'
             storeFile rootProject.file('libs/ftc.debug.keystore')
             storePassword 'android'
+
+
         }
     }
 
@@ -112,6 +115,11 @@ android {
         jniLibs.srcDir rootProject.file('libs')
     }
     ndkVersion '21.3.6528147'
+}
+dependencies {
+    implementation 'com.github.openftc:easyopencv:v5.0.0'
+    implementation 'org.openftc:libftc:1.0.0'
+
 }
 
 

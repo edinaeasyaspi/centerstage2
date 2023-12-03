@@ -36,7 +36,7 @@ public class RobotHardware {
     public final DcMotorEx liftMotor;
 
     public final WebcamName LogitechC270_8034PI; // Expose the webcam as a public variable
-
+    RobotHardware robotHardware;
     public RobotHardware(HardwareMap hardwareMap) {
         LynxFirmware.throwIfModulesAreOutdated(hardwareMap);
 

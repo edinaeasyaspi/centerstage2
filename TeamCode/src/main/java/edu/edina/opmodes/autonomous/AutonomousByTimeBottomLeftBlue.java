@@ -1,6 +1,8 @@
 package edu.edina.opmodes.autonomous;
 
 
+import com.qualcomm.hardware.motors.NeveRest40Gearmotor;
+import com.qualcomm.hardware.motors.TetrixMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;

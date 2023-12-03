@@ -4,10 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import edu.edina.library.util.Robot;
+import edu.edina.library.util.RobotHardware;
 
 @TeleOp(name = "TeleopMultiThread", group = "teleop")
 @Disabled
 public class TeleopMultiThread extends TeleopOpMode {
+    protected Robot robot;
     @Override
     public void init() {
         // this line calls the init method in the TeleopOpMode to setup the game pads
