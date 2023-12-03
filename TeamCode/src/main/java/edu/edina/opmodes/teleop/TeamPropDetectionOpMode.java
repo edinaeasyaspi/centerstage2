@@ -17,6 +17,9 @@ public class TeamPropDetectionOpMode extends OpMode {
     private OpenCvCamera webcam;
     private PropDetectionPipeline propDetectionPipeline;
 
+    WebcamName webcamName = hardwareMap.get(WebcamName.class, "LogitechC270_8034PI");
+
+
     @Override
     public void init() {
         // Initialize the webcam and prop detection
