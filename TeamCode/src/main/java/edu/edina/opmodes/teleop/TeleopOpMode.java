@@ -28,7 +28,6 @@ public class TeleopOpMode extends OpMode {
     public void init_loop() {
         RobotState state = RobotState.getInstance();
         RobotHardware hardware = robot.RobotHardware;
-        hardware = robotHardware;
         RobotConfiguration config = RobotConfiguration.getInstance();
 
         telemetry.update();
