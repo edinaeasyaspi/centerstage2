@@ -43,7 +43,7 @@ public class TeleopOpMode extends OpMode {
 
     @Override
     public void start() {
-        // Actions to perform when OpMode starts
+
     }
 
     @Override
