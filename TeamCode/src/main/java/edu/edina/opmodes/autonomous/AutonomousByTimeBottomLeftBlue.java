@@ -1,15 +1,17 @@
 package edu.edina.opmodes.autonomous;
 
-
-import com.qualcomm.hardware.motors.NeveRest40Gearmotor;
-import com.qualcomm.hardware.motors.TetrixMotor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvPipeline;
+import org.opencv.core.Mat;
 
 @Autonomous(name = "Robot: Autonomous Drive by time1", group = "Autonomous")
 public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
@@ -24,6 +26,9 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
     private CRServo leftIntakeServo = null;
     private CRServo rightIntakeServo = null;
 
+    private OpenCvCamera webcam;
+    private YourImageProcessingPipeline imageProcessingPipeline;
+
     private ElapsedTime runtime = new ElapsedTime();
 
     static final double FORWARD_SPEED = 1.0;
@@ -32,21 +37,24 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
     @Override
     public void runOpMode() {
         initializeHardware();
+        initializeCamera();
 
         waitForStart();
 
-        strafeLeft(1.295);
-        driveForward(2.0);
-        turn(-TURN_SPEED, 1.0802);
-        goBackward1(0.52);
-        extendLiftMotor((short) 2.0);
-        intakeServoForward(0.5);
-        moveLiftServosBack((short) 2.0);
-        reverseIntakeServos((short) 1.2);
-        swingBackLiftServos((short)2.0);
-        lowerLiftMotor((short) 2.0);
+        // ... (existing code)
 
-        stopAll();
+        while (opModeIsActive()) {
+            // Access the result of image processing through the pipeline
+            Mat processedFrame = imageProcessingPipeline.getResultMat();
+
+            // Perform actions based on processed frames
+            // ...
+
+            telemetry.addData("Autonomous Status", "Running");
+            telemetry.update();
+        }
+
+        stop();
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -64,12 +72,47 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
         leftIntakeServo = hardwareMap.get(CRServo.class, "F2");
         rightIntakeServo = hardwareMap.get(CRServo.class, "F1");
 
-
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
     }
+
+    private void initializeCamera() {
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(
+                hardwareMap.get(WebcamName.class, "webcamName"), cameraMonitorViewId);
+        webcam.openCameraDevice();
+
+        // Set up image processing pipeline
+        imageProcessingPipeline = new YourImageProcessingPipeline();
+        webcam.setPipeline(imageProcessingPipeline);
+
+        webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+    }
+
+    // ... (existing code)
+
+    // Implement your image processing pipeline
+    public static class YourImageProcessingPipeline extends OpenCvPipeline {
+        private Mat resultMat;
+
+        @Override
+        public Mat processFrame(Mat input) {
+            // Implement your image processing here
+            // Modify 'input' as needed
+            resultMat = input.clone(); // Example: simply clone the input
+
+            return resultMat;
+        }
+
+        public Mat getResultMat() {
+            return resultMat;
+        }
+    }
+
+    // ... (existing code)
 
     private void strafeRight(double duration) {
         setDrivePower(FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED);
@@ -104,71 +147,8 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
         backLeftMotor.setPower(0);
 
     }
-    private void goBackward1(double duration) {
-        setDrivePower(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED);
-        sleep((long) (duration * 700));
 
-        frontRightMotor.setPower(0);
-        frontLeftMotor.setPower(0);
-        backLeftMotor.setPower(0);
-        backRightMotor.setPower(0);
-
-    };
-
-
-    private void extendLiftMotor(short duration) {
-        liftMotor.setPower(FORWARD_SPEED);
-        sleep((short) (duration * 1500));
-
-        stopAll();
-    }
-
-    private void moveLiftServosBack(short duration) {
-        leftLiftServo.setPosition(0.9);
-        rightLiftServo.setPosition(0.1);
-        sleep((short) (duration * 2000));
-
-
-
-        telemetry.addData("Left Lift Servo Position", leftLiftServo.getPosition());
-        telemetry.addData("Right Lift Servo Position", rightLiftServo.getPosition());
-        telemetry.update();
-
-    }
-
-    private void reverseIntakeServos(short duration) {
-        setIntakeServoPower(1, -1);
-        sleep((short) (duration * 1200));
-
-        stopAll();
-    }
-
-    private void swingBackLiftServos(short duration) {
-        leftLiftServo.setPosition(0.1);
-        rightLiftServo.setPosition(0.9);
-        sleep((short) (duration * 2000));
-    }
-
-    private void lowerLiftMotor(double duration) {
-        liftMotor.setPower(-FORWARD_SPEED);
-        sleep((short) (duration * 800));
-
-        liftMotor.setPower(0);
-    }
-
-    private void goBackward(double duration) {
-        setDrivePower(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED);
-        sleep((long) (duration * 1000));
-    }
-
-
-    private void stopAll() {
-        setDrivePower(0, 0, 0, 0);
-        liftMotor.setPower(0);
-        setIntakeServoPower(0, 0);
-        leftLiftServo.setPosition(1);
-        rightLiftServo.setPosition(1);
-    }
+    // ... (rest of the existing code)
 
     private void setDrivePower(double frontLeft, double frontRight, double backLeft, double backRight) {
         frontLeftMotor.setPower(frontLeft);
@@ -181,4 +161,6 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
         leftIntakeServo.setPower(leftPower);
         rightIntakeServo.setPower(rightPower);
     }
+
+    // ... (rest of the existing code)
 }
