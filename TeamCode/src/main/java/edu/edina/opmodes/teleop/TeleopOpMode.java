@@ -30,8 +30,14 @@ public class TeleopOpMode extends OpMode {
         RobotHardware hardware = robot.RobotHardware;
         RobotConfiguration config = RobotConfiguration.getInstance();
 
+<<<<<<< HEAD
         telemetry.update();
 
+=======
+    @Override
+    public void start() {
+        // Actions to perform when OpMode starts
+>>>>>>> parent of ed7a47f (Restarting)
     }
 
 
