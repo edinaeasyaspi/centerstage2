@@ -32,11 +32,13 @@ public class AutonomousByTimeBottomRightRed extends LinearOpMode {
 
         waitForStart();
 
-        strafeRight(1.295);
-        //strafeLeft(1.295);
-        driveForward(2.0);
-        turn(-TURN_SPEED, 1.0802);
+
+        //strafeRight(1.295);
+        driveForward(0.5);
+        goBackward2((short) 0.1);
+        turn(-TURN_SPEED, 500);
         goBackward1(0.52);
+        driveForward(2.0);
         extendLiftMotor((short) 2.0);
         intakeServoForward(0.5);
         moveLiftServosBack((short) 2.0);
@@ -68,32 +70,25 @@ public class AutonomousByTimeBottomRightRed extends LinearOpMode {
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
     }
 
-    private void strafeRight(double duration) {
-        setDrivePower(FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED);
-        sleep((long) (duration * 1000));
-    }
-
     private void driveForward(double duration) {
         setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
         sleep((long) (duration * 2000));
+    }
+    private void goBackward2(short duration) {
+        setDrivePower(-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED);
+        sleep((short) (duration * 100));
     }
 
     private void intakeServoForward(double duration) {
         setIntakeServoPower(1, 1);
         sleep((long) (duration * 1000));
     }
-
-    private void strafeLeft(double duration) {
-        setDrivePower(-FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, -FORWARD_SPEED);
-        sleep((long) (duration * 1000));
-    }
-
     private void turn(double power, double duration) {
-        frontLeftMotor.setPower(power);
-        backLeftMotor.setPower(power);
-        frontRightMotor.setPower(-power);
-        backRightMotor.setPower(-power);
-        sleep((long) (duration * 1350));
+        frontLeftMotor.setPower(-power);
+        backLeftMotor.setPower(-power);
+        frontRightMotor.setPower(power);
+        backRightMotor.setPower(power);
+        sleep((long) (duration * 500));
 
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);

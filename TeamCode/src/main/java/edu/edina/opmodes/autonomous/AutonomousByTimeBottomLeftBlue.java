@@ -35,8 +35,6 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
 
         waitForStart();
 
-        //strafeRight(1.3);
-
         strafeLeft(1.295);
         driveForward(2.0);
         turn(-TURN_SPEED, 1.0802);
