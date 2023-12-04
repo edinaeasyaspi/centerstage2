@@ -15,7 +15,7 @@ class ColorSensorTeleOp extends LinearOpMode {
 
         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
 
-        // Wait for start
+
         waitForStart();
 
         while (opModeIsActive()) {

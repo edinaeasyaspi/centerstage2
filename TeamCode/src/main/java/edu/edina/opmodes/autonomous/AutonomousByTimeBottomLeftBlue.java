@@ -41,14 +41,13 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
 
         waitForStart();
 
-        // ... (existing code)
+
 
         while (opModeIsActive()) {
-            // Access the result of image processing through the pipeline
+
             Mat processedFrame = imageProcessingPipeline.getResultMat();
 
-            // Perform actions based on processed frames
-            // ...
+
 
             telemetry.addData("Autonomous Status", "Running");
             telemetry.update();
@@ -85,24 +84,20 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
                 hardwareMap.get(WebcamName.class, "webcamName"), cameraMonitorViewId);
         webcam.openCameraDevice();
 
-        // Set up image processing pipeline
+
         imageProcessingPipeline = new YourImageProcessingPipeline();
         webcam.setPipeline(imageProcessingPipeline);
 
         webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
     }
 
-    // ... (existing code)
-
-    // Implement your image processing pipeline
     public static class YourImageProcessingPipeline extends OpenCvPipeline {
         private Mat resultMat;
 
         @Override
         public Mat processFrame(Mat input) {
-            // Implement your image processing here
-            // Modify 'input' as needed
-            resultMat = input.clone(); // Example: simply clone the input
+
+            resultMat = input.clone();
 
             return resultMat;
         }
@@ -112,7 +107,7 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
         }
     }
 
-    // ... (existing code)
+
 
     private void strafeRight(double duration) {
         setDrivePower(FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED);
@@ -162,5 +157,4 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
         rightIntakeServo.setPower(rightPower);
     }
 
-    // ... (rest of the existing code)
 }
