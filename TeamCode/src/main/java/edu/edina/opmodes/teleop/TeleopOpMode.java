@@ -37,6 +37,9 @@ public class TeleopOpMode extends OpMode {
     @Override
     public void start() {
         // Actions to perform when OpMode starts
+<<<<<<< HEAD
+>>>>>>> parent of ed7a47f (Restarting)
+=======
 >>>>>>> parent of ed7a47f (Restarting)
     }
 
