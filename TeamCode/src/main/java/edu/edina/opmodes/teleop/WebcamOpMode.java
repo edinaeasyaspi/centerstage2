@@ -38,10 +38,10 @@ public class WebcamOpMode extends OpMode {
 //        webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
     }
 
-    @Override
-    public void init_loop() {
-        Mat processedFrame = imageProcessingPipeline.getResultMat();
-    }
+//    @Override
+//    public void init_loop() {
+//        Mat processedFrame = imageProcessingPipeline.getResultMat();
+
 
     @Override
     public void start() {
