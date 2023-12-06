@@ -37,9 +37,10 @@ public class AutonomousByTimeTopRightRedSpikemark extends LinearOpMode {
         //strafeRight(1.295);
         driveForward(0.5);
         goBackward2((short) 0.1);
-        turn(-TURN_SPEED, 500);
-        goBackward1(0.52);
+        turn(-TURN_SPEED, 0.5);
         driveForward(2.0);
+        turn(-TURN_SPEED, 0.5);
+        goBackward1(0.52);
         extendLiftMotor((short) 2.0);
         intakeServoForward(0.5);
         moveLiftServosBack((short) 2.0);
