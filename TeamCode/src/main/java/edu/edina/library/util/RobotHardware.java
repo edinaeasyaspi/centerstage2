@@ -4,7 +4,7 @@ import com.acmerobotics.roadrunner.ftc.LynxFirmware;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -15,9 +15,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 public class RobotHardware {
-
-    public final ColorSensor colorSensor;
-    public final DistanceSensor distanceSensor;
+    //public final DistanceSensor distanceSensor;
     public final DcMotorEx frontLeftMotor, frontRightMotor, backRightMotor, backLeftMotor;
 
     public final VoltageSensor voltageSensor;
@@ -30,8 +28,8 @@ public class RobotHardware {
 
     public final DcMotorEx liftMotor;
 
-    public final WebcamName LogitechC270_8034PI; // Expose the webcam as a public variable
-    RobotHardware robotHardware;
+    //public final WebcamName LogitechC270_8034PI; // Expose the webcam as a public variable
+
     public RobotHardware(HardwareMap hardwareMap) {
         LynxFirmware.throwIfModulesAreOutdated(hardwareMap);
 
@@ -59,8 +57,7 @@ public class RobotHardware {
         rightIntakeServo = hardwareMap.get(CRServo.class, "F1");
 
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
-        distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
-        colorSensor = hardwareMap.get(ColorSensor.class, "color_sensor");
-        LogitechC270_8034PI = hardwareMap.get(WebcamName.class, "LogitechC270_8034PI");
+        //distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
+        //LogitechC270_8034PI = hardwareMap.get(WebcamName.class, "LogitechC270_8034PI");
     }
 }

@@ -6,7 +6,7 @@ import edu.edina.library.util.Robot;
 
 @TeleOp(name = "DriveMe", group = "teleop")
 public class TeleopSingleThread extends TeleopOpMode {
-    private Robot robot;
+   // private Robot robot;
 
     @Override
     public void init() {
