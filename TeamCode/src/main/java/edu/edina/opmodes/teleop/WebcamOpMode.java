@@ -38,7 +38,7 @@ public class WebcamOpMode extends OpMode {
 
     @Override
     public void init_loop() {
-
+        Mat processedFrame = imageProcessingPipeline.getResultMat();
     }
 
     @Override
