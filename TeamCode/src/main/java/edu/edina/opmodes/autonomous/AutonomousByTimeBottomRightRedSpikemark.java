@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "Robot: Autonomous Drive by time2", group = "Autonomous")
-public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
+public class AutonomousByTimeBottomRightRedSpikemark extends LinearOpMode {
 
     private DcMotor frontLeftMotor = null;
     private DcMotor backLeftMotor = null;
@@ -34,11 +34,9 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
 
 
         //strafeRight(1.295);
-
         driveForward(0.5);
         goBackward2((short) 0.1);
         turn(-TURN_SPEED, 500);
-        goForward2(2.0);
         goBackward1(0.52);
         driveForward(2.0);
         extendLiftMotor((short) 2.0);
@@ -98,11 +96,6 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
         backLeftMotor.setPower(0);
 
     }
-    private void goForward2(double duration) {
-        setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
-        sleep((long) (duration * 2000));
-    }
-
     private void goBackward1(double duration) {
         setDrivePower(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED);
         sleep((long) (duration * 700));
@@ -112,7 +105,7 @@ public class AutonomousByTimeBottomLeftBlue extends LinearOpMode {
         backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
 
-    }
+    };
 
 
     private void extendLiftMotor(short duration) {

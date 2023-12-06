@@ -1,6 +1,5 @@
 package edu.edina.opmodes.autonomous;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -9,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "Robot: Autonomous Drive by time2", group = "Autonomous")
-public class AutonomousByTimeBottomRightRed extends LinearOpMode {
+class AutonomousByTimeBottomRightBlueSpikemark extends LinearOpMode {
 
     private DcMotor frontLeftMotor = null;
     private DcMotor backLeftMotor = null;
@@ -38,7 +37,7 @@ public class AutonomousByTimeBottomRightRed extends LinearOpMode {
         goBackward2((short) 0.1);
         turn(-TURN_SPEED, 500);
         goBackward1(0.52);
-        driveForward(2.0);
+        driveForward(0.9);
         extendLiftMotor((short) 2.0);
         intakeServoForward(0.5);
         moveLiftServosBack((short) 2.0);
@@ -174,4 +173,5 @@ public class AutonomousByTimeBottomRightRed extends LinearOpMode {
         rightIntakeServo.setPower(rightPower);
     }
 }
+
 
