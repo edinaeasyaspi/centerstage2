@@ -13,6 +13,7 @@ import edu.edina.library.subsystems.Intake;
 import edu.edina.library.subsystems.Lift;
 import edu.edina.library.subsystems.MecanumDrive;
 import edu.edina.library.subsystems.Subsystem;
+import edu.edina.library.subsystems.Webcam;
 
 public class Robot {
     private ExecutorService subsystemUpdateExecutor;
@@ -24,6 +25,7 @@ public class Robot {
     public Lift Lift;
     public MecanumDrive MecanumDrive;
     public Intake Intake;
+    public Webcam Webcam;
     private Runnable subsystemUpdateRunnable = () -> {
         while (!Thread.currentThread().isInterrupted()) {
             internal_update();
@@ -43,6 +45,8 @@ public class Robot {
 
         this.Intake = new Intake(this);
         subsystems.add(this.Intake);
+
+        this.Webcam = new Webcam(this);
 
         if (this.runMultiThreaded) {
             // setup the thread executor

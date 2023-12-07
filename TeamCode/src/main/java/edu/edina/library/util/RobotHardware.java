@@ -28,8 +28,9 @@ public class RobotHardware {
 
     public final DcMotorEx liftMotor;
 
-    //public final WebcamName LogitechC270_8034PI; // Expose the webcam as a public variable
+    public final WebcamName webcam;
 
+    public final int cameraMonitorViewId;
     public RobotHardware(HardwareMap hardwareMap) {
         LynxFirmware.throwIfModulesAreOutdated(hardwareMap);
 
@@ -58,6 +59,8 @@ public class RobotHardware {
 
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         //distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
-        //LogitechC270_8034PI = hardwareMap.get(WebcamName.class, "LogitechC270_8034PI");
+        webcam = hardwareMap.get(WebcamName.class, "LogitechC270_8034PI");
+        cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+
     }
 }
