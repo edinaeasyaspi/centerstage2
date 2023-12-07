@@ -42,7 +42,6 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
         turn1(-TURN_SPEED, 500);
         goBackward1(0.52);
         extendLiftMotor((short) 2.0);
-        intakeServoForward(0.5);
         moveLiftServosBack((short) 2.0);
         reverseIntakeServos((short) 1.2);
         swingBackLiftServos((short)2.0);
