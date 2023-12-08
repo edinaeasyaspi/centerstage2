@@ -46,7 +46,7 @@ public class Robot {
         this.Intake = new Intake(this);
         subsystems.add(this.Intake);
 
-        this.Webcam = new Webcam(this);
+       // this.Webcam = new Webcam(this);
 
         if (this.runMultiThreaded) {
             // setup the thread executor
