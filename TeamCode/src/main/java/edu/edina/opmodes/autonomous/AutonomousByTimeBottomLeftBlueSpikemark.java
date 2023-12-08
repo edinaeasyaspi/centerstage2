@@ -73,11 +73,11 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
 
     private void driveForward(double duration) {
         setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
-        sleep((long) (duration * 2000));
+        sleep((long) (duration * 730));
     }
     private void goBackward2(double duration) {
         setDrivePower(-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED);
-        sleep((short) (duration * 300));
+        sleep((short) (duration * 150));
     }
     private void turn(double power, double duration) {
         frontLeftMotor.setPower(-power);
