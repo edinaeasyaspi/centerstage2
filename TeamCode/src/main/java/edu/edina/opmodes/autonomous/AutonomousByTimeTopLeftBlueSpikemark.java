@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "AutoBottomLeftBlueSpikemark", group = "Autonomous")
+@Autonomous(name = "AutoTopLeftBlueSpikemark", group = "Autonomous")
 public class AutonomousByTimeTopLeftBlueSpikemark extends LinearOpMode {
 
     private DcMotor frontLeftMotor = null;
@@ -42,7 +42,6 @@ public class AutonomousByTimeTopLeftBlueSpikemark extends LinearOpMode {
         turn(-TURN_SPEED, 1);
         goBackward1(0.35);
         extendLiftMotor((short) 2.0);
-
         moveLiftServosBack((short) 2.0);
         reverseIntakeServos((short) 1.2);
         swingBackLiftServos((short)2.0);
