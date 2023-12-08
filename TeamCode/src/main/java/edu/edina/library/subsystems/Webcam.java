@@ -27,14 +27,14 @@ public class Webcam extends Subsystem{
         RobotConfiguration config = RobotConfiguration.getInstance();
 
        // int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardware.webcam, hardware.cameraMonitorViewId);
-        webcam.openCameraDevice();
-
-        // Set up image processing pipeline
-        imageProcessingPipeline = new YourImageProcessingPipeline(); // Implement this class
-        webcam.setPipeline(imageProcessingPipeline);
-
-        webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+//        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardware.webcam, hardware.cameraMonitorViewId);
+//        webcam.openCameraDevice();
+//
+//        // Set up image processing pipeline
+//        imageProcessingPipeline = new YourImageProcessingPipeline(); // Implement this class
+//        webcam.setPipeline(imageProcessingPipeline);
+//
+//        webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
     }
 
     @Override
