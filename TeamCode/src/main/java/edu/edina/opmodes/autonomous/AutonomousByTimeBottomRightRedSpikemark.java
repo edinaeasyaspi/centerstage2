@@ -36,7 +36,7 @@ public class AutonomousByTimeBottomRightRedSpikemark extends LinearOpMode {
 
         driveForward(0.5);
         goBackward2((short) 0.1);
-        turn(-TURN_SPEED, 0.25);
+        turn(-TURN_SPEED, 1);
         driveForward(2.0);
         turn(-TURN_SPEED, 0.53);
         goBackward1(0.52);
@@ -78,17 +78,12 @@ public class AutonomousByTimeBottomRightRedSpikemark extends LinearOpMode {
         setDrivePower(-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED);
         sleep((short) (duration * 100));
     }
-
-    private void intakeServoForward(double duration) {
-        setIntakeServoPower(1, 1);
-        sleep((long) (duration * 1000));
-    }
     private void turn(double power, double duration) {
         frontLeftMotor.setPower(-power);
         backLeftMotor.setPower(-power);
         frontRightMotor.setPower(power);
         backRightMotor.setPower(power);
-        sleep((long) (duration * 500));
+        sleep((long) (duration * 1000));
 
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);

@@ -36,11 +36,11 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
         //strafeRight(1.295);
 
         driveForward(1.4);
-        goBackward2((short) 0.3);
+        goBackward1((short) 0.105);
         turn(TURN_SPEED, 1.5);
-        driveForward(2.0);
+        goForward2(2.0);
         turn1(-TURN_SPEED, 1);
-        goBackward1(0.52);
+        goBackward2(0.52);
         extendLiftMotor((short) 2.0);
         moveLiftServosBack((short) 2.0);
         reverseIntakeServos((short) 1.2);
@@ -75,9 +75,9 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
         setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
         sleep((long) (duration * 730));
     }
-    private void goBackward2(double duration) {
+    private void goBackward1(double duration) {
         setDrivePower(-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED);
-        sleep((short) (duration * 150));
+        sleep((short) (duration * 105));
     }
     private void turn(double power, double duration) {
         frontLeftMotor.setPower(-power);
@@ -91,10 +91,9 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
         backRightMotor.setPower(0);
         backLeftMotor.setPower(0);
     }
-
-        private void intakeServoForward(double duration) {
-        setIntakeServoPower(1, 1);
-        sleep((long) (duration * 1000));
+    private void goForward2(double duration) {
+        setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
+        sleep((long) (duration * 2000));
     }
     private void turn1(double power, double duration) {
         frontLeftMotor.setPower(-power);
@@ -109,12 +108,8 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
         backLeftMotor.setPower(0);
 
     }
-    private void goForward2(double duration) {
-        setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
-        sleep((long) (duration * 2000));
-    }
 
-    private void goBackward1(double duration) {
+    private void goBackward2(double duration) {
         setDrivePower(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED);
         sleep((long) (duration * 700));
 
