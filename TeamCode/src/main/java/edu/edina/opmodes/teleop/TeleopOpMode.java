@@ -34,11 +34,6 @@ public class TeleopOpMode extends OpMode {
 
     }
 
-    @Override
-    public void start() {
-        robot.start();
-    }
-
 
     @Override
     public void loop() {
