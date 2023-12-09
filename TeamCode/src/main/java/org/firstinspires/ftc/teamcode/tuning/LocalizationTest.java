@@ -19,10 +19,10 @@ public class LocalizationTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         if (TuningOpModes.DRIVE_CLASS.equals(MecanumDrive.class)) {
             MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-            DcMotorEx leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-            DcMotorEx leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-            DcMotorEx rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
-            DcMotorEx rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+            DcMotorEx leftFront = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
+            DcMotorEx leftBack = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
+            DcMotorEx rightBack = hardwareMap.get(DcMotorEx.class, "backRightMotor");
+            DcMotorEx rightFront = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
 
             waitForStart();
 

@@ -14,6 +14,10 @@ public class TeleopOpMode extends OpMode {
     protected SmartGamepad driver1Gamepad;
     protected SmartGamepad driver2Gamepad;
 
+    @Override
+    public void start() {
+        robot.start();
+    }
 
     @Override
     public void init() {
@@ -52,6 +56,7 @@ public class TeleopOpMode extends OpMode {
         telemetry.addData("Gamepad2.right", gamepad2.right_trigger);
         telemetry.addData("Gamepad2.left", gamepad2.left_trigger);
         telemetry.addData("Lift Position", RobotState.getInstance().liftTipState);
+        telemetry.addData("started", robot.Started);
         robot.update();
         robot.telemetry();
     }
