@@ -37,7 +37,7 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
 
         driveForward(1.4);
         goBackward2((short) 0.3);
-        turn(TURN_SPEED, 1.5);
+        turn(TURN_SPEED, 1.4);
         driveForward(2.0);
         turn1(-TURN_SPEED, 1);
         goBackward1(0.52);
@@ -65,10 +65,10 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
         leftIntakeServo = hardwareMap.get(CRServo.class, "F2");
         rightIntakeServo = hardwareMap.get(CRServo.class, "F1");
 
-        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
-        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotor.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
     private void driveForward(double duration) {
@@ -84,7 +84,7 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
         backLeftMotor.setPower(-power);
         frontRightMotor.setPower(power);
         backRightMotor.setPower(power);
-        sleep((long) (duration * 500));
+        sleep((long) (duration * 1400));
 
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);

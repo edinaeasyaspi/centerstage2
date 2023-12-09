@@ -37,27 +37,31 @@ public class Lift extends Subsystem{
         if (robot.Started) {
             switch (state.liftState) {
                 case Up:
-                    hardware.liftMotor.setPower(1);
+                    hardware.liftMotor.setPower(0.7);
                     break;
                 case Down:
-                    hardware.liftMotor.setPower(-1);
+                    hardware.liftMotor.setPower(-0.7);
                     break;
                 default:
                     hardware.liftMotor.setPower(0);
             }
 
             switch (state.liftTipState) {
-                case Horizontal:
-                    hardware.leftLiftServo.setPosition(0.0);
-                    hardware.rightLiftServo.setPosition(1);
+                case Vertical:
+                    hardware.leftLiftServo.setPosition(0.1);
+                    hardware.rightLiftServo.setPosition(0.9);
                     break;
-                default: case Vertical:
-                    hardware.leftLiftServo.setPosition(1);
-                    hardware.rightLiftServo.setPosition(0.0);
+                default:
+                case Horizontal:
+                    hardware.leftLiftServo.setPosition(0.9);
+                    hardware.rightLiftServo.setPosition(0.1);
                     break;
             }
+
         }
-    }
+        }
+    
+
 
     public void setProperties(boolean rightTrigger, boolean leftTrigger, boolean horizontal, boolean vertical) {
         RobotState state = RobotState.getInstance();
