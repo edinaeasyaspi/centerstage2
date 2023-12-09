@@ -35,7 +35,7 @@ public class AutonomousByTimeTopLeftBlueSpikemark extends LinearOpMode {
 
 
         //strafeRight(1.295);
-        driveForward(0.5);
+        driveForward(1.4);
         goBackward2((short) 0.1);
         turn(-TURN_SPEED, 0.5);
         driveForward(1.0);
