@@ -33,7 +33,7 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
         waitForStart();
 
         strafeRight(1.295);
-        driveForward(2.0);
+        driveForward(1.4);
         turn(-TURN_SPEED, 1.09);
         goBackward1(0.47);
         extendLiftMotor((short) 1.1); //good
