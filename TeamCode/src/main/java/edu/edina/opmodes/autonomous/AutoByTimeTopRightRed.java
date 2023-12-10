@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "ComponentTesting", group = "Autonomous")
+@Autonomous(name = "AutoByTimeTopRightRed", group = "Autonomous")
 public class AutoByTimeTopRightRed extends LinearOpMode {
 
     private DcMotor frontLeftMotor = null;
@@ -32,16 +32,16 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
 
         waitForStart();
 
-        strafeRight(1.295);
-        driveForward(1.4);
-        turn(-TURN_SPEED, 1.09);
+        strafeLeft(1.295);
+        driveForward(1.0);
+        turn(-TURN_SPEED, 1.11);
         goBackward1(0.47);
-        extendLiftMotor((short) 1.1); //good
+        extendLiftMotor((short) 1.7); //good
         servoIntakePower((short)(1.1));
         moveLiftServosBack((short) 1.0);
         reverseIntakeServos((short) 3.2);
         swingBackLiftServos((short)2.0);
-        lowerLiftMotor((short) 1.1);
+        lowerLiftMotor((short) 1.5);
 
         stopAll();
 
@@ -67,8 +67,8 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
-    private void strafeRight(double duration) {
-        setDrivePower(FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED);
+    private void strafeLeft(double duration) {
+        setDrivePower(-FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, -FORWARD_SPEED);
         sleep((long) (duration * 1000));
     }
 
@@ -109,7 +109,7 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
 
     private void extendLiftMotor(short duration) {
         liftMotor.setPower(FORWARD_SPEED);
-        sleep((short) (duration * 1100));
+        sleep((short) (duration * 1700));
 
         stopAll();
     }
@@ -150,7 +150,7 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
 
     private void lowerLiftMotor(double duration) {
         liftMotor.setPower(-FORWARD_SPEED);
-        sleep((short) (duration * 800));
+        sleep((short) (duration * 1500));
 
         liftMotor.setPower(0);
     }
@@ -181,4 +181,3 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
         rightIntakeServo.setPower(rightPower);
     }
 }
-

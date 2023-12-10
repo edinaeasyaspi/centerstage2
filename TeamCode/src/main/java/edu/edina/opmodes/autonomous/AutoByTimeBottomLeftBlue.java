@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "AutoBottomLeftBlueSpikemark", group = "Autonomous")
+@Autonomous(name = "AutoByTimeBottomLeftBlue", group = "Autonomous")
 public class AutoByTimeBottomLeftBlue extends LinearOpMode {
 
     private DcMotor frontLeftMotor = null;
@@ -32,19 +32,19 @@ public class AutoByTimeBottomLeftBlue extends LinearOpMode {
 
         waitForStart();
 
-
-        strafeRight(1.295);
+        strafeRight(1.39);
         driveForward(2.0);
-        goBackward2((short) 0.3);
-        turn(TURN_SPEED, 1.4);
-        driveForward(2.0);
-        turn1(-TURN_SPEED, 1);
-        goBackward1(0.52);
-        extendLiftMotor((short) 2.0);
-        moveLiftServosBack((short) 2.0);
-        reverseIntakeServos((short) 1.2);
+        turn(-TURN_SPEED, 1.09);
+        goBackward1(0.47);
+        extendLiftMotor((short) 1.7);
+        servoIntakePower((short)(1.1));
+        moveLiftServosBack((short) 1.0);
+        swingBackLiftServos((short)(0.1));
+        moveLiftServosBack((short) 1.0);
+        reverseIntakeServos((short) 3.2);
         swingBackLiftServos((short)2.0);
-        lowerLiftMotor((short) 2.0);
+        lowerLiftMotor((short) 1.1);
+        driveForward(0.05);
 
         stopAll();
 
@@ -71,52 +71,33 @@ public class AutoByTimeBottomLeftBlue extends LinearOpMode {
     }
 
     private void strafeRight(double duration) {
-        setDrivePower(-FORWARD_SPEED,FORWARD_SPEED, FORWARD_SPEED, -FORWARD_SPEED);
+        setDrivePower(FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED);
         sleep((long) (duration * 1000));
     }
+
     private void driveForward(double duration) {
-        setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
-        sleep((long) (duration * 730));
-    }
-    private void goBackward2(double duration) {
-        setDrivePower(-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED);
-        sleep((short) (duration * 150));
-    }
-    private void turn(double power, double duration) {
-        frontLeftMotor.setPower(-power);
-        backLeftMotor.setPower(-power);
-        frontRightMotor.setPower(power);
-        backRightMotor.setPower(power);
-        sleep((long) (duration * 1400));
-
-        frontRightMotor.setPower(0);
-        frontLeftMotor.setPower(0);
-        backRightMotor.setPower(0);
-        backLeftMotor.setPower(0);
-    }
-
-        private void intakeServoForward(double duration) {
-        setIntakeServoPower(1, 1);
-        sleep((long) (duration * 1000));
-    }
-    private void turn1(double power, double duration) {
-        frontLeftMotor.setPower(-power);
-        backLeftMotor.setPower(-power);
-        frontRightMotor.setPower(power);
-        backRightMotor.setPower(power);
-        sleep((long) (duration * 500));
-
-        frontRightMotor.setPower(0);
-        frontLeftMotor.setPower(0);
-        backRightMotor.setPower(0);
-        backLeftMotor.setPower(0);
-
-    }
-    private void goForward2(double duration) {
         setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
         sleep((long) (duration * 2000));
     }
 
+    private void intakeServoForward(double duration) {
+        setIntakeServoPower(-1, 1);
+        sleep((long) (duration * 1000));
+    }
+
+    private void turn(double power, double duration) {
+        frontLeftMotor.setPower(power);
+        backLeftMotor.setPower(power);
+        frontRightMotor.setPower(-power);
+        backRightMotor.setPower(-power);
+        sleep((long) (duration * 1270));
+
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+
+    }
     private void goBackward1(double duration) {
         setDrivePower(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED);
         sleep((long) (duration * 700));
@@ -126,19 +107,27 @@ public class AutoByTimeBottomLeftBlue extends LinearOpMode {
         backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
 
-    }
+    };
 
 
     private void extendLiftMotor(short duration) {
         liftMotor.setPower(FORWARD_SPEED);
-        sleep((short) (duration * 1500));
+        sleep((short) (duration * 1700));
 
         stopAll();
     }
 
+    private void servoIntakePower(short duration) {
+        setIntakeServoPower(0, 0);
+        sleep((short) (duration * 1200));
+
+        stopAll();
+
+    }
+
     private void moveLiftServosBack(short duration) {
-        leftLiftServo.setPosition(0.9);
-        rightLiftServo.setPosition(0.1);
+        leftLiftServo.setPosition(0.0);
+        rightLiftServo.setPosition(1.0);
         sleep((short) (duration * 2000));
 
 
@@ -157,8 +146,8 @@ public class AutoByTimeBottomLeftBlue extends LinearOpMode {
     }
 
     private void swingBackLiftServos(short duration) {
-        leftLiftServo.setPosition(0.1);
-        rightLiftServo.setPosition(0.9);
+        leftLiftServo.setPosition(1);
+        rightLiftServo.setPosition(0);
         sleep((short) (duration * 2000));
     }
 
@@ -195,4 +184,3 @@ public class AutoByTimeBottomLeftBlue extends LinearOpMode {
         rightIntakeServo.setPower(rightPower);
     }
 }
-

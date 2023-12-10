@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "AutoBottomRightRed", group = "Autonomous")
+@Autonomous(name = "AutoByTimeBottomRightRed", group = "Autonomous")
 public class AutoByTimeBottomRightRed extends LinearOpMode {
 
     private DcMotor frontLeftMotor = null;
@@ -32,16 +32,19 @@ public class AutoByTimeBottomRightRed extends LinearOpMode {
 
         waitForStart();
 
-        strafeLeft(1.295);
+        strafeLeft(1.39);
         driveForward(2.0);
         turn(-TURN_SPEED, 1.09);
         goBackward1(0.47);
-        extendLiftMotor((short) 1.1); //good
+        extendLiftMotor((short) 1.7);
         servoIntakePower((short)(1.1));
+        moveLiftServosBack((short) 1.0);
+        swingBackLiftServos((short)(0.1));
         moveLiftServosBack((short) 1.0);
         reverseIntakeServos((short) 3.2);
         swingBackLiftServos((short)2.0);
         lowerLiftMotor((short) 1.1);
+        driveForward(0.05);
 
         stopAll();
 
@@ -68,7 +71,7 @@ public class AutoByTimeBottomRightRed extends LinearOpMode {
     }
 
     private void strafeLeft(double duration) {
-        setDrivePower(-FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, -FORWARD_SPEED);
+        setDrivePower(-FORWARD_SPEED, FORWARD_SPEED,FORWARD_SPEED, -FORWARD_SPEED);
         sleep((long) (duration * 1000));
     }
 
@@ -109,7 +112,7 @@ public class AutoByTimeBottomRightRed extends LinearOpMode {
 
     private void extendLiftMotor(short duration) {
         liftMotor.setPower(FORWARD_SPEED);
-        sleep((short) (duration * 1100));
+        sleep((short) (duration * 1700));
 
         stopAll();
     }

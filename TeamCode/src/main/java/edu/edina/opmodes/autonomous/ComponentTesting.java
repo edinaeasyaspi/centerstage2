@@ -33,15 +33,18 @@ public class ComponentTesting extends LinearOpMode {
         waitForStart();
 
         strafeRight(1.295);
-        driveForward(2.0);
+        driveForward(1.0);
         turn(-TURN_SPEED, 1.09);
         goBackward1(0.47);
-        extendLiftMotor((short) 1.1); //good
+        extendLiftMotor((short) 1.7); //good
         servoIntakePower((short)(1.1));
+        moveLiftServosBack((short) 1.0);
+        swingBackLiftServos((short)(0.1));
         moveLiftServosBack((short) 1.0);
         reverseIntakeServos((short) 3.2);
         swingBackLiftServos((short)2.0);
         lowerLiftMotor((short) 1.1);
+        driveForward(0.05);
 
         stopAll();
 
@@ -109,7 +112,7 @@ public class ComponentTesting extends LinearOpMode {
 
     private void extendLiftMotor(short duration) {
         liftMotor.setPower(FORWARD_SPEED);
-        sleep((short) (duration * 1100));
+        sleep((short) (duration * 1700));
 
         stopAll();
     }
