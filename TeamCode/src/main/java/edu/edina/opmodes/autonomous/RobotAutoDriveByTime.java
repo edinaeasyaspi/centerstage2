@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "AutoBottomLeftBlueSpikemark", group = "Autonomous")
-public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
+@Autonomous(name = "Robot: Autonomous Drive by time", group = "Autonomous")
+public class RobotAutoDriveByTime extends LinearOpMode {
 
     private DcMotor frontLeftMotor = null;
     private DcMotor backLeftMotor = null;
@@ -32,16 +32,12 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
 
         waitForStart();
 
-
-        //strafeRight(1.295);
-
-        driveForward(1.4);
-        goBackward2((short) 0.3);
-        turn(TURN_SPEED, 1.4);
+        strafeRight(1.295);
         driveForward(2.0);
-        turn1(-TURN_SPEED, 1);
-        goBackward1(0.52);
-        extendLiftMotor((short) 2.0);
+        turn(-TURN_SPEED, 1.0);
+        goBackward1(0.47);
+        extendLiftMotor((short) 1.3);
+        intakeServoForward(0.5);
         moveLiftServosBack((short) 2.0);
         reverseIntakeServos((short) 1.2);
         swingBackLiftServos((short)2.0);
@@ -71,49 +67,34 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
-    private void driveForward(double duration) {
-        setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
-        sleep((long) (duration * 730));
-    }
-    private void goBackward2(double duration) {
-        setDrivePower(-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED,-FORWARD_SPEED);
-        sleep((short) (duration * 150));
-    }
-    private void turn(double power, double duration) {
-        frontLeftMotor.setPower(-power);
-        backLeftMotor.setPower(-power);
-        frontRightMotor.setPower(power);
-        backRightMotor.setPower(power);
-        sleep((long) (duration * 1400));
-
-        frontRightMotor.setPower(0);
-        frontLeftMotor.setPower(0);
-        backRightMotor.setPower(0);
-        backLeftMotor.setPower(0);
-    }
-
-        private void intakeServoForward(double duration) {
-        setIntakeServoPower(1, 1);
+    private void strafeRight(double duration) {
+        setDrivePower(FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED);
         sleep((long) (duration * 1000));
     }
-    private void turn1(double power, double duration) {
-        frontLeftMotor.setPower(-power);
-        backLeftMotor.setPower(-power);
-        frontRightMotor.setPower(power);
-        backRightMotor.setPower(power);
-        sleep((long) (duration * 500));
 
-        frontRightMotor.setPower(0);
-        frontLeftMotor.setPower(0);
-        backRightMotor.setPower(0);
-        backLeftMotor.setPower(0);
-
-    }
-    private void goForward2(double duration) {
+    private void driveForward(double duration) {
         setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
         sleep((long) (duration * 2000));
     }
 
+    private void intakeServoForward(double duration) {
+        setIntakeServoPower(1, 1);
+        sleep((long) (duration * 1000));
+    }
+
+    private void turn(double power, double duration) {
+        frontLeftMotor.setPower(power);
+        backLeftMotor.setPower(power);
+        frontRightMotor.setPower(-power);
+        backRightMotor.setPower(-power);
+        sleep((long) (duration * 1270));
+
+        frontRightMotor.setPower(0);
+        frontLeftMotor.setPower(0);
+        backRightMotor.setPower(0);
+        backLeftMotor.setPower(0);
+
+    }
     private void goBackward1(double duration) {
         setDrivePower(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED);
         sleep((long) (duration * 700));
@@ -123,7 +104,7 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
         backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
 
-    }
+    };
 
 
     private void extendLiftMotor(short duration) {
@@ -192,4 +173,3 @@ public class AutonomousByTimeBottomLeftBlueSpikemark extends LinearOpMode {
         rightIntakeServo.setPower(rightPower);
     }
 }
-

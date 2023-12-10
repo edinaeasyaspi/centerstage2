@@ -47,20 +47,20 @@ public class Lift extends Subsystem{
             }
 
             switch (state.liftTipState) {
-                case Vertical:
-                    hardware.leftLiftServo.setPosition(0.1);
-                    hardware.rightLiftServo.setPosition(0.9);
+                case Horizontal:
+                    hardware.leftLiftServo.setPosition(0.0);
+                    hardware.rightLiftServo.setPosition(1);
                     break;
                 default:
-                case Horizontal:
-                    hardware.leftLiftServo.setPosition(0.9);
-                    hardware.rightLiftServo.setPosition(0.1);
+                case Vertical:
+                    hardware.leftLiftServo.setPosition(1);
+                    hardware.rightLiftServo.setPosition(0.0);
                     break;
             }
 
         }
         }
-    
+
 
 
     public void setProperties(boolean rightTrigger, boolean leftTrigger, boolean horizontal, boolean vertical) {
