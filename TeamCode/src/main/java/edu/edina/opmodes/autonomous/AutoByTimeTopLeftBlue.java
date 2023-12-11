@@ -42,6 +42,7 @@ public class AutoByTimeTopLeftBlue extends LinearOpMode {
         reverseIntakeServos((short) 3.2);
         swingBackLiftServos((short)2.0);
         lowerLiftMotor((short) 1.5);
+        driveForward(0.05);
 
         stopAll();
 
@@ -109,7 +110,9 @@ public class AutoByTimeTopLeftBlue extends LinearOpMode {
 
     private void extendLiftMotor(short duration) {
         liftMotor.setPower(FORWARD_SPEED);
-        sleep((short) (duration * 1700));
+        sleep((short) (duration * 1200));
+
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         stopAll();
     }
@@ -150,7 +153,7 @@ public class AutoByTimeTopLeftBlue extends LinearOpMode {
 
     private void lowerLiftMotor(double duration) {
         liftMotor.setPower(-FORWARD_SPEED);
-        sleep((short) (duration * 1500));
+        sleep((short) (duration * 1200));
 
         liftMotor.setPower(0);
     }

@@ -33,15 +33,16 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
         waitForStart();
 
         strafeLeft(1.295);
-        driveForward(1.0);
+        driveForward(1.35);
         turn(-TURN_SPEED, 1.11);
-        goBackward1(0.47);
-        extendLiftMotor((short) 1.7); //good
+        goBackward1(0.1);
+        extendLiftMotor((short) 1.3); //good
         servoIntakePower((short)(1.1));
         moveLiftServosBack((short) 1.0);
         reverseIntakeServos((short) 3.2);
         swingBackLiftServos((short)2.0);
-        lowerLiftMotor((short) 1.5);
+        lowerLiftMotor((short) 1.3);
+        driveForward(0.05);
 
         stopAll();
 
@@ -74,7 +75,7 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
 
     private void driveForward(double duration) {
         setDrivePower(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED);
-        sleep((long) (duration * 2000));
+        sleep((long) (duration * 1350));
     }
 
     private void intakeServoForward(double duration) {
@@ -97,7 +98,7 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
     }
     private void goBackward1(double duration) {
         setDrivePower(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED);
-        sleep((long) (duration * 700));
+        sleep((long) (duration * 100));
 
         frontRightMotor.setPower(0);
         frontLeftMotor.setPower(0);
@@ -109,7 +110,9 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
 
     private void extendLiftMotor(short duration) {
         liftMotor.setPower(FORWARD_SPEED);
-        sleep((short) (duration * 1700));
+        sleep((short) (duration * 1300));
+
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         stopAll();
     }
@@ -123,9 +126,11 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
     }
 
     private void moveLiftServosBack(short duration) {
-        leftLiftServo.setPosition(0.0);
-        rightLiftServo.setPosition(1.0);
+        leftLiftServo.setPosition(0.1);
+        rightLiftServo.setPosition(0.9  );
         sleep((short) (duration * 2000));
+
+
 
 
 
@@ -150,7 +155,7 @@ public class AutoByTimeTopRightRed extends LinearOpMode {
 
     private void lowerLiftMotor(double duration) {
         liftMotor.setPower(-FORWARD_SPEED);
-        sleep((short) (duration * 1500));
+        sleep((short) (duration * 1300));
 
         liftMotor.setPower(0);
     }
