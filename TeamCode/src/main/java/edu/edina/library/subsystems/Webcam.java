@@ -1,5 +1,7 @@
 package edu.edina.library.subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import org.openftc.easyopencv.OpenCvCamera;
 
 import edu.edina.library.util.Robot;
@@ -13,6 +15,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.opencv.core.Mat;
 
 public class Webcam extends Subsystem{
+
     private Robot robot;
     private OpenCvCamera webcam;
     public Webcam(Robot robot) {
@@ -25,16 +28,15 @@ public class Webcam extends Subsystem{
         RobotState state = RobotState.getInstance();
         RobotHardware hardware = robot.RobotHardware;
         RobotConfiguration config = RobotConfiguration.getInstance();
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+       webcam = OpenCvCameraFactory.getInstance().createWebcam(hardware.webcam, hardware.cameraMonitorViewId);
+       webcam.openCameraDevice();
 
-       // int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardware.webcam, hardware.cameraMonitorViewId);
-//        webcam.openCameraDevice();
-//
-//        // Set up image processing pipeline
-//        imageProcessingPipeline = new YourImageProcessingPipeline(); // Implement this class
-//        webcam.setPipeline(imageProcessingPipeline);
-//
-//        webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+        // Set up image processing pipeline
+       imageProcessingPipeline = new YourImageProcessingPipeline(); // Implement this class
+        webcam.setPipeline(imageProcessingPipeline);
+
+        webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
     }
 
     @Override
