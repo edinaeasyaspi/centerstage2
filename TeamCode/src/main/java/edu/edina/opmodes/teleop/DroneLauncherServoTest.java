@@ -6,12 +6,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="ServoControl", group="TeleOp")
 public class DroneLauncherServoTest extends LinearOpMode {
 
-    private Servo droneLauncherServo;
+    private Servo leftLiftServo;
 
     @Override
     public void runOpMode() {
 
-        droneLauncherServo = hardwareMap.get(Servo.class, "droneLauncherServo");
+        leftLiftServo = hardwareMap.get(Servo.class, "");
 
 
         waitForStart();
@@ -25,7 +25,7 @@ public class DroneLauncherServoTest extends LinearOpMode {
             servoPosition = Math.min(1.0, Math.max(0.0, servoPosition));
 
 
-            droneLauncherServo.setPosition(servoPosition);
+            leftLiftServo.setPosition(servoPosition);
 
 
             telemetry.addData("Servo Position", servoPosition);
