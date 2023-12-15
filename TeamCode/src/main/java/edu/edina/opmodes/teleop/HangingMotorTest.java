@@ -3,7 +3,7 @@ package edu.edina.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 
 
 @TeleOp
@@ -29,13 +29,13 @@ public class HangingMotorTest extends OpMode {
         double HangingMotorPower = 0.3;
         double HangingMotorPower2 = -0.3;
 
-        if (gamepad2.x) {
+        if (gamepad1.x) {
             frontLeftMotor.setPower(1);
         } else {
             frontLeftMotor.setPower(0);
 
         }
-        if (gamepad2.y) {
+        if (gamepad1.y) {
             frontLeftMotor.setPower(-1);
         } else {
             frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
