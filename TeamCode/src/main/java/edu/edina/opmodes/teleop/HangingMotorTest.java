@@ -7,12 +7,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp
 public class HangingMotorTest extends OpMode {
-    public DcMotor HangingMotor = null;
+    public DcMotor frontLeftMotor = null;
 
     @Override
     public void init() {
-        HangingMotor = hardwareMap.get(DcMotor.class, "hangingMotor");
-        HangingMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
+        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
     }
 
     @Override
@@ -29,11 +29,11 @@ public class HangingMotorTest extends OpMode {
         double HangingMotorPower2 = -0.3;
 
         if (gamepad1.x) {
-            HangingMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);// I used the zero power behaviour that the guy at the tournament recommended us
-            HangingMotor.setPower(1);
+            frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);// I used the zero power behaviour that the guy at the tournament recommended us
+            frontLeftMotor.setPower(0);
         } else {
-           HangingMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            HangingMotor.setPower(-1);
+           frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            frontLeftMotor.setPower(0);
         }
     }
 }
