@@ -8,6 +8,7 @@ public class DroneLauncherServoTest extends LinearOpMode {
 
     private Servo leftLiftServo;
 
+
     @Override
     public void runOpMode() {
 
@@ -16,14 +17,12 @@ public class DroneLauncherServoTest extends LinearOpMode {
 
         waitForStart();
 
-
-
         while (opModeIsActive()) {
 
             double servoPosition = gamepad1.right_trigger;
 
 
-            servoPosition = Math.min(1.0, Math.max(0.0, servoPosition));
+            servoPosition = Math.max(1.0, Math.min(0.0, servoPosition));
 
 
             leftLiftServo.setPosition(servoPosition);
