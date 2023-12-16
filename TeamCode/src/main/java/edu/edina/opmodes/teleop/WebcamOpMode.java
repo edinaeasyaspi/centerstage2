@@ -1,6 +1,5 @@
 package edu.edina.opmodes.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -8,23 +7,18 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-import edu.edina.library.subsystems.Webcam;
 import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.SmartGamepad;
 import org.opencv.core.Mat;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 public class WebcamOpMode extends OpMode {
     protected RobotHardware robotHardware;
     protected SmartGamepad driver1Gamepad;
     protected SmartGamepad driver2Gamepad;
     private OpenCvCamera webcam;
-    private Webcam.YourImageProcessingPipeline imageProcessingPipeline;
-
-    private WebcamName LogitechC270_8034PI;
+    private YourImageProcessingPipeline imageProcessingPipeline;
 
     @Override
-
     public void init() {
         driver1Gamepad = new SmartGamepad(gamepad1);
         driver2Gamepad = new SmartGamepad(gamepad2);
@@ -36,7 +30,7 @@ public class WebcamOpMode extends OpMode {
         webcam.openCameraDevice();
 
         // Set up image processing pipeline
-        imageProcessingPipeline = new Webcam.YourImageProcessingPipeline(); // Implement this class
+        imageProcessingPipeline = new YourImageProcessingPipeline(); // Implement this class
         webcam.setPipeline(imageProcessingPipeline);
 
         webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
@@ -44,15 +38,17 @@ public class WebcamOpMode extends OpMode {
 
     @Override
     public void init_loop() {
-        Mat processedFrame = imageProcessingPipeline.getResultMat();
-
-
-       // public void start(); {
-        //Mat processedFrame = imageProcessingPipeline.getResultMat();
 
     }
 
-        public void loop() {
+    @Override
+    public void start() {
+        Mat processedFrame = imageProcessingPipeline.getResultMat();
+
+    }
+
+    @Override
+    public void loop() {
         driver1Gamepad.update();
         driver2Gamepad.update();
 
@@ -66,17 +62,14 @@ public class WebcamOpMode extends OpMode {
         telemetry.update();
     }
 
+    @Override
     public void stop() {
-        //HAD TO MAKE FUNCTION, NOTHING GOES IN HERE. PERIOD.PERIOD !@#Q(*#U%)*(Q#$
-    }
-
-    {
         // Actions to perform when OpMode stops
         webcam.stopStreaming();
     }
 
     // Implement your image processing pipeline
-    class YourImageProcessingPipeline extends OpenCvPipeline {
+    public static class YourImageProcessingPipeline extends OpenCvPipeline {
         private Mat resultMat;
 
 
