@@ -1,12 +1,15 @@
 package edu.edina.library.subsystems;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import edu.edina.library.enums.LiftState;
 import edu.edina.library.enums.LiftTipState;
 import edu.edina.library.util.Robot;
 import edu.edina.library.util.RobotConfiguration;
 import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.RobotState;
+
 
 public class Lift extends Subsystem{
     private Robot robot;
@@ -34,17 +37,17 @@ public class Lift extends Subsystem{
         RobotHardware hardware = robot.RobotHardware;
         RobotConfiguration config = RobotConfiguration.getInstance();
 
-        if (robot.Started) {
-            switch (state.liftState) {
-                case Up:
-                    hardware.liftMotor.setPower(1.0);
-                    break;
-                case Down:
-                    hardware.liftMotor.setPower(-1);
-                    break;
-                default:
-                    hardware.liftMotor.setPower(0);
-            }
+      //  if (robot.Started) {
+        //    switch (state.liftState) {
+          //      case Up:
+            //        hardware.liftMotor.setPower(1.0);
+              //      break;
+                //case Down:
+                  //  hardware.liftMotor.setPower(-1);
+                    //break;
+                //default:
+                  //  hardware.liftMotor.setPower(0);
+            //}
 
             switch (state.liftTipState) {
                 case Horizontal:
@@ -59,7 +62,7 @@ public class Lift extends Subsystem{
             }
 
         }
-        }
+
 
 
 
