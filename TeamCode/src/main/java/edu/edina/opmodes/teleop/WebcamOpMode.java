@@ -67,7 +67,7 @@ public class WebcamOpMode extends OpMode {
     }
 
     public void stop() {
-        //HAD TO MAKE FUNCTION, NOTHING GOES IN HERE. PERIOD.
+        //HAD TO MAKE FUNCTION, NOTHING GOES IN HERE. PERIOD.PERIOD !@#Q(*#U%)*(Q#$
     }
 
     {

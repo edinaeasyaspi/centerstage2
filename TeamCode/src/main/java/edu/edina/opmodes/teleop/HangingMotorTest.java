@@ -3,12 +3,16 @@ package edu.edina.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import edu.edina.library.util.Robot;
+
 
 
 
 @TeleOp
 public class HangingMotorTest extends OpMode {
     public DcMotor frontLeftMotor = null;
+
+    protected Robot robot;
 
     @Override
     public void init() {
@@ -32,6 +36,7 @@ public class HangingMotorTest extends OpMode {
         if (gamepad1.x) {
             frontLeftMotor.setPower(1);
         } else {
+            frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             frontLeftMotor.setPower(0);
 
         }

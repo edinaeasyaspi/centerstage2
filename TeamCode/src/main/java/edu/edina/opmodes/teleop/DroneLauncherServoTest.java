@@ -3,7 +3,7 @@ package edu.edina.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="ServoControl", group="TeleOp")
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="DroneLauncherServoTest", group="TeleOp")
 public class DroneLauncherServoTest extends LinearOpMode {
 
     private Servo leftLiftServo;
@@ -11,15 +11,16 @@ public class DroneLauncherServoTest extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        leftLiftServo = hardwareMap.get(Servo.class, "");
+        leftLiftServo = hardwareMap.get(Servo.class, "S1");
 
 
         waitForStart();
 
 
+
         while (opModeIsActive()) {
 
-            double servoPosition = gamepad1.left_stick_y; // Adjust as needed
+            double servoPosition = gamepad1.right_trigger;
 
 
             servoPosition = Math.min(1.0, Math.max(0.0, servoPosition));
