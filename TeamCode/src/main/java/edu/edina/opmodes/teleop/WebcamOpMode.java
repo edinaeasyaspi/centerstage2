@@ -38,7 +38,7 @@ public class WebcamOpMode extends OpMode {
 
     @Override
     public void init_loop() {
-
+        //RUN THE CODE COME ON I WANT TO SEE THE STREAMING ON THE CAMERA PLEase
     }
 
     @Override
@@ -55,8 +55,7 @@ public class WebcamOpMode extends OpMode {
         // Access the result of image processing through the pipeline
         Mat processedFrame = imageProcessingPipeline.getResultMat();
 
-        // Perform actions based on processed frames
-        // ...
+
 
         telemetry.addData("Some Information", "...");
         telemetry.update();
