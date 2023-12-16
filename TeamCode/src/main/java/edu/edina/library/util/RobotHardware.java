@@ -18,13 +18,13 @@ import edu.edina.opmodes.teleop.HangingMotorTest;
 
 public class RobotHardware {
     //public final DistanceSensor distanceSensor;
-    public final DcMotorEx frontLeftMotor, frontRightMotor, backRightMotor, backLeftMotor, HangingMotor;
+    public final DcMotorEx frontLeftMotor, frontRightMotor, backRightMotor, backLeftMotor;
 
     public final VoltageSensor voltageSensor;
 
     public final IMU imu;
 
-    public final Servo leftLiftServo, rightLiftServo, droneLauncherServo;
+    public final Servo leftLiftServo, rightLiftServo;
 
     public final CRServo leftIntakeServo, rightIntakeServo;
 
@@ -46,7 +46,7 @@ public class RobotHardware {
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
-        HangingMotor = hardwareMap.get(DcMotorEx.class, "hangingMotor");
+        //HangingMotor = hardwareMap.get(DcMotorEx.class, "hangingMotor");
 
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -58,7 +58,7 @@ public class RobotHardware {
 
         leftLiftServo = hardwareMap.get(Servo.class, "S1");
         rightLiftServo = hardwareMap.get(Servo.class, "S2");
-        droneLauncherServo = hardwareMap.get(Servo.class, "droneLauncherServo");
+        //droneLauncherServo = hardwareMap.get(Servo.class, "droneLauncherServo");
 
         leftIntakeServo = hardwareMap.get(CRServo.class, "F2");
         rightIntakeServo = hardwareMap.get(CRServo.class, "F1");
