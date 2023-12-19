@@ -15,6 +15,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.SmartGamepad;
 
@@ -44,7 +45,7 @@ public class WebcamLinearOpmode extends LinearOpMode
         robotHardware = new RobotHardware(hardwareMap);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(robotHardware.LogitechC270_8034PI, cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI"), cameraMonitorViewId);
 
         // OR...  Do Not Activate the Camera Monitor View
         //webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
