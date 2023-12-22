@@ -49,7 +49,7 @@ public class Lift extends Subsystem{
                   //  hardware.liftMotor.setPower(0);
             //}
 
-            switch (state.liftTipState) {
+            /*switch (state.liftTipState) {
                 case Horizontal:
                     hardware.leftLiftServo.setPosition(0.0);
                     hardware.rightLiftServo.setPosition(1.0);
@@ -59,7 +59,7 @@ public class Lift extends Subsystem{
                     hardware.leftLiftServo.setPosition(1);
                     hardware.rightLiftServo.setPosition(0.0);
                     break;
-            }
+            }*/
 
         }
 

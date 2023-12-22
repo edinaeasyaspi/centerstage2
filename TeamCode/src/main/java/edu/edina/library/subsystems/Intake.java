@@ -32,16 +32,16 @@ public class Intake extends Subsystem {
         if (robot.Started) {
             switch (state.intakeState) {
                 case Intake:
-                    hardware.leftIntakeServo.setPower(1);
-                    hardware.rightIntakeServo.setPower(-1);
+                    hardware.leftIntakeServo.setPosition(1);
+                    hardware.rightIntakeServo.setPosition(-1);
                     break;
                 case Expel:
-                    hardware.leftIntakeServo.setPower(-1);
-                    hardware.rightIntakeServo.setPower(1);
+                    hardware.leftIntakeServo.setPosition(-1);
+                    hardware.rightIntakeServo.setPosition(1);
                     break;
                 case Idle:
-                    hardware.leftIntakeServo.setPower(0);
-                    hardware.rightIntakeServo.setPower(0);
+                    hardware.leftIntakeServo.setPosition(0);
+                    hardware.rightIntakeServo.setPosition(0);
                     break;
             }
         }
