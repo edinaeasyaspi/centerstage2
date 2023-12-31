@@ -1,4 +1,4 @@
-package edu.edina.opmodes.teleop;
+package edu.edina.opmodes.teleop.test;
 
 import java.io.Serializable;
 

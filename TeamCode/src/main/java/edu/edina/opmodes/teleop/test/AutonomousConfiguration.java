@@ -1,4 +1,4 @@
-package edu.edina.opmodes.teleop;
+package edu.edina.opmodes.teleop.test;
 
 import android.content.Context;
 
@@ -6,6 +6,8 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import edu.edina.opmodes.teleop.ReadWriteAutoOptions;
 
 /**
  * Created by Ron on 11/16/2016.

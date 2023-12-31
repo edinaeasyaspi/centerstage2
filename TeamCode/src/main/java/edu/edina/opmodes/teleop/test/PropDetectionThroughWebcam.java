@@ -1,4 +1,4 @@
-package edu.edina.opmodes.teleop;
+package edu.edina.opmodes.teleop.test;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -10,8 +10,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.WhiteBa
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
-import org.opencv.core.Mat;
-import org.opencv.core.Rect;
 
 import android.content.Context;
 import android.util.Size;

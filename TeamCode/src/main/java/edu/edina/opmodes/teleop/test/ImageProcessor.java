@@ -1,4 +1,4 @@
-package edu.edina.opmodes.teleop;
+package edu.edina.opmodes.teleop.test;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,7 +12,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-public class HardwareClassForVisionPortal implements org.firstinspires.ftc.vision.VisionProcessor {
+public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
     private int rectY = 320;
     public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
     public Rect rectMiddle = new Rect(460, rectY, 40, 40);
@@ -26,7 +26,7 @@ public class HardwareClassForVisionPortal implements org.firstinspires.ftc.visio
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
 
-    public HardwareClassForVisionPortal(Telemetry telemetry) {
+    public ImageProcessor(Telemetry telemetry) {
         this.telemetry = telemetry;
     }
 
