@@ -22,13 +22,16 @@ public class HangingMotorTest extends OpMode {
 
     public void HangingMotorCode() {
         if (gamepad1.dpad_up) {
+            // Extend the servos all the way
             leftLiftServo.setPosition(Servo.MAX_POSITION);
             rightLiftServo.setPosition(Servo.MAX_POSITION);
         } else if (gamepad1.dpad_down) {
-            leftLiftServo.setPosition(0.2);
-            rightLiftServo.setPosition(0.2);
-        } else {
+            // Retract the servos
             leftLiftServo.setPosition(Servo.MIN_POSITION);
+            rightLiftServo.setPosition(Servo.MIN_POSITION);
+        } else {
+            // Stop the servos
+            leftLiftServo.setPosition(Servo.MIN_POSITION); // You can adjust this position if needed
             rightLiftServo.setPosition(Servo.MIN_POSITION);
         }
     }

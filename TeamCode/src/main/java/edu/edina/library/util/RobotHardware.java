@@ -24,7 +24,7 @@ public class RobotHardware {
     public final Servo leftLiftServo, rightLiftServo;
 
     public final Servo rightIntakeServo;
-    public final CRServo leftIntakeServo;
+    public final Servo leftIntakeServo;
 
     //public final DcMotorEx liftMotor;
 
@@ -58,7 +58,7 @@ public class RobotHardware {
         rightLiftServo = hardwareMap.get(Servo.class, "S2");
         //droneLauncherServo = hardwareMap.get(Servo.class, "droneLauncherServo");
 
-        leftIntakeServo = hardwareMap.get(CRServo.class, "F2");
+        leftIntakeServo = hardwareMap.get(Servo.class, "F2");
         rightIntakeServo = hardwareMap.get(Servo.class, "F1");
 
         //liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
