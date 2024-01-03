@@ -3,40 +3,66 @@ package edu.edina.opmodes.teleop.test;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp
 public class IntakeTest extends OpMode {
     public Servo leftLiftServo = null;
-    public Servo rightLiftServo = null;
-    public double leftextendClaw = 0.8;
-    public double rightextendClaw = 0.3;
-    public double leftretractClaw = 0.3;
-    public double rightretractClaw = 0.8;
+    public Servo rightLiftServo = null; //Telling the control hub which pieces to use and how to call them from the robot hardware
+
+    private ElapsedTime runtime = new ElapsedTime();
+
+    private double extendSpeed = 0.5; // I'll ask Ratik his preferred speed for the claw to open and close
+    private double retractSpeed = -0.5;
 
     @Override
     public void init() {
-        leftLiftServo = hardwareMap.get(Servo.class, "S1");
+        leftLiftServo = hardwareMap.get(Servo.class, "S1"); //Declare the components used
         rightLiftServo = hardwareMap.get(Servo.class, "S2");
-        leftLiftServo.setPosition(leftretractClaw);
-        rightLiftServo.setPosition(rightretractClaw);
     }
 
     @Override
     public void loop() {
-        Intake();
+        IntakeRun(); //Loop the code
     }
 
-    public void Intake() {
-        if (gamepad1.right_bumper) {
-            leftLiftServo.setPosition(leftextendClaw);
-            rightLiftServo.setPosition(rightextendClaw);
-        } else if (gamepad1.left_bumper) {
-            leftLiftServo.setPosition(leftretractClaw);
-            rightLiftServo.setPosition(rightretractClaw);
-        } else {
-            leftLiftServo.setPosition(leftretractClaw);
-            rightLiftServo.setPosition(rightretractClaw);
-        }}}
+    public void IntakeRun() {
+            if (gamepad1.right_bumper) {
+                extendServos(); //If the right bumper is pressed it will call the "extendServos" and it will continue making the new servo positions
+            }
+            else if (gamepad1.left_bumper) {
+                retractServos(); //If the left bumper is pressed, it will call the "retractServos" and make the new servo positions from there
+            }
+            else {
+                stopServos(); //If neither the left or the right bumpers are pressed, it will stop the servos in their current position
+            }
+        }
+
+
+    private void extendServos() {
+        double currentPosition = leftLiftServo.getPosition();
+        double newPosition = currentPosition + extendSpeed * runtime.seconds();
+        newPosition = Math.max(Servo.MIN_POSITION, Math.min(Servo.MAX_POSITION, newPosition));
+        leftLiftServo.setPosition(newPosition); //Set the positions based on the runtime
+        rightLiftServo.setPosition(newPosition);
+        runtime.reset();
+    }
+
+    private void retractServos() {
+        double currentPosition = leftLiftServo.getPosition();
+        double newPosition = currentPosition + retractSpeed * runtime.seconds();
+        newPosition = Math.max(Servo.MIN_POSITION, Math.min(Servo.MAX_POSITION, newPosition));
+        leftLiftServo.setPosition(newPosition); //Set the new positions based on the new runtime data
+        rightLiftServo.setPosition(newPosition);
+        runtime.reset();
+    }
+
+    private void stopServos() {
+        leftLiftServo.setPosition(leftLiftServo.getPosition()); //Reset the servos
+        rightLiftServo.setPosition(rightLiftServo.getPosition());
+        runtime.reset(); //Rest the runtime
+    }
+}
 
         /* When the right bumper is clicked, the servo will move until the right bumper is not pressed
          When the left bumper is clicked, the servo will move the opposite way until the left bumper is not pressed
