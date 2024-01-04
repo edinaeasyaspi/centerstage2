@@ -21,10 +21,10 @@ public class RobotHardware {
 
     public final IMU imu;
 
-    public final Servo leftLiftServo, rightLiftServo;
+    //public final Servo leftLiftServo, rightLiftServo;
 
-    public final Servo rightIntakeServo;
-    public final Servo leftIntakeServo;
+   // public final Servo rightIntakeServo;
+    public final CRServo leftIntakeServo;
 
     //public final DcMotorEx liftMotor;
 
@@ -54,12 +54,12 @@ public class RobotHardware {
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-        leftLiftServo = hardwareMap.get(Servo.class, "S1");
-        rightLiftServo = hardwareMap.get(Servo.class, "S2");
+        //leftLiftServo = hardwareMap.get(Servo.class, "S1");
+        //rightLiftServo = hardwareMap.get(Servo.class, "S2");
         //droneLauncherServo = hardwareMap.get(Servo.class, "droneLauncherServo");
 
-        leftIntakeServo = hardwareMap.get(Servo.class, "F2");
-        rightIntakeServo = hardwareMap.get(Servo.class, "F1");
+        leftIntakeServo = hardwareMap.get(CRServo.class, "F2");
+        //rightIntakeServo = hardwareMap.get(Servo.class, "F1");
 
         //liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         //distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
