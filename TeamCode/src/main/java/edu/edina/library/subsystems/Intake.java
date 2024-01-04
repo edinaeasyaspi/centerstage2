@@ -33,15 +33,15 @@ public class Intake extends Subsystem {
             switch (state.intakeState) {
                 case Intake:
                     hardware.leftIntakeServo.setPower(1);
-                    hardware.rightIntakeServo.setPosition(-1);
+                 //   hardware.rightIntakeServo.setPosition(-1);
                     break;
                 case Expel:
                     hardware.leftIntakeServo.setPower(-1);
-                    hardware.rightIntakeServo.setPosition(1);
+                  //  hardware.rightIntakeServo.setPosition(1);
                     break;
                 case Idle:
                     hardware.leftIntakeServo.setPower(0);
-                    hardware.rightIntakeServo.setPosition(0);
+                //    hardware.rightIntakeServo.setPosition(0);
                     break;
             }
         }

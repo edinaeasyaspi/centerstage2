@@ -19,7 +19,7 @@ public class DroneLauncherServoTest extends OpMode {
 
     public void droneLauncherServo() {
         if (gamepad2.dpad_up) {
-            leftIntakeServo.setPower(0.5);
+            leftIntakeServo.setPower(-0.5);
         } else leftIntakeServo.setPower(0);
         }
     }
