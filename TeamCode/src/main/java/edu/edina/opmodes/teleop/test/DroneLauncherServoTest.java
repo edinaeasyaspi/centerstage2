@@ -18,9 +18,10 @@ public class DroneLauncherServoTest extends OpMode {
     }
 
     public void droneLauncherServo() {
-        if (gamepad2.dpad_up) {
+        if (gamepad2.dpad_up && gamepad2.x) {
             leftIntakeServo.setPower(-0.1);
         } else leftIntakeServo.setPower(0);
         }
     }
 
+//Putting to controls in case of an accidental click of one of the controls so the drone launcher doesn't start flying mid-match
