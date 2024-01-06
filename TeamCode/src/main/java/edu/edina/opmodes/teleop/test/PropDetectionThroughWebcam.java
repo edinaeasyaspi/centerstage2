@@ -38,7 +38,7 @@ public class PropDetectionThroughWebcam extends OpMode {
         visionPortalBuilder = new VisionPortal.Builder();
         visionPortal = visionPortalBuilder.enableLiveView(true).
                 addProcessor((VisionProcessor) imageProcessor).
-                setCamera(hardwareMap.get(WebcamName.class, "webcam1")).
+                setCamera(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI")).
                 setCameraResolution(new Size(640, 480)).
                 build();
     }
@@ -73,7 +73,7 @@ public class PropDetectionThroughWebcam extends OpMode {
     public void start() {
         // Make sure the required menu options are set.
         if (!autonomousConfiguration.getReadyToStart()) {
-            telemetry.addData("Alert", "Not ready to start!");
+            telemetry.addLine("Alert - Not ready to start!");
             telemetry.speak("Not ready to start!");
             runTime.reset();
             visionPortal.stopStreaming();
