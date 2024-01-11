@@ -12,8 +12,8 @@ public class IntakeTest extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    private double extendSpeed = 0.5; // I'll ask Ratik his preferred speed for the claw to open and close
-    private double retractSpeed = -0.5;
+    private double extendSpeed = 0.75; // I'll ask Ratik his preferred speed for the claw to open and close
+    private double retractSpeed = -0.75;
 
     @Override
     public void init() {

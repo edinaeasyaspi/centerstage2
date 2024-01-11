@@ -2,6 +2,7 @@ package edu.edina.library.util;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import edu.edina.library.enums.DroneLauncherState;
 import edu.edina.library.enums.IntakeState;
 import edu.edina.library.enums.LiftState;
 import edu.edina.library.enums.LiftTipState;
@@ -14,10 +15,13 @@ public class RobotState {
     public LiftState liftState;
     public IntakeState intakeState;
 
+    public DroneLauncherState droneLauncherState;
+
     public RobotState() {
         liftTipState = LiftTipState.Vertical;
         liftState = LiftState.Idle;
         intakeState = IntakeState.Idle;
+        droneLauncherState = DroneLauncherState.Idle;
     }
 
     public static synchronized RobotState getInstance()

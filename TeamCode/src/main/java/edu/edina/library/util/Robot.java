@@ -8,12 +8,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-
 import edu.edina.library.subsystems.Intake;
 import edu.edina.library.subsystems.Lift;
 import edu.edina.library.subsystems.MecanumDrive;
 import edu.edina.library.subsystems.Subsystem;
 import edu.edina.library.subsystems.Webcam;
+import edu.edina.library.subsystems.DroneLauncher;
+
 
 public class Robot {
     private ExecutorService subsystemUpdateExecutor;
@@ -23,6 +24,7 @@ public class Robot {
     private List<Subsystem> subsystems = new ArrayList<>();
     private Telemetry telemetry;
     public Lift Lift;
+    public DroneLauncher DroneLauncher;
     public MecanumDrive MecanumDrive;
     public Intake Intake;
     public Webcam Webcam;
@@ -46,7 +48,11 @@ public class Robot {
         this.Intake = new Intake(this);
         subsystems.add(this.Intake);
 
-       // this.Webcam = new Webcam(this);
+        this.DroneLauncher = new DroneLauncher(this);
+        subsystems.add(this.DroneLauncher);
+
+        this.Webcam = new Webcam(this);
+        subsystems.add(this.Webcam);
 
         if (this.runMultiThreaded) {
             // setup the thread executor
