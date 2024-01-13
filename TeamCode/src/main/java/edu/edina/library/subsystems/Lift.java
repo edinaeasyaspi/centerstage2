@@ -43,7 +43,7 @@ public class Lift extends Subsystem{
             //        hardware.liftMotor.setPower(1.0);
               //      break;
                 //case Down:
-                  //  hardware.liftMotor.setPower(-1);
+                    hardware.liftMotor.setPower(-1);
                     //break;
                 //default:
                   //  hardware.liftMotor.setPower(0);

@@ -7,7 +7,7 @@ import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 
-public class meepmeeptesting2 {
+public class meepmeepbottomrightredmiddle {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
@@ -19,15 +19,13 @@ public class meepmeeptesting2 {
                                 .turn(Math.toRadians(90))
                                 .forward(38)
                                 .back((10))
-                                .splineTo(new Vector2d(-58, -51), Math.toRadians(90))
+                                .splineTo(new Vector2d(-57, -54), Math.toRadians(90))
                                 .splineTo(new Vector2d(-40, -10), Math.toRadians(0))
                                 .splineTo(new Vector2d(33, -13), Math.toRadians(0))
                                 .splineTo(new Vector2d(49, -34), Math.toRadians(0))
-                                .waitSeconds(1)
-                                .splineTo(new Vector2d(-45, -34), Math.toRadians(0))
-                                .waitSeconds(1)
-//.splineToConstantHeading(new Vector2d(40, 40), Math.toRadians(0))k
-                                //This is bottomrightredstraight
+                                //  .splineToLinearHeading(new Pose2d(-15 -12, Math.toRadians(90)), Math.toRadians(0))
+
+                                //This is bottomRightRedMiddle
 
 
 
@@ -41,5 +39,4 @@ public class meepmeeptesting2 {
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
                 .start();
-    }
-}
+    }}
