@@ -21,12 +21,12 @@ public class RobotHardware {
 
     public final IMU imu;
 
-    //public final Servo leftLiftServo, rightLiftServo;
+    public final Servo rightClaw, leftClaw;
 
-    public final Servo rightIntakeServo, leftIntakeServo;
+    public final Servo  wrist;
     public final CRServo droneLauncherServo;
 
-    //public final DcMotorEx liftMotor;
+    public final DcMotorEx liftMotor;
 
     public final WebcamName webcam;
 
@@ -46,7 +46,7 @@ public class RobotHardware {
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
-        //HangingMotor = hardwareMap.get(DcMotorEx.class, "hangingMotor");
+
 
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -57,11 +57,12 @@ public class RobotHardware {
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
         droneLauncherServo = hardwareMap.get(CRServo.class, "droneLauncherServo");
+        rightClaw = hardwareMap.get(Servo.class, "rightClaw");
+        leftClaw = hardwareMap.get(Servo.class, "leftClaw");
+        wrist = hardwareMap.get(Servo.class, "wrist");
 
-        leftIntakeServo = hardwareMap.get(Servo.class, "F2");
-        rightIntakeServo = hardwareMap.get(Servo.class, "F1");
 
-        //liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
+        liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
 
 
         webcam = hardwareMap.get(WebcamName.class, "LogitechC270_8034PI");
