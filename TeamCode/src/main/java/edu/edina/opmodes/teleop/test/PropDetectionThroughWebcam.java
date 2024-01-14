@@ -1,5 +1,7 @@
 package edu.edina.opmodes.teleop.test;
 import com.acmerobotics.roadrunner.Pose2d;
+
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -21,19 +23,19 @@ public class PropDetectionThroughWebcam extends OpMode {
     private ImageProcessor imageProcessor;
     private VisionPortal.Builder visionPortalBuilder;
     private VisionPortal visionPortal;
-    private Class<? extends ImageProcessor> selectedSpike;
+    private ImageProcessor.Selected selectedSpike;
     private Telemetry.Item teleSelected;
     private Pose2d startPose;
     private Context context;
     private boolean readyToStart;
-    private Telemetry telemetry;
+    private GamepadEx gamepad;
     private int delaySeconds;
     private ElapsedTime runTime;
     AutonomousConfiguration autonomousConfiguration = new AutonomousConfiguration();
 
 
     public void init() {
-        // gamepad = new GamepadEx(gamepad1);
+         gamepad = new GamepadEx(gamepad1);
         imageProcessor = new ImageProcessor(telemetry);
         visionPortalBuilder = new VisionPortal.Builder();
         visionPortal = visionPortalBuilder.enableLiveView(true).
@@ -41,20 +43,17 @@ public class PropDetectionThroughWebcam extends OpMode {
                 setCamera(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI")).
                 setCameraResolution(new Size(640, 480)).
                 build();
+
+        runTime = new ElapsedTime();
+        teleSelected = telemetry.addData("Selected", teleSelected);
+        autonomousConfiguration.init(gamepad, this.telemetry, hardwareMap.appContext);
     }
 
-    public void ImageProcessor(Telemetry telemetry) {
-        this.telemetry = telemetry;
-    }
 
     public void init_loop() {
         // Wait for the camera to be open
         if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
-//            telemetry.addData("Camera", "Waiting");
-            return;
-        }
-        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
-//            telemetry.addData("Camera", "Waiting");
+            telemetry.addData("Camera", "Waiting");
             return;
         }
 
@@ -64,8 +63,9 @@ public class PropDetectionThroughWebcam extends OpMode {
         }
 
         // Keep checking the camera
-        selectedSpike = imageProcessor.getClass();
+        selectedSpike = imageProcessor.getSelection();
         teleSelected.setValue(selectedSpike);
+        telemetry.addData("Selected value", selectedSpike);
         // Get the menu options
         autonomousConfiguration.init_loop();
     }
@@ -74,7 +74,7 @@ public class PropDetectionThroughWebcam extends OpMode {
         // Make sure the required menu options are set.
         if (!autonomousConfiguration.getReadyToStart()) {
             telemetry.addLine("Alert - Not ready to start!");
-            telemetry.speak("Not ready to start!");
+          //  telemetry.speak("Not ready to start!");
             runTime.reset();
             visionPortal.stopStreaming();
             while (runTime.seconds() < 2) {
