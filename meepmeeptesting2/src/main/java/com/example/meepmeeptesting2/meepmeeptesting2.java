@@ -43,13 +43,7 @@ public class meepmeeptesting2 {
 
 
 
-                                //   .splineTo(new Vector2d(33, -13), Math.toRadians(0))
-                              //  .splineTo(new Vector2d(49, -34), Math.toRadians(0))
-                             //   .waitSeconds(1)
-                             //   .splineTo(new Vector2d(-45, -34), Math.toRadians(0))
-                             //   .waitSeconds(1)
-//.splineToConstantHeading(new Vector2d(40, 40), Math.toRadians(0))k
-                                //This is bottomrightredstraight
+                                //This is bottomrightredstraight 2+7 auto
 
 
 
