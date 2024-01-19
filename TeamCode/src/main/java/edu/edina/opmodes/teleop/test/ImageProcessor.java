@@ -13,10 +13,13 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
-    private int rectY = 320;
-    public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
-    public Rect rectMiddle = new Rect(460, rectY, 40, 40);
-    public Rect rectRight = new Rect(440, rectY - 100, 40, 40);
+    private int rectY = 160;
+//    public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
+//    public Rect rectMiddle = new Rect(460, rectY, 40, 40);
+//    public Rect rectRight = new Rect(440, rectY - 100, 40, 40);
+//public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
+    public Rect rectMiddle = new Rect(0, rectY, 460, 160);
+    public Rect rectRight = new Rect(540, rectY, 80, 160);
     Selected selection = Selected.NONE;
     private final double SAT_THRESHOLD = 50;
     public double satRectLeft;
@@ -38,22 +41,24 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
-        satRectLeft = getAvgSaturation(hsvMat, rectLeft);
+      //  satRectLeft = getAvgSaturation(hsvMat, rectLeft);
         satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
         satRectRight = getAvgSaturation(hsvMat, rectRight);
 
-        if (Math.abs(satRectLeft - satRectMiddle) < SAT_THRESHOLD) {
-            return Selected.RIGHT;
+
+        if (Math.abs(satRectRight - satRectMiddle) < SAT_THRESHOLD) {
+            return Selected.LEFT;
         }
 
-        if (satRectLeft > satRectMiddle) {
-            return Selected.LEFT;
+        if (satRectRight > satRectMiddle) {
+            return Selected.RIGHT;
         } else {
             return Selected.MIDDLE;
         }
     }
 
     protected double getAvgSaturation(Mat input, Rect rect) {
+        //to do; boolean blue is true
         submat = input.submat(rect);
         Scalar color = Core.mean(submat);
         return color.val[1];
@@ -79,8 +84,8 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
         Paint nonSelectedPaint = new Paint(selectedPaint);
         nonSelectedPaint.setColor(Color.GREEN);
 
-        android.graphics.Rect drawRectangleLeft = makeGraphicsRect(rectLeft,
-                scaleBmpPxToCanvasPx);
+//        android.graphics.Rect drawRectangleLeft = makeGraphicsRect(rectLeft,
+//                scaleBmpPxToCanvasPx);
         android.graphics.Rect drawRectangleMiddle = makeGraphicsRect(rectMiddle,
                 scaleBmpPxToCanvasPx);
         android.graphics.Rect drawRectangleRight = makeGraphicsRect(rectRight,
@@ -89,22 +94,22 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
         selection = (Selected) userContext;
         switch (selection) {
             case LEFT:
-                canvas.drawRect(drawRectangleLeft, selectedPaint);
+  //              canvas.drawRect(drawRectangleLeft, selectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
             case MIDDLE:
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
+  //              canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, selectedPaint);
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
             case RIGHT:
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
+  //              canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, selectedPaint);
                 break;
             case NONE:
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
+   //             canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
