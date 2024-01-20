@@ -38,6 +38,10 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
+
+        double[] pix = hsvMat.get(320, 240);
+        telemetry.addData("center", "%f %f %f", pix[0], pix[1], pix[2]);
+
         satRectLeft = getAvgSaturation(hsvMat, rectLeft);
         satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
         satRectRight = getAvgSaturation(hsvMat, rectRight);

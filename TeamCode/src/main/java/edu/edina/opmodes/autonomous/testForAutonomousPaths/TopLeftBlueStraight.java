@@ -2,7 +2,7 @@ package edu.edina.opmodes.autonomous.testForAutonomousPaths;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "TopLeftBlueStraight", group = "Autonomous")
+//@Autonomous(name = "TopLeftBlueStraight", group = "Autonomous")
 public class TopLeftBlueStraight extends AutonomousDriveMain{
     public boolean isParkPositionStraight = true;
     public boolean isAllianceLeftBlue = true;

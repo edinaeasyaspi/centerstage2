@@ -112,7 +112,7 @@ public class Positioning {
     }
 
 
-    public void reset() {
+    public void resetHeading() {
         intialHeading = getHeading();
     }
 

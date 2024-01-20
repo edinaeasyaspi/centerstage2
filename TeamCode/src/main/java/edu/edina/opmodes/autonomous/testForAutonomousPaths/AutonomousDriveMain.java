@@ -1,7 +1,9 @@
 package edu.edina.opmodes.autonomous.testForAutonomousPaths;
 
 
-public class AutonomousDriveMain{
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+public class AutonomousDriveMain   {
     private int verticalDistance = 10; //how much distance from starting point to board, 10 = top distance, bottom distance = 34
     private int horizontalDistance = 10; //how much distance from starting point to middle
     private int delayInSeconds = 0; //how long we want to delay before bot starts moving.

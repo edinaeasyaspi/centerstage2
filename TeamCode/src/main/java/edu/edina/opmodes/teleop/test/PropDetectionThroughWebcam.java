@@ -15,6 +15,8 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
 
+import edu.edina.library.util.Position;
+
 import android.content.Context;
 import android.util.Size;
 
@@ -57,6 +59,7 @@ public class PropDetectionThroughWebcam extends OpMode {
 
 
     public void init_loop() {
+        aprilTagPos.resetHeading();
         // Wait for the camera to be open
         if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
             telemetry.addData("Camera", "Waiting");
@@ -126,7 +129,12 @@ public class PropDetectionThroughWebcam extends OpMode {
 
     @Override
     public void loop() {
-        // empty for now
-    }
+        aprilTagPos.getPosition();
 
+        Position p = aprilTagPos.getPosition();
+        if (p != null) {
+            telemetry.addData("position", p);
+            telemetry.update();
+        }
+    }
 }
