@@ -14,7 +14,7 @@ import org.opencv.imgproc.Imgproc;
 
 public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
     private int rectY = 160;
-//    public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
+    //    public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
 //    public Rect rectMiddle = new Rect(460, rectY, 40, 40);
 //    public Rect rectRight = new Rect(440, rectY - 100, 40, 40);
 //public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
@@ -28,6 +28,7 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
     Telemetry telemetry;
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
+    private String diagString;
 
     public ImageProcessor(Telemetry telemetry) {
         this.telemetry = telemetry;
@@ -43,9 +44,9 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
 
         double[] pix = hsvMat.get(320, 240);
-        telemetry.addData("center", "%f %f %f", pix[0], pix[1], pix[2]);
+        diagString = String.format("center pixel HSV: %f %f %f", pix[0], pix[1], pix[2]);
 
-      //  satRectLeft = getAvgSaturation(hsvMat, rectLeft);
+        //  satRectLeft = getAvgSaturation(hsvMat, rectLeft);
         satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
         satRectRight = getAvgSaturation(hsvMat, rectRight);
 
@@ -98,22 +99,22 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
         selection = (Selected) userContext;
         switch (selection) {
             case LEFT:
-  //              canvas.drawRect(drawRectangleLeft, selectedPaint);
+                //              canvas.drawRect(drawRectangleLeft, selectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
             case MIDDLE:
-  //              canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
+                //              canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, selectedPaint);
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
             case RIGHT:
-  //              canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
+                //              canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, selectedPaint);
                 break;
             case NONE:
-   //             canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
+                //             canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
@@ -123,6 +124,10 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
 
     public Selected getSelection() {
         return selection;
+    }
+
+    public String getDiagString() {
+        return diagString;
     }
 
     public enum Selected {
