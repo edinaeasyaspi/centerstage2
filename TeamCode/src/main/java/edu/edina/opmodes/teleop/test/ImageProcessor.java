@@ -22,9 +22,13 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
     public Rect rectRight = new Rect(540, rectY, 80, 160);
     Selected selection = Selected.NONE;
     private final double SAT_THRESHOLD = 50;
-    public double satRectLeft;
-    public double satRectMiddle;
-    public double satRectRight;
+    private final double SAT_THRESHOLD2 = 75;
+
+    private final double VAL_THRESHOLD = 80;
+    private final double SCORE_THRESHOLD = 0.4;
+
+    public double scoreRectMiddle;
+    public double scoreRectRight;
     Telemetry telemetry;
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
@@ -43,30 +47,43 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        double[] pix = hsvMat.get(320, 240);
-        diagString = String.format("center pixel HSV: %f %f %f", pix[0], pix[1], pix[2]);
-
         //  satRectLeft = getAvgSaturation(hsvMat, rectLeft);
-        satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
-        satRectRight = getAvgSaturation(hsvMat, rectRight);
+        scoreRectMiddle = objectScore(hsvMat, rectMiddle);
+        scoreRectRight = objectScore(hsvMat, rectRight);
 
+        diagString = String.format("scores: middle=%.3f, right=%.3f", scoreRectMiddle, scoreRectRight);
 
-        if (Math.abs(satRectRight - satRectMiddle) < SAT_THRESHOLD) {
-            return Selected.LEFT;
-        }
-
-        if (satRectRight > satRectMiddle) {
+        if (scoreRectRight > scoreRectMiddle && scoreRectRight > SCORE_THRESHOLD) {
             return Selected.RIGHT;
-        } else {
+        }
+        if (scoreRectMiddle > scoreRectRight && scoreRectMiddle > SCORE_THRESHOLD) {
             return Selected.MIDDLE;
         }
+        return Selected.LEFT;
     }
+
 
     protected double getAvgSaturation(Mat input, Rect rect) {
         //to do; boolean blue is true
         submat = input.submat(rect);
         Scalar color = Core.mean(submat);
         return color.val[1];
+    }
+
+    private double objectScore(Mat input, Rect rect) {
+        submat = input.submat(rect);
+        double pixelCount = 0.0;
+        for (int y = 0; y < submat.rows(); y = y + 1) {
+            for (int x = 0; x < submat.cols(); x = x + 1) {
+                double[] pix = submat.get(y, x);
+                if (pix[1] > SAT_THRESHOLD2 && pix[2] > VAL_THRESHOLD) {
+                    pixelCount = pixelCount + 1;
+                }
+            }
+        }
+        double pixelFraction = pixelCount / (submat.cols() * submat.rows());
+
+        return pixelFraction;
     }
 
     private android.graphics.Rect makeGraphicsRect(Rect rect, float scaleBmpPxToCanvasPx) {
