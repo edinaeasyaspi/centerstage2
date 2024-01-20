@@ -1,7 +1,9 @@
 package edu.edina.opmodes.teleop.test;
+
 import com.acmerobotics.roadrunner.Pose2d;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.qualcomm.hardware.bosch.BNO055IMUNew;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -32,17 +34,21 @@ public class PropDetectionThroughWebcam extends OpMode {
     private int delaySeconds;
     private ElapsedTime runTime;
     AutonomousConfiguration autonomousConfiguration = new AutonomousConfiguration();
+    private Positioning aprilTagPos;
 
 
     public void init() {
-         gamepad = new GamepadEx(gamepad1);
+        gamepad = new GamepadEx(gamepad1);
         imageProcessor = new ImageProcessor(telemetry);
+        aprilTagPos = new Positioning(hardwareMap.get(BNO055IMUNew.class, "imu"), telemetry);
         visionPortalBuilder = new VisionPortal.Builder();
-        visionPortal = visionPortalBuilder.enableLiveView(true).
-                addProcessor((VisionProcessor) imageProcessor).
-                setCamera(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI")).
-                setCameraResolution(new Size(640, 480)).
-                build();
+        visionPortal = visionPortalBuilder
+                .enableLiveView(true)
+                .addProcessor((VisionProcessor) imageProcessor)
+                .addProcessor(aprilTagPos.getMyAprilTagProc())
+                .setCamera(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI"))
+                .setCameraResolution(new Size(640, 480))
+                .build();
 
         runTime = new ElapsedTime();
         teleSelected = telemetry.addData("Selected", teleSelected);
@@ -74,7 +80,7 @@ public class PropDetectionThroughWebcam extends OpMode {
         // Make sure the required menu options are set.
         if (!autonomousConfiguration.getReadyToStart()) {
             telemetry.addLine("Alert - Not ready to start!");
-          //  telemetry.speak("Not ready to start!");
+            //  telemetry.speak("Not ready to start!");
             runTime.reset();
             visionPortal.stopStreaming();
             while (runTime.seconds() < 2) {
@@ -120,7 +126,7 @@ public class PropDetectionThroughWebcam extends OpMode {
 
     @Override
     public void loop() {
-      // empty for now
+        // empty for now
     }
 
 }
