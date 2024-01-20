@@ -13,18 +13,26 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
-    private int rectY = 320;
-    public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
-    public Rect rectMiddle = new Rect(460, rectY, 40, 40);
-    public Rect rectRight = new Rect(440, rectY - 100, 40, 40);
+    private int rectY = 160;
+    //    public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
+//    public Rect rectMiddle = new Rect(460, rectY, 40, 40);
+//    public Rect rectRight = new Rect(440, rectY - 100, 40, 40);
+//public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
+    public Rect rectMiddle = new Rect(80, 200, 160, 80);
+    public Rect rectRight = new Rect(540, rectY, 80, 160);
     Selected selection = Selected.NONE;
     private final double SAT_THRESHOLD = 50;
-    public double satRectLeft;
-    public double satRectMiddle;
-    public double satRectRight;
+    private final double SAT_THRESHOLD2 = 75;
+
+    private final double VAL_THRESHOLD = 80;
+    private final double SCORE_THRESHOLD = 0.4;
+
+    public double scoreRectMiddle;
+    public double scoreRectRight;
     Telemetry telemetry;
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
+    private String diagString;
 
     public ImageProcessor(Telemetry telemetry) {
         this.telemetry = telemetry;
@@ -39,28 +47,43 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        double[] pix = hsvMat.get(320, 240);
-        telemetry.addData("center", "%f %f %f", pix[0], pix[1], pix[2]);
+        //  satRectLeft = getAvgSaturation(hsvMat, rectLeft);
+        scoreRectMiddle = objectScore(hsvMat, rectMiddle);
+        scoreRectRight = objectScore(hsvMat, rectRight);
 
-        satRectLeft = getAvgSaturation(hsvMat, rectLeft);
-        satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
-        satRectRight = getAvgSaturation(hsvMat, rectRight);
+        diagString = String.format("scores: middle=%.3f, right=%.3f", scoreRectMiddle, scoreRectRight);
 
-        if (Math.abs(satRectLeft - satRectMiddle) < SAT_THRESHOLD) {
+        if (scoreRectRight > scoreRectMiddle && scoreRectRight > SCORE_THRESHOLD) {
             return Selected.RIGHT;
         }
-
-        if (satRectLeft > satRectMiddle) {
-            return Selected.LEFT;
-        } else {
+        if (scoreRectMiddle > scoreRectRight && scoreRectMiddle > SCORE_THRESHOLD) {
             return Selected.MIDDLE;
         }
+        return Selected.LEFT;
     }
 
+
     protected double getAvgSaturation(Mat input, Rect rect) {
+        //to do; boolean blue is true
         submat = input.submat(rect);
         Scalar color = Core.mean(submat);
         return color.val[1];
+    }
+
+    private double objectScore(Mat input, Rect rect) {
+        submat = input.submat(rect);
+        double pixelCount = 0.0;
+        for (int y = 0; y < submat.rows(); y = y + 1) {
+            for (int x = 0; x < submat.cols(); x = x + 1) {
+                double[] pix = submat.get(y, x);
+                if (pix[1] > SAT_THRESHOLD2 && pix[2] > VAL_THRESHOLD) {
+                    pixelCount = pixelCount + 1;
+                }
+            }
+        }
+        double pixelFraction = pixelCount / (submat.cols() * submat.rows());
+
+        return pixelFraction;
     }
 
     private android.graphics.Rect makeGraphicsRect(Rect rect, float scaleBmpPxToCanvasPx) {
@@ -83,8 +106,8 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
         Paint nonSelectedPaint = new Paint(selectedPaint);
         nonSelectedPaint.setColor(Color.GREEN);
 
-        android.graphics.Rect drawRectangleLeft = makeGraphicsRect(rectLeft,
-                scaleBmpPxToCanvasPx);
+//        android.graphics.Rect drawRectangleLeft = makeGraphicsRect(rectLeft,
+//                scaleBmpPxToCanvasPx);
         android.graphics.Rect drawRectangleMiddle = makeGraphicsRect(rectMiddle,
                 scaleBmpPxToCanvasPx);
         android.graphics.Rect drawRectangleRight = makeGraphicsRect(rectRight,
@@ -93,22 +116,22 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
         selection = (Selected) userContext;
         switch (selection) {
             case LEFT:
-                canvas.drawRect(drawRectangleLeft, selectedPaint);
+                //              canvas.drawRect(drawRectangleLeft, selectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
             case MIDDLE:
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
+                //              canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, selectedPaint);
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
             case RIGHT:
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
+                //              canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, selectedPaint);
                 break;
             case NONE:
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
+                //             canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleMiddle, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
@@ -118,6 +141,10 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
 
     public Selected getSelection() {
         return selection;
+    }
+
+    public String getDiagString() {
+        return diagString;
     }
 
     public enum Selected {
