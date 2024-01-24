@@ -12,16 +12,13 @@ public class ServoTest extends LinearOpMode {
         waitForStart();
         while(opModeIsActive()){
             if(gamepad1.right_bumper){
-                hangRight.setPosition(-0.8);
+                hangRight.setPosition(1);
+                hangLeft.setPosition(0);
             }
-            if(gamepad1.right_trigger>0.8){
+            if (gamepad1.right_trigger>0.8){
                 hangRight.setPosition(0);
-            }
-            if(gamepad1.left_bumper){
                 hangLeft.setPosition(1);
-            }
-            if(gamepad1.left_trigger>0.8){
-                hangLeft.setPosition(0.25);
+
             }
         }
     }
