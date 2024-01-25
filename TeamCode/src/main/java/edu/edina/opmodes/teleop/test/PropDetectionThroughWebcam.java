@@ -3,6 +3,7 @@ package edu.edina.opmodes.teleop.test;
 import com.acmerobotics.roadrunner.Pose2d;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.bosch.BNO055IMUNew;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -42,7 +43,7 @@ public class PropDetectionThroughWebcam extends OpMode {
     public void init() {
         gamepad = new GamepadEx(gamepad1);
         imageProcessor = new ImageProcessor(telemetry);
-        aprilTagPos = new Positioning(hardwareMap.get(BNO055IMUNew.class, "imu"), telemetry);
+        aprilTagPos = new Positioning(hardwareMap.get(BHI260IMU.class, "imu"), telemetry);
         visionPortalBuilder = new VisionPortal.Builder();
         visionPortal = visionPortalBuilder
                 .enableLiveView(true)

@@ -6,6 +6,8 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import android.util.Size;
 
 import com.qualcomm.hardware.bosch.BNO055IMUNew;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -15,16 +17,16 @@ import edu.edina.library.util.Position;
 
 import edu.edina.library.util.Parts;
 
-public class AprilTagTest {
+@Autonomous
+public class AprilTagTest extends LinearOpMode {
 
     private ImageProcessor imageProcessor;
     private VisionPortal.Builder visionPortalBuilder;
     private VisionPortal visionPortal;
     private Positioning aprilTagPos;
-    private Parts parts;
 
-    public AprilTagTest() {
-        new Parts(hardwareMap);
+    public void runOpMode(){
+        Parts parts = new Parts(hardwareMap);
 
         imageProcessor = new ImageProcessor(telemetry);
 
@@ -32,19 +34,23 @@ public class AprilTagTest {
         visionPortalBuilder = new VisionPortal.Builder();
         visionPortal = visionPortalBuilder
                 .enableLiveView(true)
-                .addProcessor((VisionProcessor) imageProcessor)
+                .addProcessor(imageProcessor)
                 .addProcessor(aprilTagPos.getMyAprilTagProc())
                 .setCamera(parts.webcam)
                 .setCameraResolution(new Size(640, 480))
                 .build();
-    }
 
-    public void loop() {
-        aprilTagPos.getPosition();
+        waitForStart();
 
-        Position p = aprilTagPos.getPosition();
-        if (p != null) {
-            telemetry.addData("position", p);
+        while (opModeIsActive()) {
+            aprilTagPos.getPosition();
+
+            Position p = aprilTagPos.getPosition();
+
+            if (p != null) {
+                telemetry.addData("position", p);
+            }
+
             telemetry.addData("heading", aprilTagPos.getHeading());
             telemetry.update();
         }

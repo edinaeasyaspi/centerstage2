@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
-import com.qualcomm.hardware.bosch.BNO055IMUNew;
+import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -23,7 +23,7 @@ public class Positioning {
 
     public AprilTagProcessor myAprilTagProc;
 
-    private BNO055IMUNew IMU;
+    private BHI260IMU IMU;
     private Telemetry telemetry;
 
     private double intialHeading;
@@ -31,7 +31,7 @@ public class Positioning {
     private final double[] allmy = {132.492908, 132.492908, 132.492908, 132.492908, 132.492908, 132.492908, 0, 0, 0, 0};
     private final double camOffsetX = 5.25, camOffsetY = 8;
 
-    public Positioning(BNO055IMUNew IMU, Telemetry telemetry) {
+    public Positioning(BHI260IMU IMU, Telemetry telemetry) {
         this.IMU = IMU;
         this.telemetry = telemetry;
 
