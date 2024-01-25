@@ -21,8 +21,8 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
     public Rect rectMiddle = new Rect(80, 200, 160, 80);
     public Rect rectRight = new Rect(540, rectY, 80, 160);
     Selected selection = Selected.NONE;
-    private final double SAT_THRESHOLD = 50;
-    private final double SAT_THRESHOLD2 = 75;
+
+    private final double SAT_THRESHOLD = 75;
 
     private final double VAL_THRESHOLD = 80;
     private final double SCORE_THRESHOLD = 0.4;
@@ -76,7 +76,7 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
         for (int y = 0; y < submat.rows(); y = y + 1) {
             for (int x = 0; x < submat.cols(); x = x + 1) {
                 double[] pix = submat.get(y, x);
-                if (pix[1] > SAT_THRESHOLD2 && pix[2] > VAL_THRESHOLD) {
+                if (pix[1] > SAT_THRESHOLD && pix[2] > VAL_THRESHOLD) {
                     pixelCount = pixelCount + 1;
                 }
             }
