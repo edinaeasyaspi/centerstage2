@@ -23,7 +23,8 @@ public class RobotHardware {
 
     public final Servo rightClaw, leftClaw;
 
-    public final Servo  wrist;
+    public final Servo  rightArmServo;
+    public final Servo leftArmServo;
     public final CRServo droneLauncherServo;
 
     public final DcMotorEx liftMotor;
@@ -59,7 +60,9 @@ public class RobotHardware {
         droneLauncherServo = hardwareMap.get(CRServo.class, "droneLauncherServo");
         rightClaw = hardwareMap.get(Servo.class, "rightClaw");
         leftClaw = hardwareMap.get(Servo.class, "leftClaw");
-        wrist = hardwareMap.get(Servo.class, "wrist");
+        leftArmServo = hardwareMap.get(Servo.class, "leftArmServo");
+        rightArmServo = hardwareMap.get(Servo.class, "rightArmServo");
+
 
 
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
