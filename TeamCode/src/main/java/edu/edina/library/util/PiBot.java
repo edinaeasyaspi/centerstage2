@@ -33,6 +33,7 @@ public class PiBot {
         //happy hanukkah
     }
     public boolean latchOn (){
+        //happy MLKJ day
         throw new RuntimeException();
     }
     public void dropPixelOnBackground() {
@@ -40,10 +41,10 @@ public class PiBot {
     }
 
     public void intakePixel() {
-        //happy juneteenth
+        //happy memorial day
     }
 
     public void launch() {
-        //.
+        //happy presidents day weekend
     }
 }
