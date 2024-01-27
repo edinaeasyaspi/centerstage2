@@ -50,7 +50,7 @@ public class PiMotor {
         speedo.sample(getDeg());
     }
 
-    public void run(double currBotSpeed, double move, double dir) {
+    public void run(double currBotSpeed, double move, double dir, double correction) {
         if (move != 0) {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); // is this needed
 
@@ -69,7 +69,7 @@ public class PiMotor {
             torqueFrac *= move * dir * torqueLimit;
             currBotSpeed *= move;
 
-            double volt = (torqueFrac + currBotSpeed / motorConf.topSpeed) * motorConf.nominalVolt;
+            double volt = (torqueFrac + currBotSpeed / motorConf.topSpeed + correction) * motorConf.nominalVolt;
             motor.setPower(volt / vs.getVoltage());
         } else {
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); // is this needed

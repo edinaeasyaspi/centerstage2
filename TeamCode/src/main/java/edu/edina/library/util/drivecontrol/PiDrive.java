@@ -6,11 +6,11 @@ import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 import android.annotation.SuppressLint;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import java.util.Arrays;
 
+import edu.edina.library.util.Positioning;
 import edu.edina.library.util.RobotHardware;
 
 @SuppressLint("DefaultLocale")
@@ -18,18 +18,24 @@ public class PiDrive {
     private final PiMotor[] motors;
 
     //for 20:1
-    private static final double shutdownTol = 30;
+    private static final double ROTATE_MULT = 1.0 / 0.003;
     private static final MoveCal driveCal = new MoveCal(546.0 / 39.0, -500);
     private static final MoveCal strafeCal = new MoveCal(746.2 / 40.5, -1200);
     private static final MoveCal diagonalCal = new MoveCal(749.0 / 40.5, -1200);
+    // misnamed and not needed?
     private static final double[] accelVolts = new double[]{0.9619 * 0.25, 0.9748 * 0.25, 1.0273 * 0.25, 1.0405 * 0.25};
 
     private double[] move;
+    private double[] rotate;
     private MoveCal amc;
     private double tgtDeg;
     private boolean driving;
+    private final Positioning posn;
+    private double initialDegrees;
 
-    public PiDrive(RobotHardware hw) {
+    public PiDrive(RobotHardware hw, Positioning posn) {
+        this.posn = posn;
+
         DcMotor[] motors = new DcMotor[]{hw.frontLeftMotor, hw.backLeftMotor, hw.frontRightMotor, hw.backRightMotor};
         VoltageSensor vs = hw.voltageSensor;
 
@@ -38,6 +44,7 @@ public class PiDrive {
             if (i < 2) motors[i].setDirection(FORWARD);
             else motors[i].setDirection(REVERSE);
 
+            // spell out Tf
             double accelTf = accelVolts[i];
 
             this.motors[i] = new PiMotor(motors[i], MotorConfig.driveMotor, vs, accelTf);
@@ -48,7 +55,7 @@ public class PiDrive {
         return motors[i];
     }
 
-    public void resetPos() { // prepMove, reset deg, read imu
+    private void resetPos() { // prepMove, reset deg, read imu
         for (int i = 0; i < 4; i++)
             get(i).resetDeg();
     }
@@ -86,6 +93,10 @@ public class PiDrive {
     }
 
     public void preRun(double targetPos, DriveDirection d) {
+        resetPos();
+
+        initialDegrees = posn.getHeading();
+
         if (d == DriveDirection.Lateral) {
             move = new double[]{1, -1, -1, 1};
             amc = strafeCal;
@@ -103,6 +114,8 @@ public class PiDrive {
         }
 
         tgtDeg = amc.dpi * targetPos;
+
+        rotate = new double[4];
 
         setDriving(true, 1);
     }
@@ -141,8 +154,15 @@ public class PiDrive {
             setDriving(false, torqueLimit);
         }
 
+        double degreeError = posn.getHeading() - initialDegrees;
+        double correction = degreeError * ROTATE_MULT;
+        rotate[0] = correction;
+        rotate[1] = correction;
+        rotate[2] = -correction;
+        rotate[3] = -correction;
+
         for (int i = 0; i < 4; i++)
-            get(i).run(s, move[i], dSign);
+            get(i).run(s, move[i], dSign, 0);
 
         return false;
     }

@@ -28,11 +28,11 @@ public class VisionTestMode extends LinearOpMode {
                 .build();
 
         while (opModeInInit()) {
-            if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
-                visionPortal
-                        .getCameraControl(WhiteBalanceControl.class)
-                        .setMode(WhiteBalanceControl.Mode.AUTO);
-            }
+//            if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
+//                visionPortal
+//                        .getCameraControl(WhiteBalanceControl.class)
+//                        .setMode(WhiteBalanceControl.Mode.AUTO);
+//            }
 
             ImageProcessor.Selected selectedSpike = imageProcessor.getSelection();
             telemetry.addData("Selected value", selectedSpike);

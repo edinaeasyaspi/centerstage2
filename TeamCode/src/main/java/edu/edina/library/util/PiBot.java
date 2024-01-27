@@ -25,10 +25,12 @@ public class PiBot {
         this.hw = hw;
         this.posn = new Positioning(hw);
         motors = new DcMotor[]{hw.frontLeftMotor, hw.backLeftMotor, hw.frontRightMotor, hw.backRightMotor};
-        drive = new PiDrive(hw);
+        drive = new PiDrive(hw, posn);
     }
 
     public void planDriveToClosestPoint(Point target, DriveDirection direction) {
+
+
         double tgtDist = 0;
 
         Position currentPos = posn.getCurrPos();

@@ -3,6 +3,7 @@ package edu.edina.opmodes.teleop.test;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import edu.edina.library.util.Positioning;
 import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.drivecontrol.DriveDirection;
 import edu.edina.library.util.drivecontrol.PiDrive;;
@@ -20,7 +21,10 @@ public class DriveTestMode extends LinearOpMode {
     // how to do dpi calibration: drive, read actualDeg from Driver Station, measure distance with tape measure,divide actualDeg by measured distance
     @Override
     public void runOpMode() {
-        pd = new PiDrive(new RobotHardware(hardwareMap));
+        RobotHardware hw = new RobotHardware(hardwareMap);
+        Positioning posn = new Positioning(hw);
+
+        pd = new PiDrive(hw, posn);
         waitForStart();
 
         test(40);
@@ -38,7 +42,6 @@ public class DriveTestMode extends LinearOpMode {
     }
 
     private void test(double targetDist) {
-        pd.resetPos();
         pd.preRun(targetDist, dir);
 
         telemetry.addData("deccel", "deccel=%.1f", pd.getActiveMoveCal().deccel);
