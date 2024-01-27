@@ -7,7 +7,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class Positioning {
 
         myAprilTagProc = myAprilTagProcBuilder.build();
 
-        intialHeading = getHeading();
+        intialHeading = readImuHeading();
 
         currPos = new Position(72, 72, 0, 1, 0);
     }
@@ -61,7 +60,7 @@ public class Positioning {
 
                 double mc = Math.sqrt((px * px) + (py * py));
 
-                double a = getHeading();
+                double a = readImuHeading();
                 double dx = Math.sin(Math.toRadians(detection.ftcPose.yaw));
                 double dy = Math.cos(Math.toRadians(detection.ftcPose.yaw));
 
@@ -94,7 +93,7 @@ public class Positioning {
 //        return null;
 //    }
 
-    public double getHeading() {
+    public double readImuHeading() {
         Orientation myRobotOrientation;
 
         myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
@@ -106,7 +105,7 @@ public class Positioning {
 
 
     public void resetHeading() {
-        intialHeading = getHeading();
+        intialHeading = readImuHeading();
     }
 
 }

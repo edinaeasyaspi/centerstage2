@@ -11,39 +11,44 @@ import edu.edina.library.util.drivecontrol.DriveDirection;
 
 @Autonomous
 public class RouteTest extends LinearOpMode {
+    private PiBot piBot;
+
     @Override
     public void runOpMode() {
         RobotHardware hw = new RobotHardware(hardwareMap, telemetry);
-        PiBot piBot = new PiBot(hw);
+        piBot = new PiBot(hw);
 
         waitForStart();
 
         Point startLocation = new Point(72, 72);
 
-        telemetry.addData("pos", piBot.getPositioning().getCurrPos());
-        piBot.planDriveToClosestPoint(new Point(72, 102), DriveDirection.Axial);
-        sleep(10000);
+        drive(new Point(72, 84), DriveDirection.Axial);
+        drive(new Point(84, 84), DriveDirection.Lateral);
+        rotate(startLocation);
+        sleep(3000);
+        drive(startLocation, DriveDirection.Axial);
+    }
 
+    private void drive(Point to, DriveDirection direction) {
+        piBot.planDriveToClosestPoint(to, direction);
         while (opModeIsActive()) {
             if (piBot.runDrive() == DriveStatus.Done) break;
         }
 
-        piBot.planDriveToClosestPoint(new Point(102, 102), DriveDirection.Lateral);
+        showPos();
+    }
 
-        while (opModeIsActive()) {
-            if (piBot.runDrive() == DriveStatus.Done) break;
-        }
-
-        piBot.planRotateToPoint(startLocation);
-
+    private void rotate(Point to) {
+        piBot.planRotateToPoint(to);
         while (opModeIsActive()) {
             if (piBot.rotateToHeading() == DriveStatus.Done) break;
         }
 
-        piBot.planDriveToClosestPoint(new Point(72, 72), DriveDirection.Axial);
+        showPos();
+    }
 
-        while (opModeIsActive()) {
-            if (piBot.runDrive() == DriveStatus.Done) break;
-        }
+    private void showPos() {
+        telemetry.addData("pos", piBot.getPositioning().getCurrPos());
+        telemetry.update();
     }
 }

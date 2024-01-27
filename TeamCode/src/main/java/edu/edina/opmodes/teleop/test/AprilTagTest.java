@@ -46,7 +46,7 @@ public class AprilTagTest extends LinearOpMode {
                 telemetry.addData("position", p);
             }
 
-            telemetry.addData("heading", aprilTagPos.getHeading());
+            telemetry.addData("heading", aprilTagPos.readImuHeading());
             telemetry.update();
         }
     }

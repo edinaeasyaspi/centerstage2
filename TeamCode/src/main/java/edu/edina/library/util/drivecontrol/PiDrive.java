@@ -92,7 +92,7 @@ public class PiDrive {
     public void preRun(double targetPos, DriveDirection d) {
         resetPos();
 
-        initialDegrees = posn.getHeading();
+        initialDegrees = posn.readImuHeading();
 
         if (d == DriveDirection.Lateral) {
             move = new double[]{1, -1, -1, 1};
@@ -151,7 +151,7 @@ public class PiDrive {
             setDriving(false, torqueLimit);
         }
 
-        double degreeError = posn.getHeading() - initialDegrees;
+        double degreeError = posn.readImuHeading() - initialDegrees;
         double correction = degreeError * ROTATE_MULT;
         rotate[0] = correction;
         rotate[1] = correction;
