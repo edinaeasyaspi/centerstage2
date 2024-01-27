@@ -25,7 +25,7 @@ public class Positioning {
     private final double[] allmx = {29.381, 35.381, 41.381, 100.0435, 106.0435, 112.0435};
     private final double[] allmy = {132.492908, 132.492908, 132.492908, 132.492908, 132.492908, 132.492908, 0, 0, 0, 0};
     private final double camOffsetX = 5.25, camOffsetY = 8;
-    private Point currPos;
+    private Position currPos;
 
     public Positioning(RobotHardware hw) {
         this.imu = hw.imu;
@@ -42,10 +42,10 @@ public class Positioning {
 
         intialHeading = getHeading();
 
-        currPos = new Point(72, 72);
+        currPos = new Position(72, 72, 0, 1, 0);
     }
 
-    public Point getCurrPos() {
+    public Position getCurrPos() {
         return currPos;
     }
 

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import edu.edina.library.util.drivecontrol.DriveDirection;
+import edu.edina.library.util.drivecontrol.PiDrive;
 
 public class PiBot {
     private final RobotHardware hw;
@@ -16,18 +17,39 @@ public class PiBot {
     private DcMotor[] motors;
     private DcMotor.RunMode preRotateRunMode;
 
+    //Driving
+    private Position stoppingPoint;
+    private PiDrive drive;
+
     public PiBot(RobotHardware hw) {
         this.hw = hw;
         this.posn = new Positioning(hw);
         motors = new DcMotor[]{hw.frontLeftMotor, hw.backLeftMotor, hw.frontRightMotor, hw.backRightMotor};
+        drive = new PiDrive(hw);
     }
 
     public void planDriveToClosestPoint(Point target, DriveDirection direction) {
+        double tgtDist = 0;
 
+        Position currentPos = posn.getCurrPos();
+
+        if (direction == DriveDirection.Lateral) {
+            tgtDist = currentPos.toRobotRel(target).x;
+
+            stoppingPoint = currentPos.addRobotRel(new Point(tgtDist, 0));
+        } else if (direction == DriveDirection.Axial) {
+            tgtDist = currentPos.addRobotRel(target).y;
+
+            stoppingPoint = currentPos.addRobotRel(new Point(0, tgtDist));
+        }
+
+            if (Math.abs(tgtDist) < 0.1) return;
+
+        drive.preRun(tgtDist, direction);
     }
 
     public boolean runDrive() {
-        throw new RuntimeException();
+        return drive.run();
     }
 
     public void planRotate(double targetHeading) {
@@ -36,7 +58,7 @@ public class PiBot {
     }
 
     public void planRotateToPoint(Point p) {
-        Point c = posn.getCurrPos();
+        Position c = posn.getCurrPos();
 
         double x = p.x - c.x;
         double y = p.y - c.y;
