@@ -34,12 +34,6 @@ public class Positioning {
 
         myAprilTagProc = myAprilTagProcBuilder.build();
 
-        com.qualcomm.robotcore.hardware.IMU.Parameters myIMUparameters;
-
-        myIMUparameters = new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.UP));
-
-        imu.initialize(myIMUparameters);
-
         intialHeading = getHeading();
 
         currPos = new Position(72, 72, 0, 1, 0);
@@ -47,6 +41,10 @@ public class Positioning {
 
     public Position getCurrPos() {
         return currPos;
+    }
+
+    public void setCurrPos(Position newPos) {
+        currPos = newPos;
     }
 
     public Position readAprilTagPosition() {

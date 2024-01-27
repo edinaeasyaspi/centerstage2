@@ -43,13 +43,18 @@ public class PiBot {
             stoppingPoint = currentPos.addRobotRel(new Point(0, tgtDist));
         }
 
-            if (Math.abs(tgtDist) < 0.1) return;
+        if (Math.abs(tgtDist) < 0.1) return;
 
         drive.preRun(tgtDist, direction);
     }
 
     public boolean runDrive() {
-        return drive.run();
+        if (drive.run()) {
+            posn.setCurrPos(stoppingPoint);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void planRotate(double targetHeading) {
