@@ -28,9 +28,11 @@ public class PiBot {
         drive = new PiDrive(hw, posn);
     }
 
+    public Positioning getPositioning() {
+        return posn;
+    }
+
     public void planDriveToClosestPoint(Point target, DriveDirection direction) {
-
-
         double tgtDist = 0;
 
         Position currentPos = posn.getCurrPos();
@@ -40,7 +42,7 @@ public class PiBot {
 
             stoppingPoint = currentPos.addRobotRel(new Point(tgtDist, 0));
         } else if (direction == DriveDirection.Axial) {
-            tgtDist = currentPos.addRobotRel(target).y;
+            tgtDist = currentPos.toRobotRel(target).y;
 
             stoppingPoint = currentPos.addRobotRel(new Point(0, tgtDist));
         }
@@ -48,14 +50,18 @@ public class PiBot {
         if (Math.abs(tgtDist) < 0.1) return;
 
         drive.preRun(tgtDist, direction);
+        if (hw.telemetry != null) {
+            hw.telemetry.addData("tgtDist", "%.1fin", tgtDist);
+            hw.telemetry.update();
+        }
     }
 
-    public boolean runDrive() {
+    public DriveStatus runDrive() {
         if (drive.run()) {
             posn.setCurrPos(stoppingPoint);
-            return true;
+            return DriveStatus.Done;
         } else {
-            return false;
+            return DriveStatus.Driving;
         }
     }
 
@@ -75,7 +81,7 @@ public class PiBot {
         planRotate(Math.toDegrees(angle));
     }
 
-    public boolean rotateToHeading() {
+    public DriveStatus rotateToHeading() {
         double ppd = 537.0 / 63.15;
 
         double targetAngle = targetHeading - posn.getHeading();
@@ -109,9 +115,9 @@ public class PiBot {
             for (DcMotor m : motors) {
                 m.setMode(preRotateRunMode);
             }
-            return true;
+            return DriveStatus.Done;
         } else {
-            return false;
+            return DriveStatus.Driving;
         }
     }
 

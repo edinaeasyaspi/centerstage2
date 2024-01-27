@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 import edu.edina.opmodes.teleop.HangingMotorTest;
@@ -33,9 +34,15 @@ public class RobotHardware {
     public final WebcamName webcam;
 
     public final int cameraMonitorViewId;
+    public final Telemetry telemetry;
     public WebcamName LogitechC270_8034PI;
 
     public RobotHardware(HardwareMap hardwareMap) {
+        this(hardwareMap, null);
+    }
+
+    public RobotHardware(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
         LynxFirmware.throwIfModulesAreOutdated(hardwareMap);
 
         for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {

@@ -19,7 +19,7 @@ public final class Position {
     @NonNull
     @Override
     public String toString() {
-        return String.format("%.2f,%.2f @%.2f", x, y, a);
+        return String.format("x=%.2f, y=%.2f heading=%.2f", x, y, a);
     }
 
     public double dist(Position p) {

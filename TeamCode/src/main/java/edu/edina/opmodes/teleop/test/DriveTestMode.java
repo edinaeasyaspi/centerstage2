@@ -21,7 +21,7 @@ public class DriveTestMode extends LinearOpMode {
     // how to do dpi calibration: drive, read actualDeg from Driver Station, measure distance with tape measure,divide actualDeg by measured distance
     @Override
     public void runOpMode() {
-        RobotHardware hw = new RobotHardware(hardwareMap);
+        RobotHardware hw = new RobotHardware(hardwareMap, telemetry);
         Positioning posn = new Positioning(hw);
 
         pd = new PiDrive(hw, posn);
