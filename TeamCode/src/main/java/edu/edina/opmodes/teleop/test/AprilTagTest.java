@@ -38,9 +38,9 @@ public class AprilTagTest extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            aprilTagPos.getPosition();
+            aprilTagPos.readAprilTagPosition();
 
-            Position p = aprilTagPos.getPosition();
+            Position p = aprilTagPos.readAprilTagPosition();
 
             if (p != null) {
                 telemetry.addData("position", p);

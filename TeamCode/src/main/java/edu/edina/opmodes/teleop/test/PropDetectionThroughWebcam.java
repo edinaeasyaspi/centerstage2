@@ -3,7 +3,6 @@ package edu.edina.opmodes.teleop.test;
 import com.acmerobotics.roadrunner.Pose2d;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -132,9 +131,9 @@ public class PropDetectionThroughWebcam extends OpMode {
 
     @Override
     public void loop() {
-        aprilTagPos.getPosition();
+        aprilTagPos.readAprilTagPosition();
 
-        Position p = aprilTagPos.getPosition();
+        Position p = aprilTagPos.readAprilTagPosition();
         if (p != null) {
             telemetry.addData("position", p);
             telemetry.update();

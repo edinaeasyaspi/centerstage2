@@ -35,6 +35,17 @@ public class PiBot {
         this.targetHeading = targetHeading;
     }
 
+    public void planRotateToPoint(Point p) {
+        Point c = posn.getCurrPos();
+
+        double x = p.x - c.x;
+        double y = p.y - c.y;
+
+        double angle = Math.atan2(-x, y);
+
+        planRotate(Math.toDegrees(angle));
+    }
+
     public boolean rotateToHeading() {
         double ppd = 537.0 / 63.15;
 

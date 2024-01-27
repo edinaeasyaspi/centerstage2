@@ -1,6 +1,5 @@
 package edu.edina.library.util;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -26,6 +25,7 @@ public class Positioning {
     private final double[] allmx = {29.381, 35.381, 41.381, 100.0435, 106.0435, 112.0435};
     private final double[] allmy = {132.492908, 132.492908, 132.492908, 132.492908, 132.492908, 132.492908, 0, 0, 0, 0};
     private final double camOffsetX = 5.25, camOffsetY = 8;
+    private Point currPos;
 
     public Positioning(RobotHardware hw) {
         this.imu = hw.imu;
@@ -41,13 +41,15 @@ public class Positioning {
         imu.initialize(myIMUparameters);
 
         intialHeading = getHeading();
+
+        currPos = new Point(72, 72);
     }
 
-    public void resetPosition() {
-        intialHeading = getHeading();
+    public Point getCurrPos() {
+        return currPos;
     }
 
-    public Position getPosition() { //rename
+    public Position readAprilTagPosition() {
         List<AprilTagDetection> currentDetections = myAprilTagProc.getDetections();
         for (AprilTagDetection detection : currentDetections) {
             if (detection.metadata != null && detection.id <= 6) {
@@ -78,21 +80,21 @@ public class Positioning {
         return null;
     }
 
-    public Position getRelPosition(Position p) { //rename
-        List<AprilTagDetection> currentDetections = myAprilTagProc.getDetections();
-        for (AprilTagDetection detection : currentDetections) {
-            if (detection.metadata != null && detection.id <= 6) {
-                int i = detection.id - 1;
-
-                double detX = detection.ftcPose.x + camOffsetX;
-                double detY = detection.ftcPose.y + camOffsetY;
-
-                return new Position(p.x + detX, p.y + detY, p.dx, p.dy, p.a);
-            }
-        }
-
-        return null;
-    }
+//    public Position getRelPosition(Position p) { //rename
+//        List<AprilTagDetection> currentDetections = myAprilTagProc.getDetections();
+//        for (AprilTagDetection detection : currentDetections) {
+//            if (detection.metadata != null && detection.id <= 6) {
+//                int i = detection.id - 1;
+//
+//                double detX = detection.ftcPose.x + camOffsetX;
+//                double detY = detection.ftcPose.y + camOffsetY;
+//
+//                return new Position(p.x + detX, p.y + detY, p.dx, p.dy, p.a);
+//            }
+//        }
+//
+//        return null;
+//    }
 
     public double getHeading() {
         Orientation myRobotOrientation;
