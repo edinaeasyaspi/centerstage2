@@ -84,13 +84,13 @@ public class PiBot {
     public DriveStatus rotateToHeading() {
         double ppd = 537.0 / 63.15;
 
-        double targetAngle = targetHeading - posn.getHeading();
+        double targetAngle = targetHeading - posn.readImuHeading();
 
-        if (targetAngle < -180) {
+        while (targetAngle < -180) {
             targetAngle = targetAngle + 360;
         }
 
-        if (targetAngle > 180) {
+        while (targetAngle > 180) {
             targetAngle = targetAngle - 360;
         }
 
@@ -100,7 +100,7 @@ public class PiBot {
 
             for (DcMotor m : motors) {
                 int p = m.getCurrentPosition();
-                if (m.getDirection() == DcMotorSimple.Direction.FORWARD) {
+                if (m.getDirection() == DcMotorSimple.Direction.REVERSE) {
                     m.setTargetPosition(p - targetPos);
                 } else {
                     m.setTargetPosition(p + targetPos);
@@ -113,6 +113,7 @@ public class PiBot {
 
         if (areIdle()) {
             for (DcMotor m : motors) {
+                m.setPower(0);
                 m.setMode(preRotateRunMode);
             }
             return DriveStatus.Done;
