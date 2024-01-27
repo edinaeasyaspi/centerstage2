@@ -4,7 +4,6 @@ import com.acmerobotics.roadrunner.Pose2d;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.hardware.bosch.BHI260IMU;
-import com.qualcomm.hardware.bosch.BNO055IMUNew;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -17,6 +16,8 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
 
 import edu.edina.library.util.Position;
+import edu.edina.library.util.Positioning;
+import edu.edina.library.util.RobotHardware;
 
 import android.content.Context;
 import android.util.Size;
@@ -41,9 +42,10 @@ public class PropDetectionThroughWebcam extends OpMode {
 
 
     public void init() {
+        RobotHardware hw = new RobotHardware(hardwareMap);
         gamepad = new GamepadEx(gamepad1);
         imageProcessor = new ImageProcessor(telemetry);
-        aprilTagPos = new Positioning(hardwareMap.get(BHI260IMU.class, "imu"), telemetry);
+        aprilTagPos = new Positioning(hw);
         visionPortalBuilder = new VisionPortal.Builder();
         visionPortal = visionPortalBuilder
                 .enableLiveView(true)

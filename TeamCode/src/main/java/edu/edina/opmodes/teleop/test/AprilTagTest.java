@@ -1,21 +1,16 @@
 package edu.edina.opmodes.teleop.test;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import android.util.Size;
 
-import com.qualcomm.hardware.bosch.BNO055IMUNew;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.VisionProcessor;
 
 import edu.edina.library.util.Position;
 
-import edu.edina.library.util.Parts;
+import edu.edina.library.util.Positioning;
+import edu.edina.library.util.RobotHardware;
 
 @Autonomous
 public class AprilTagTest extends LinearOpMode {
@@ -26,17 +21,17 @@ public class AprilTagTest extends LinearOpMode {
     private Positioning aprilTagPos;
 
     public void runOpMode(){
-        Parts parts = new Parts(hardwareMap);
+        RobotHardware hw = new RobotHardware(hardwareMap);
 
         imageProcessor = new ImageProcessor(telemetry);
 
-        aprilTagPos = new Positioning(parts.imu, telemetry);
+        aprilTagPos = new Positioning(hw);
         visionPortalBuilder = new VisionPortal.Builder();
         visionPortal = visionPortalBuilder
                 .enableLiveView(true)
                 .addProcessor(imageProcessor)
                 .addProcessor(aprilTagPos.getMyAprilTagProc())
-                .setCamera(parts.webcam)
+                .setCamera(hw.webcam)
                 .setCameraResolution(new Size(640, 480))
                 .build();
 

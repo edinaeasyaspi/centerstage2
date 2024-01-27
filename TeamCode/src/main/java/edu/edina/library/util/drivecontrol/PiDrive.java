@@ -11,6 +11,8 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import java.util.Arrays;
 
+import edu.edina.library.util.RobotHardware;
+
 @SuppressLint("DefaultLocale")
 public class PiDrive {
     private final PiMotor[] motors;
@@ -27,15 +29,9 @@ public class PiDrive {
     private double tgtDeg;
     private boolean driving;
 
-    public PiDrive(HardwareMap hardwareMap) {
-        DcMotor leftFront = hardwareMap.get(DcMotor.class, "front_left_motor");
-        DcMotor rightFront = hardwareMap.get(DcMotor.class, "front_right_motor");
-        DcMotor leftBack = hardwareMap.get(DcMotor.class, "back_left_motor");
-        DcMotor rightBack = hardwareMap.get(DcMotor.class, "back_right_motor");
-
-        DcMotor[] motors = new DcMotor[]{leftFront, leftBack, rightFront, rightBack};
-
-        VoltageSensor vs = getVs(hardwareMap);
+    public PiDrive(RobotHardware hw) {
+        DcMotor[] motors = new DcMotor[]{hw.frontLeftMotor, hw.backLeftMotor, hw.frontRightMotor, hw.backRightMotor};
+        VoltageSensor vs = hw.voltageSensor;
 
         this.motors = new PiMotor[4];
         for (int i = 0; i < 4; i++) {
@@ -173,13 +169,5 @@ public class PiDrive {
     private void shutdown() {
         for (int i = 0; i < 4; i++)
             get(i).shutdown();
-    }
-
-    private static VoltageSensor getVs(HardwareMap hardwareMap) {
-        for (VoltageSensor vs : hardwareMap.voltageSensor) {
-            return vs;
-        }
-
-        throw new RuntimeException("no voltage sensor");
     }
 }

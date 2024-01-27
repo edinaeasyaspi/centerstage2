@@ -1,4 +1,4 @@
-package edu.edina.opmodes.teleop.test;
+package edu.edina.library.util;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -8,13 +8,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
-import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import java.util.List;
-
-import edu.edina.library.util.Position;
 
 public class Positioning {
     public AprilTagProcessor getMyAprilTagProc() {
@@ -23,17 +20,15 @@ public class Positioning {
 
     public AprilTagProcessor myAprilTagProc;
 
-    private BHI260IMU IMU;
-    private Telemetry telemetry;
+    private IMU imu;
 
     private double intialHeading;
     private final double[] allmx = {29.381, 35.381, 41.381, 100.0435, 106.0435, 112.0435};
     private final double[] allmy = {132.492908, 132.492908, 132.492908, 132.492908, 132.492908, 132.492908, 0, 0, 0, 0};
     private final double camOffsetX = 5.25, camOffsetY = 8;
 
-    public Positioning(BHI260IMU IMU, Telemetry telemetry) {
-        this.IMU = IMU;
-        this.telemetry = telemetry;
+    public Positioning(RobotHardware hw) {
+        this.imu = hw.imu;
 
         AprilTagProcessor.Builder myAprilTagProcBuilder = new AprilTagProcessor.Builder().setDrawTagID(true).setDrawTagOutline(true).setDrawAxes(true).setDrawCubeProjection(true);
 
@@ -43,7 +38,7 @@ public class Positioning {
 
         myIMUparameters = new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.UP));
 
-        IMU.initialize(myIMUparameters);
+        imu.initialize(myIMUparameters);
 
         intialHeading = getHeading();
     }
@@ -55,7 +50,6 @@ public class Positioning {
     public Position getPosition() { //rename
         List<AprilTagDetection> currentDetections = myAprilTagProc.getDetections();
         for (AprilTagDetection detection : currentDetections) {
-            telemetry.addData("at detect", detection.id);
             if (detection.metadata != null && detection.id <= 6) {
                 int i = detection.id - 1;
 
@@ -87,7 +81,6 @@ public class Positioning {
     public Position getRelPosition(Position p) { //rename
         List<AprilTagDetection> currentDetections = myAprilTagProc.getDetections();
         for (AprilTagDetection detection : currentDetections) {
-            telemetry.addData("at detect", detection.id);
             if (detection.metadata != null && detection.id <= 6) {
                 int i = detection.id - 1;
 
@@ -104,7 +97,7 @@ public class Positioning {
     public double getHeading() {
         Orientation myRobotOrientation;
 
-        myRobotOrientation = IMU.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+        myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
         double zAxis = myRobotOrientation.thirdAngle;
 
