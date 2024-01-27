@@ -23,7 +23,7 @@ public class PiDrive {
     private static final MoveCal strafeCal = new MoveCal(746.2 / 40.5, -1200);
     private static final MoveCal diagonalCal = new MoveCal(749.0 / 40.5, -1200);
     // misnamed and not needed?
-    private static final double[] accelVolts = new double[]{0.9619 * 0.25, 0.9748 * 0.25, 1.0273 * 0.25, 1.0405 * 0.25};
+    private static final double accelFrac = 0.25;
 
     private double[] move;
     private double[] rotate;
@@ -41,13 +41,10 @@ public class PiDrive {
 
         this.motors = new PiMotor[4];
         for (int i = 0; i < 4; i++) {
-            if (i < 2) motors[i].setDirection(FORWARD);
-            else motors[i].setDirection(REVERSE);
+            if (i < 2) motors[i].setDirection(REVERSE);
+            else motors[i].setDirection(FORWARD);
 
-            // spell out Tf
-            double accelTf = accelVolts[i];
-
-            this.motors[i] = new PiMotor(motors[i], MotorConfig.driveMotor, vs, accelTf);
+            this.motors[i] = new PiMotor(motors[i], MotorConfig.driveMotor, vs, accelFrac);
         }
     }
 
