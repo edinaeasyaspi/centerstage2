@@ -2,7 +2,6 @@ package edu.edina.library.util;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_TO_POSITION;
 
-import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -20,7 +19,8 @@ public class PiBot {
 
     //Driving
     private Position stoppingPoint;
-    private PiDrive drive;
+    public final PiDrive drive;
+    private double predriveHeading;
 
     public PiBot(RobotHardware hw) {
         this.hw = hw;
@@ -35,6 +35,8 @@ public class PiBot {
 
     public void planDriveToClosestPoint(Point target, DriveDirection direction) {
         double tgtDist = 0;
+
+        this.predriveHeading = posn.readHeading(true);
 
         Position currentPos = posn.getCurrPos();
 
@@ -59,6 +61,7 @@ public class PiBot {
 
     public DriveStatus runDrive() {
         if (drive.run()) {
+            posn.readHeading(true);
             posn.setCurrPos(stoppingPoint);
             return DriveStatus.Done;
         } else {
@@ -87,7 +90,7 @@ public class PiBot {
     public DriveStatus rotateToHeading() {
         double ppd = 537.0 / 63.15;
 
-        double targetAngle = targetHeading - posn.readImuHeading(true);
+        double targetAngle = targetHeading - posn.readHeading(true);
 
         while (targetAngle < -180) {
             targetAngle = targetAngle + 360;
@@ -98,7 +101,7 @@ public class PiBot {
         }
 
         if (hw.telemetry != null) {
-            hw.telemetry.addData("heading", "%.1f", posn.readImuHeading(false));
+            hw.telemetry.addData("heading", "%.1f", posn.readHeading(false));
             hw.telemetry.addData("target", "%.1f", targetAngle);
             hw.telemetry.addData("xz", xz++);
             hw.telemetry.update();

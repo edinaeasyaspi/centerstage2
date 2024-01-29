@@ -28,7 +28,7 @@ public class RouteTest extends LinearOpMode {
             drive(new Point(84, 84), DriveDirection.Lateral);
             rotate(startLocation);
             drive(startLocation, DriveDirection.Axial);
-            rotate(0);
+            rotate(new Point(72, 84));
         }
     }
 

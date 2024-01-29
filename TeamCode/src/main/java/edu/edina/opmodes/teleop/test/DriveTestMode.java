@@ -27,17 +27,17 @@ public class DriveTestMode extends LinearOpMode {
         pd = new PiDrive(hw, posn);
         waitForStart();
 
-        test(40);
+        test(20);
         sleep(1000);
-        test(-40);
+        test(-20);
 
         for (int trial = 0; trial < 10; trial++) {
             if (pd.getActiveMoveCal().deccel >= 0)
                 break;
 
-            test(20);
+            test(12);
             sleep(1000);
-            test(-20);
+            test(-12);
         }
     }
 

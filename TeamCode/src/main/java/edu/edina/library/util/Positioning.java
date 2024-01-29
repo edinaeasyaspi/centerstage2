@@ -1,13 +1,8 @@
 package edu.edina.library.util;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
-import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -37,7 +32,7 @@ public class Positioning {
 
         myAprilTagProc = myAprilTagProcBuilder.build();
 
-        initialHeading = readImuHeading(false);
+        initialHeading = readHeading(false);
 
         currPos = new Position(72, 72, 0);
     }
@@ -64,7 +59,7 @@ public class Positioning {
 
                 double mc = Math.sqrt((px * px) + (py * py));
 
-                double a = readImuHeading(false);
+                double a = readHeading(false);
                 double dx = Math.sin(Math.toRadians(detection.ftcPose.yaw));
                 double dy = Math.cos(Math.toRadians(detection.ftcPose.yaw));
 
@@ -81,7 +76,7 @@ public class Positioning {
         return null;
     }
 
-    public double readImuHeading(boolean updatePosition) {
+    public double readHeading(boolean updatePosition) {
         double zAxis = gyro.getHeading();
 
         double heading = zAxis - initialHeading;

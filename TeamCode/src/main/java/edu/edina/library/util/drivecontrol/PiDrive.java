@@ -18,9 +18,9 @@ public class PiDrive {
     private final PiMotor[] motors;
 
     //for 20:1
-    private static final double ROTATE_MULT = 1.0 / 0.003;
-    private static final MoveCal driveCal = new MoveCal(546.0 / 39.0, -500);
-    private static final MoveCal strafeCal = new MoveCal(746.2 / 40.5, -1200);
+    private static final double ROTATE_MULT = 2.0 / 0.003;
+    private static final MoveCal driveCal = new MoveCal(2 * 360.0 / 24.125, -500);
+    private static final MoveCal strafeCal = new MoveCal(388.8 / 22.25, -1200);
     private static final MoveCal diagonalCal = new MoveCal(749.0 / 40.5, -1200);
     // misnamed and not needed?
     private static final double accelFrac = 0.25;
@@ -64,7 +64,7 @@ public class PiDrive {
     public double getDegSpeed() {
         double[] d = new double[4];
         for (int i = 0; i < 4; i++)
-            d[i] = get(i).getDegSpeed() * move[i]; // mult/divide?
+            d[i] = get(i).getDegSpeed() * move[i];
 
         Arrays.sort(d);
         return (d[1] + d[2]) / 2;
@@ -73,7 +73,7 @@ public class PiDrive {
     public double getDeg() {
         double[] d = new double[4];
         for (int i = 0; i < 4; i++)
-            d[i] = get(i).getDeg() * move[i]; // mult/divide?
+            d[i] = get(i).getDeg() * move[i];
 
         Arrays.sort(d);
         return (d[1] + d[2]) / 2;
@@ -92,7 +92,7 @@ public class PiDrive {
     public void preRun(double targetPos, DriveDirection d) {
         resetPos();
 
-        initialDegrees = posn.readImuHeading(false);
+        initialDegrees = posn.readHeading(false);
 
         if (d == DriveDirection.Lateral) {
             move = new double[]{1, -1, -1, 1};
@@ -151,7 +151,7 @@ public class PiDrive {
             setDriving(false, torqueLimit);
         }
 
-        double degreeError = posn.readImuHeading(false) - initialDegrees;
+        double degreeError = posn.readHeading(true) - initialDegrees;
         double correction = degreeError * ROTATE_MULT;
         rotate[0] = correction;
         rotate[1] = correction;

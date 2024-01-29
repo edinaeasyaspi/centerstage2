@@ -12,7 +12,7 @@ public class MotorConfig {
         this.nominalVolt = nominalVolt;
     }
 
-    public static final MotorConfig driveMotor = new MotorConfig(890, 280.0 * 4.0 / 360.0, 12); // 40:1
+    public static final MotorConfig driveMotor = new MotorConfig(890, 537.7 / 360.0, 12); // 40:1
 
     public double toDeg(double pos) {
         return pos / degreeMult;
