@@ -2,6 +2,7 @@ package edu.edina.library.util;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_TO_POSITION;
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -81,10 +82,12 @@ public class PiBot {
         planRotate(Math.toDegrees(angle));
     }
 
+    int xz;
+
     public DriveStatus rotateToHeading() {
         double ppd = 537.0 / 63.15;
 
-        double targetAngle = targetHeading - posn.readImuHeading();
+        double targetAngle = targetHeading - posn.readImuHeading(true);
 
         while (targetAngle < -180) {
             targetAngle = targetAngle + 360;
@@ -94,7 +97,14 @@ public class PiBot {
             targetAngle = targetAngle - 360;
         }
 
-        if (Math.abs(targetAngle) > 2) {
+        if (hw.telemetry != null) {
+            hw.telemetry.addData("heading", "%.1f", posn.readImuHeading(false));
+            hw.telemetry.addData("target", "%.1f", targetAngle);
+            hw.telemetry.addData("xz", xz++);
+            hw.telemetry.update();
+        }
+
+        if (Math.abs(targetAngle) > 1) {
             int targetPos = (int) (targetAngle * ppd);
             double power = 0.5;
 
@@ -116,6 +126,7 @@ public class PiBot {
                 m.setPower(0);
                 m.setMode(preRotateRunMode);
             }
+
             return DriveStatus.Done;
         } else {
             return DriveStatus.Driving;

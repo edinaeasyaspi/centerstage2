@@ -6,14 +6,12 @@ import androidx.annotation.NonNull;
 
 @SuppressLint("DefaultLocale")
 public final class Position {
-    public double x, y, dx, dy, a;
+    public final double x, y, a;
 
-    public Position(double x, double y, double dx, double dy, double a) {
+    public Position(double x, double y, double a) {
         this.x = x;
         this.y = y;
         this.a = a;
-        this.dx = dx;
-        this.dy = dy;
     }
 
     @NonNull
@@ -29,6 +27,8 @@ public final class Position {
     }
 
     public Point toRobotRel(Point p) {
+        double dx = getDx();
+        double dy = getDy();
         double tx = p.x - this.x;
         double ty = p.y - this.y;
         return new Point(
@@ -37,8 +37,18 @@ public final class Position {
     }
 
     public Position addRobotRel(Point p) {
+        double dx = getDx();
+        double dy = getDy();
         double tx = dy * p.x + dx * p.y;
         double ty = -dx * p.x + dy * p.y;
-        return new Position(x + tx, y + ty, dx, dy, a);
+        return new Position(x + tx, y + ty, a);
+    }
+
+    public double getDx() {
+        return -Math.sin(Math.toRadians(a));
+    }
+
+    public double getDy() {
+        return Math.cos(Math.toRadians(a));
     }
 }
