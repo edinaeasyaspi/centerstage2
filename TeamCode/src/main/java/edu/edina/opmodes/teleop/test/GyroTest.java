@@ -1,0 +1,20 @@
+package edu.edina.opmodes.teleop.test;
+
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import edu.edina.library.util.RobotHardware;
+
+@Autonomous
+public class GyroTest extends LinearOpMode {
+    @Override
+    public void runOpMode() {
+        ModernRoboticsI2cGyro gyro = new RobotHardware(hardwareMap).gyro;
+        waitForStart();
+        while (opModeIsActive()) {
+            telemetry.addData("gyro heading", gyro.getHeading());
+            telemetry.update();
+        }
+    }
+}

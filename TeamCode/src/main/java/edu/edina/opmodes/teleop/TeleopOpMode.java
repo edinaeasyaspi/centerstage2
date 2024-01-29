@@ -9,8 +9,6 @@ import edu.edina.library.util.SmartGamepad;
 
 public class TeleopOpMode extends OpMode {
     protected Robot robot;
-
-
     protected SmartGamepad driver1Gamepad;
     protected SmartGamepad driver2Gamepad;
 

@@ -61,7 +61,6 @@ public class PropDetectionThroughWebcam extends OpMode {
 
 
     public void init_loop() {
-        aprilTagPos.resetHeading();
         // Wait for the camera to be open
         if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
             telemetry.addData("Camera", "Waiting");
@@ -131,9 +130,7 @@ public class PropDetectionThroughWebcam extends OpMode {
 
     @Override
     public void loop() {
-        aprilTagPos.readAprilTagPosition();
-
-        Position p = aprilTagPos.readAprilTagPosition();
+        Position p = aprilTagPos.readAprilTagPosition(true);
         if (p != null) {
             telemetry.addData("position", p);
             telemetry.update();
