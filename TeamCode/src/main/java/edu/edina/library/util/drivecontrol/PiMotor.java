@@ -69,6 +69,7 @@ public class PiMotor {
             torqueFrac *= move * dir * torqueLimit;
             currBotSpeed *= move;
 
+            // limit speedFrac to +/- 1
             double volt = (torqueFrac + currBotSpeed / motorConf.topSpeed + correction) * motorConf.nominalVolt;
             motor.setPower(volt / vs.getVoltage());
         } else {
