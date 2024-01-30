@@ -24,11 +24,11 @@ public class RouteTest extends LinearOpMode {
         Point startLocation = new Point(72, 72);
 
         while (opModeIsActive()) {
-            drive(new Point(72, 84), DriveDirection.Axial);
-            drive(new Point(84, 84), DriveDirection.Lateral);
+            drive(new Point(72, 96), DriveDirection.Axial);
+            drive(new Point(96, 96), DriveDirection.Lateral);
             rotate(startLocation);
             drive(startLocation, DriveDirection.Axial);
-            rotate(new Point(72, 84));
+            rotate(new Point(72, 96));
         }
     }
 
