@@ -13,6 +13,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
+    public static ImageProcessor.Selected Selected;
     private int rectY = 160;
     //    public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
 //    public Rect rectMiddle = new Rect(460, rectY, 40, 40);

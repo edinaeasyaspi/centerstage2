@@ -11,6 +11,7 @@ public class GyroTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         ModernRoboticsI2cGyro gyro = new RobotHardware(hardwareMap).gyro;
+        gyro.calibrate();
         waitForStart();
         while (opModeIsActive()) {
             telemetry.addData("gyro heading", gyro.getHeading());

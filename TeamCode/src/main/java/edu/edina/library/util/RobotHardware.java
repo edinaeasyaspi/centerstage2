@@ -65,6 +65,7 @@ public class RobotHardware {
         imu.initialize(parameters);
 
         gyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "mrGyro");
+        gyro.calibrate();
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
