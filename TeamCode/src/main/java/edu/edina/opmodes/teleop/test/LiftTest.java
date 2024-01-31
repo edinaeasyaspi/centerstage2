@@ -15,7 +15,8 @@ public class LiftTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         waitForStart();
         while (opModeIsActive()) {
             if (gamepad2.right_bumper) {
