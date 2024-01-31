@@ -11,12 +11,12 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class LiftTest extends LinearOpMode {
-    public DcMotorEx liftMotor = null;
+    public DcMotor liftMotor = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        liftMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
+        liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
+        liftMotor.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
         while (opModeIsActive()) {
             if (gamepad2.right_bumper) {
@@ -29,14 +29,4 @@ public class LiftTest extends LinearOpMode {
 }
 
 
-
-//    @Override
-//    public void init() {
-//        DcMotorEx liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
-//    }
-//
-//    @Override
-//    public void loop() {
-//        LiftTest();
-//    }
 
