@@ -25,7 +25,7 @@ public class ServoTest extends LinearOpMode {
             }
             if (gamepad1.left_bumper) {
                 hangLiftLeft.setPosition(0);
-                hangLiftRight.setPosition(0);
+                hangLiftRight.setPosition(1);
             }
             if (gamepad1.left_trigger > 0.8) {
                 hangLiftLeft.setPosition(1);
