@@ -32,7 +32,7 @@ public class RobotHardware {
 
     //public final CRServo leftIntakeServo, rightIntakeServo;
 
-    //public final DcMotorEx liftMotor;
+    public final DcMotorEx liftMotor;
 
     public final WebcamName webcam;
 
@@ -75,7 +75,7 @@ public class RobotHardware {
 //        leftIntakeServo = hardwareMap.get(CRServo.class, "F2");
 //        rightIntakeServo = hardwareMap.get(CRServo.class, "F1");
 
-        //liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
+        liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
         //distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
 
         webcam = hardwareMap.get(WebcamName.class, "LogitechC270_8034PI");
