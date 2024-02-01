@@ -26,17 +26,13 @@ public class Positioning {
     private Position currPos;
 
     public Positioning(RobotHardware hw) {
-        this(hw, 0);
-    }
-
-    public Positioning(RobotHardware hw, double desiredInitialHeading) {
         this.gyro = hw.gyro;
 
         AprilTagProcessor.Builder myAprilTagProcBuilder = new AprilTagProcessor.Builder().setDrawTagID(true).setDrawTagOutline(true).setDrawAxes(true).setDrawCubeProjection(true);
 
         myAprilTagProc = myAprilTagProcBuilder.build();
 
-        this.initialHeading = readHeading(false) - desiredInitialHeading;
+        this.initialHeading = readHeading(false);
 
         currPos = new Position(72, 72, 0);
     }
@@ -47,6 +43,7 @@ public class Positioning {
 
     public void setCurrPos(Position newPos) {
         currPos = newPos;
+        initialHeading = readHeading(false) - newPos.a;
     }
 
     public Position readAprilTagPosition(boolean updatePosition) {

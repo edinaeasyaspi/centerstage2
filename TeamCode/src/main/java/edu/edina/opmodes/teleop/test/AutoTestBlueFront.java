@@ -34,12 +34,7 @@ public class AutoTestBlueFront extends LinearOpMode {
         ImageProcessor imageProcessor = new ImageProcessor(telemetry);
 
         VisionPortal.Builder visionPortalBuilder = new VisionPortal.Builder();
-        VisionPortal visionPortal = visionPortalBuilder
-                .enableLiveView(true)
-                .addProcessor(imageProcessor)
-                .setCamera(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI"))
-                .setCameraResolution(new Size(640, 480))
-                .build();
+        VisionPortal visionPortal = visionPortalBuilder.enableLiveView(true).addProcessor(imageProcessor).setCamera(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI")).setCameraResolution(new Size(640, 480)).build();
 
         while (opModeInInit()) {
 //            if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
@@ -54,21 +49,25 @@ public class AutoTestBlueFront extends LinearOpMode {
             telemetry.update();
         }
 
-        Positioning posn = new Positioning(new RobotHardware(hardwareMap), -90);
+        Positioning posn = new Positioning(new RobotHardware(hardwareMap));
+        posn.setCurrPos(new Position(0, 36, -90));
 
         waitForStart();
 
         while (opModeIsActive()) {
 //            if (position == LEFT) {
-                Position currPos = new Position(36, 0, -90);
-                driveToClosestPoint(new Point(posn.getCurrPos().x, 36), DriveDirection.Axial);
-                driveToClosestPoint(new Point(42, posn.getCurrPos().y), DriveDirection.Lateral);
-                //open purple
-                driveToClosestPoint(new Point(posn.getCurrPos().x, 30), DriveDirection.Axial);
-                rotateToHeading(180);
-                driveToClosestPoint(new Point(5, 30), DriveDirection.Axial);
-                //close to pick up white pixel
+            telemetry.addData("position", posn.getCurrPos());
+            telemetry.update();
+            sleep(2000);
+            driveToClosestPoint(new Point(36, 36), DriveDirection.Axial);
+            driveToClosestPoint(new Point(36, 30), DriveDirection.Lateral);
+            //open purple
+            driveToClosestPoint(new Point(30, 30), DriveDirection.Axial);
+            rotateToHeading(180);
+            driveToClosestPoint(new Point(30, 5), DriveDirection.Axial);
+            //close to pick up white pixel
             //}
+            break;
         }
     }
 
@@ -89,7 +88,7 @@ public class AutoTestBlueFront extends LinearOpMode {
     private void rotateToPoint(Point point) {
         piBot.planRotateToPoint(point);
         while (opModeIsActive()) {
-            if ( (piBot.runRotate() == DriveStatus.Done)) break;
+            if ((piBot.runRotate() == DriveStatus.Done)) break;
         }
     }
 }
