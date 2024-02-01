@@ -2,11 +2,20 @@ package edu.edina.library.util;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_TO_POSITION;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
+import android.util.Size;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.VisionPortal;
+
 import edu.edina.library.util.drivecontrol.DriveDirection;
 import edu.edina.library.util.drivecontrol.PiDrive;
+import edu.edina.opmodes.teleop.test.ImageProcessor;
 
 public class PiBot {
     private final RobotHardware hw;
@@ -31,6 +40,18 @@ public class PiBot {
 
     public Positioning getPositioning() {
         return posn;
+    }
+
+    public void VisionPortal(RobotHardware hw) {
+        ImageProcessor imageProcessor = new ImageProcessor(telemetry);
+
+        VisionPortal.Builder visionPortalBuilder = new VisionPortal.Builder();
+        VisionPortal visionPortal = visionPortalBuilder
+                .enableLiveView(true)
+                .addProcessor(imageProcessor)
+                .setCamera(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI"))
+                .setCameraResolution(new Size(640, 480))
+                .build();
     }
 
     public void planDriveToClosestPoint(Point target, DriveDirection direction) {
@@ -69,7 +90,7 @@ public class PiBot {
         }
     }
 
-    public void planRotate(double targetHeading) {
+    public void planRotateToHeading(double targetHeading) {
         preRotateRunMode = hw.frontLeftMotor.getMode();
         this.targetHeading = targetHeading;
     }
@@ -82,12 +103,12 @@ public class PiBot {
 
         double angle = Math.atan2(-x, y);
 
-        planRotate(Math.toDegrees(angle));
+        planRotateToHeading(Math.toDegrees(angle));
     }
 
     int xz;
 
-    public DriveStatus rotateToHeading() {
+    public DriveStatus runRotate() {
         double ppd = 537.0 / 63.15;
 
         double targetAngle = targetHeading - posn.readHeading(true);

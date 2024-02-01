@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 
+import edu.edina.library.util.DriveStatus;
 import edu.edina.library.util.PiBot;
 import edu.edina.library.util.Point;
 import edu.edina.library.util.Position;
@@ -22,9 +23,14 @@ import edu.edina.library.util.drivecontrol.DriveDirection;
 public class AutoTestBlueFront extends LinearOpMode {
     private PiBot piBot;
 
+    private RobotHardware hw;
+
     private Selected position;
 
     public void runOpMode() {
+        hw = new RobotHardware(hardwareMap);
+        piBot = new PiBot(hw);
+
         ImageProcessor imageProcessor = new ImageProcessor(telemetry);
 
         VisionPortal.Builder visionPortalBuilder = new VisionPortal.Builder();
@@ -48,14 +54,42 @@ public class AutoTestBlueFront extends LinearOpMode {
             telemetry.update();
         }
 
+        Positioning posn = new Positioning(new RobotHardware(hardwareMap), -90);
+
         waitForStart();
 
         while (opModeIsActive()) {
-            if (position == LEFT) {
-                Positioning posn = new Positioning(new RobotHardware(hardwareMap));
-                Position startPos = posn.getCurrPos();
-                piBot.planDriveToClosestPoint(new Point (startPos.x + 36, startPos.y), DriveDirection.Lateral);
-            }
+//            if (position == LEFT) {
+                Position currPos = new Position(36, 0, -90);
+                driveToClosestPoint(new Point(posn.getCurrPos().x, 36), DriveDirection.Axial);
+                driveToClosestPoint(new Point(42, posn.getCurrPos().y), DriveDirection.Lateral);
+                //open purple
+                driveToClosestPoint(new Point(posn.getCurrPos().x, 30), DriveDirection.Axial);
+                rotateToHeading(180);
+                driveToClosestPoint(new Point(5, 30), DriveDirection.Axial);
+                //close to pick up white pixel
+            //}
+        }
+    }
+
+    private void driveToClosestPoint(Point point, DriveDirection driveDirection) {
+        piBot.planDriveToClosestPoint(point, driveDirection);
+        while (opModeIsActive()) {
+            if (piBot.runDrive() == DriveStatus.Done) break;
+        }
+    }
+
+    private void rotateToHeading(double targetHeading) {
+        piBot.planRotateToHeading(targetHeading);
+        while (opModeIsActive()) {
+            if (piBot.runDrive() == DriveStatus.Done) break;
+        }
+    }
+
+    private void rotateToPoint(Point point) {
+        piBot.planRotateToPoint(point);
+        while (opModeIsActive()) {
+            if ( (piBot.runRotate() == DriveStatus.Done)) break;
         }
     }
 }

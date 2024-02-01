@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import edu.edina.library.util.DriveStatus;
 import edu.edina.library.util.PiBot;
 import edu.edina.library.util.Point;
-import edu.edina.library.util.Position;
 import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.drivecontrol.DriveDirection;
 
@@ -43,7 +42,7 @@ public class RouteTest extends LinearOpMode {
     private void rotate(Point to) {
         piBot.planRotateToPoint(to);
         while (opModeIsActive()) {
-            if (piBot.rotateToHeading() == DriveStatus.Done) break;
+            if (piBot.runRotate() == DriveStatus.Done) break;
             sleep(1);
         }
 
@@ -51,9 +50,9 @@ public class RouteTest extends LinearOpMode {
     }
 
     private void rotate(double to) {
-        piBot.planRotate(to);
+        piBot.planRotateToHeading(to);
         while (opModeIsActive()) {
-            if (piBot.rotateToHeading() == DriveStatus.Done) break;
+            if (piBot.runRotate() == DriveStatus.Done) break;
             sleep(1);
         }
 
