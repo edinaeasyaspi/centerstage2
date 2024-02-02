@@ -32,9 +32,7 @@ public class Positioning {
 
         myAprilTagProc = myAprilTagProcBuilder.build();
 
-        this.initialHeading = readHeading(false);
-
-        currPos = new Position(72, 72, 0);
+        setCurrPos(new Position(72, 72, 0));
     }
 
     public Position getCurrPos() {
@@ -43,9 +41,10 @@ public class Positioning {
 
     public void setCurrPos(Position newPos) {
         currPos = newPos;
-        initialHeading = readHeading(false) - newPos.a;
+        initialHeading = gyro.getHeading() - newPos.a;
     }
 
+    // todo: actually update position
     public Position readAprilTagPosition(boolean updatePosition) {
         List<AprilTagDetection> currentDetections = myAprilTagProc.getDetections();
         for (AprilTagDetection detection : currentDetections) {

@@ -2,6 +2,8 @@ package edu.edina.opmodes.teleop.test;
 
 import static edu.edina.opmodes.teleop.test.ImageProcessor.Selected;
 import static edu.edina.opmodes.teleop.test.ImageProcessor.Selected.LEFT;
+import static edu.edina.opmodes.teleop.test.ImageProcessor.Selected.MIDDLE;
+import static edu.edina.opmodes.teleop.test.ImageProcessor.Selected.RIGHT;
 
 import android.util.Size;
 
@@ -28,7 +30,7 @@ public class AutoTestBlueFront extends LinearOpMode {
     private Selected position;
 
     public void runOpMode() {
-        hw = new RobotHardware(hardwareMap);
+        hw = new RobotHardware(hardwareMap, telemetry);
         piBot = new PiBot(hw);
 
         ImageProcessor imageProcessor = new ImageProcessor(telemetry);
@@ -49,30 +51,31 @@ public class AutoTestBlueFront extends LinearOpMode {
             telemetry.update();
         }
 
-        Positioning posn = new Positioning(new RobotHardware(hardwareMap));
+        Positioning posn = piBot.getPositioning();
         posn.setCurrPos(new Position(0, 36, -90));
 
         waitForStart();
 
         while (opModeIsActive()) {
-//            if (position == LEFT) {
-            telemetry.addData("position", posn.getCurrPos());
-            telemetry.update();
-            sleep(2000);
-            driveToClosestPoint(new Point(36, 36), DriveDirection.Axial);
-            driveToClosestPoint(new Point(36, 30), DriveDirection.Lateral);
-            //open purple
-            driveToClosestPoint(new Point(30, 30), DriveDirection.Axial);
+            if (position == LEFT) {
+                driveToClosestPoint(36, 36, DriveDirection.Axial);
+                driveToClosestPoint(36, 42, DriveDirection.Lateral);
+                //open purple
+                driveToClosestPoint(30, 42, DriveDirection.Axial);
+                //close to pick up white pixel
+            } else if (position == MIDDLE) {
+
+            } else if (position == RIGHT) {
+            }
+
+            rotateToPoint(30, 5);
+            driveToClosestPoint(30, 5, DriveDirection.Axial);
             rotateToHeading(180);
-            driveToClosestPoint(new Point(30, 5), DriveDirection.Axial);
-            //close to pick up white pixel
-            //}
-            break;
         }
     }
 
-    private void driveToClosestPoint(Point point, DriveDirection driveDirection) {
-        piBot.planDriveToClosestPoint(point, driveDirection);
+    private void driveToClosestPoint(double x, double y, DriveDirection driveDirection) {
+        piBot.planDriveToClosestPoint(new Point(x, y), driveDirection);
         while (opModeIsActive()) {
             if (piBot.runDrive() == DriveStatus.Done) break;
         }
@@ -81,12 +84,12 @@ public class AutoTestBlueFront extends LinearOpMode {
     private void rotateToHeading(double targetHeading) {
         piBot.planRotateToHeading(targetHeading);
         while (opModeIsActive()) {
-            if (piBot.runDrive() == DriveStatus.Done) break;
+            if (piBot.runRotate() == DriveStatus.Done) break;
         }
     }
 
-    private void rotateToPoint(Point point) {
-        piBot.planRotateToPoint(point);
+    private void rotateToPoint(double x, double y) {
+        piBot.planRotateToPoint(new Point(x, y));
         while (opModeIsActive()) {
             if ((piBot.runRotate() == DriveStatus.Done)) break;
         }
