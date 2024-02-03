@@ -9,6 +9,7 @@ import android.util.Size;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -174,15 +175,36 @@ public class PiBot {
         throw new RuntimeException();
     }
 
-    public void grab(/*GrabberSide*/) {
+    public void grab(GrabberSide grabberSide) {
+        if (grabberSide == GrabberSide.Right)
+            hw.intakeRight.setPosition(0.4);
+        if (grabberSide == GrabberSide.Left)
+            hw.intakeLeft.setPosition(0.6);
+        if (grabberSide == GrabberSide.Both) {
+            hw.intakeLeft.setPosition(0.6);
+            hw.intakeRight.setPosition(0.4);
+        }
     }
 
-    public void drop(/*GrabberSide*/) {
+    public void drop(GrabberSide grabberSide) {
+        if (grabberSide == GrabberSide.Right)
+            hw.intakeRight.setPosition(0.6);
+        if (grabberSide == GrabberSide.Left)
+            hw.intakeLeft.setPosition(0.4);
+        if (grabberSide == GrabberSide.Both) {
+            hw.intakeLeft.setPosition(0.4);
+            hw.intakeRight.setPosition(0.6);
+        }
     }
 
     public void positionHooks() {
-        //merry summer
+        hw.hangRight.setPosition(Servo.MAX_POSITION);
+        hw.hangLeft.setPosition(Servo.MIN_POSITION);
+        hw.hangLiftLeft.setPosition(0.8);
+        hw.hangLiftRight.setPosition(0.2);
     }
+    //merry summer
+
 
     public boolean hooksInPosition() {
         throw new RuntimeException();

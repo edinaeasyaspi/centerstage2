@@ -24,7 +24,8 @@ public class RobotHardware {
 
     public final IMU imu;
 
-    public final Servo hangRight, hangLeft, hangLiftLeft, hangLiftRight;
+    public final Servo hangRight, hangLeft, hangLiftLeft, hangLiftRight, intakeLeft, intakeRight, intakeSwingLeft, intakeSwingRight;
+
 
     //public final CRServo leftIntakeServo, rightIntakeServo;
 
@@ -78,6 +79,11 @@ public class RobotHardware {
         hangRight = hardwareMap.get(Servo.class, "hangRight");
         hangLiftLeft = hardwareMap.get(Servo.class, "hangLiftLeft");
         hangLiftRight = hardwareMap.get(Servo.class, "hangLiftRight");
+        intakeLeft = hardwareMap.get(Servo.class, "intakeLeft");
+        intakeRight = hardwareMap.get(Servo.class, "intakeRight");
+        intakeSwingRight = hardwareMap.get(Servo.class, "intakeSwingRight");
+        intakeSwingLeft = hardwareMap.get(Servo.class, "intakeSwingLeft");
+
 
         //distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
 
