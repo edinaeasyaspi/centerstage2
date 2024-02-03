@@ -28,7 +28,11 @@ public class Positioning {
     public Positioning(RobotHardware hw) {
         this.gyro = hw.gyro;
 
-        AprilTagProcessor.Builder myAprilTagProcBuilder = new AprilTagProcessor.Builder().setDrawTagID(true).setDrawTagOutline(true).setDrawAxes(true).setDrawCubeProjection(true);
+        AprilTagProcessor.Builder myAprilTagProcBuilder = new AprilTagProcessor.Builder()
+                .setDrawTagID(true)
+                .setDrawTagOutline(true)
+                .setDrawAxes(true)
+                .setDrawCubeProjection(true);
 
         myAprilTagProc = myAprilTagProcBuilder.build();
 
@@ -69,7 +73,13 @@ public class Positioning {
                 double mq = dy * mc;
                 double ry = my - mq;
 
-                return new Position(rx, ry, a);
+                Position p = new Position(rx, ry, a);
+
+                if(updatePosition) {
+                    currPos = p;
+                }
+
+                return p;
             }
         }
 

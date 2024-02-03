@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.vision.VisionPortal;
 
+import edu.edina.library.util.PiBot;
 import edu.edina.library.util.Position;
 
 import edu.edina.library.util.Positioning;

@@ -1,5 +1,6 @@
 package edu.edina.opmodes.teleop.test;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import android.util.Size;
 
@@ -11,32 +12,17 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.WhiteBa
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
 
+import edu.edina.library.util.PiBot;
+import edu.edina.library.util.RobotHardware;
 
 @Autonomous
-
 public class VisionTestMode extends LinearOpMode {
     @Override
     public void runOpMode() {
-        ImageProcessor imageProcessor = new ImageProcessor(telemetry);
-
-        VisionPortal.Builder visionPortalBuilder = new VisionPortal.Builder();
-        VisionPortal visionPortal = visionPortalBuilder
-                .enableLiveView(true)
-                .addProcessor(imageProcessor)
-                .setCamera(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI"))
-                .setCameraResolution(new Size(640, 480))
-                .build();
+        PiBot bot = new PiBot(new RobotHardware(hardwareMap, telemetry));
 
         while (opModeInInit()) {
-//            if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
-//                visionPortal
-//                        .getCameraControl(WhiteBalanceControl.class)
-//                        .setMode(WhiteBalanceControl.Mode.AUTO);
-//            }
-
-            ImageProcessor.Selected selectedSpike = imageProcessor.getSelection();
-            telemetry.addData("Selected value", selectedSpike);
-            telemetry.addData("diag", imageProcessor.getDiagString());
+            bot.getSelection();
             telemetry.update();
         }
 

@@ -20,6 +20,7 @@ import edu.edina.opmodes.teleop.test.ImageProcessor;
 public class PiBot {
     private final RobotHardware hw;
     private final Positioning posn;
+    private final ImageProcessor imageProcessor;
 
     //rotation
     private double targetHeading;
@@ -36,22 +37,31 @@ public class PiBot {
         this.posn = new Positioning(hw);
         motors = new DcMotor[]{hw.frontLeftMotor, hw.backLeftMotor, hw.frontRightMotor, hw.backRightMotor};
         drive = new PiDrive(hw, posn);
+
+        imageProcessor = new ImageProcessor(telemetry);
+
+        VisionPortal.Builder visionPortalBuilder = new VisionPortal.Builder();
+        visionPortalBuilder.enableLiveView(true)
+                .addProcessor(imageProcessor)
+                .addProcessor(posn.getMyAprilTagProc())
+                .setCamera(hw.webcam)
+                .setCameraResolution(new Size(640, 480))
+                .build();
+    }
+
+    public ImageProcessor.Selected getSelection() {
+        ImageProcessor.Selected position = imageProcessor.getSelection();
+
+        if (hw.telemetry != null) {
+            telemetry.addData("Selected value", position);
+            telemetry.addData("diag", imageProcessor.getDiagString());
+        }
+
+        return position;
     }
 
     public Positioning getPositioning() {
         return posn;
-    }
-
-    public void VisionPortal(RobotHardware hw) {
-        ImageProcessor imageProcessor = new ImageProcessor(telemetry);
-
-        VisionPortal.Builder visionPortalBuilder = new VisionPortal.Builder();
-        VisionPortal visionPortal = visionPortalBuilder
-                .enableLiveView(true)
-                .addProcessor(imageProcessor)
-                .setCamera(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI"))
-                .setCameraResolution(new Size(640, 480))
-                .build();
     }
 
     public void planDriveToClosestPoint(Point target, DriveDirection direction) {
