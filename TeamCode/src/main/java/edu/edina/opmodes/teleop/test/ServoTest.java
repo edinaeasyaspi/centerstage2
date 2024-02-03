@@ -9,19 +9,15 @@ public class ServoTest extends LinearOpMode {
     public void runOpMode(){
         Servo hangLeft=hardwareMap.get(Servo.class, "hangLeft");
         Servo hangRight=hardwareMap.get(Servo.class, "hangRight");
+
         waitForStart();
         while(opModeIsActive()){
-            if(gamepad1.right_bumper){
-                hangRight.setPosition(-0.8);
-            }
-            if(gamepad1.right_trigger>0.8){
-                hangRight.setPosition(0);
-            }
-            if(gamepad1.left_bumper){
+            if(gamepad1.right_bumper) {
+                hangRight.setPosition(-1);
                 hangLeft.setPosition(1);
-            }
-            if(gamepad1.left_trigger>0.8){
-                hangLeft.setPosition(0.25);
+            }  else {
+                hangRight.setPosition(0);
+                hangLeft.setPosition(0);
             }
         }
     }

@@ -21,13 +21,10 @@ public class LiftTest extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             if (gamepad2.right_bumper) {
-                liftMotor.setTargetPosition(2148);
-                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                liftMotor.setPower(0.4);
+               liftMotor.setPower(0.5);
+                liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             } else {
-                liftMotor.setTargetPosition(0);
-                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                liftMotor.setPower(-0.2);
+               liftMotor.setPower(0);
             }
         }
     }
