@@ -16,14 +16,16 @@ public class LiftTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         liftMotor = hardwareMap.get(DcMotor.class, "liftMotor");
-        liftMotor.setDirection(DcMotor.Direction.REVERSE);
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftMotor.setDirection(DcMotor.Direction.FORWARD);
         waitForStart();
         while (opModeIsActive()) {
             if (gamepad2.right_bumper) {
-                liftMotor.setTargetPosition(500);
-                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                liftMotor.setPower(0.1);
-            } else liftMotor.setPower(0);
+               liftMotor.setPower(0.5);
+                liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            } else {
+               liftMotor.setPower(0);
+            }
         }
     }
 }

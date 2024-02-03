@@ -8,6 +8,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -23,7 +24,7 @@ public class RobotHardware {
 
     public final IMU imu;
 
-    //public final Servo leftLiftServo, rightLiftServo;
+    public final Servo hangRight, hangLeft, hangLiftLeft, hangLiftRight;
 
     //public final CRServo leftIntakeServo, rightIntakeServo;
 
@@ -64,6 +65,7 @@ public class RobotHardware {
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
+
 //        leftLiftServo = hardwareMap.get(Servo.class, "S1");
 //        rightLiftServo = hardwareMap.get(Servo.class, "S2");
 //        //droneLauncherServo = hardwareMap.get(Servo.class, "droneLauncherServo");
@@ -72,6 +74,11 @@ public class RobotHardware {
 //        rightIntakeServo = hardwareMap.get(CRServo.class, "F1");
 
         liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
+        hangLeft = hardwareMap.get(Servo.class, "hangLeft");
+        hangRight = hardwareMap.get(Servo.class, "hangRight");
+        hangLiftLeft = hardwareMap.get(Servo.class, "hangLiftLeft");
+        hangLiftRight = hardwareMap.get(Servo.class, "hangLiftRight");
+
         //distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
 
         webcam = hardwareMap.get(WebcamName.class, "LogitechC270_8034PI");
