@@ -2,6 +2,7 @@ package edu.edina.opmodes.autonomous;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.locks.Lock;
 
+@Disabled
 @Autonomous(name = "AutoByTimeBottomRightRed", group = "Autonomous")
 public class AutoByTimeBottomRightRed extends LinearOpMode {
 

@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.Trajectory;
 import com.acmerobotics.roadrunner.TrajectoryBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import edu.edina.library.subsystems.MecanumDrive;
@@ -16,6 +17,7 @@ import edu.edina.library.util.Robot;
 /*
  * This is a simple routine to test translational drive capabilities.
  */
+@Disabled
 @Config
 @Autonomous(group = "drive")
 public class AutonomousDriveTopLeftBlue extends LinearOpMode {
