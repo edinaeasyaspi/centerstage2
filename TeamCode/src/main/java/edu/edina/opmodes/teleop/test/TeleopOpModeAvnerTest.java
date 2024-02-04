@@ -32,6 +32,7 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
         hw.backLeftMotor.setZeroPowerBehavior(BRAKE);
         hw.frontRightMotor.setZeroPowerBehavior(BRAKE);
         hw.backRightMotor.setZeroPowerBehavior(BRAKE);
+        hw.liftMotor.setZeroPowerBehavior(BRAKE);
 
         waitForStart();
 
@@ -51,9 +52,9 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
 
-            if (gamepad1.dpad_up)
+            if (gamepad2.dpad_up)
                 hw.liftMotor.setPower(0.5);
-            else if (gamepad1.dpad_down)
+            else if (gamepad2.dpad_down)
                 hw.liftMotor.setPower(-0.4);
             else
                 hw.liftMotor.setPower(0);
@@ -65,16 +66,10 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
                 rightBackPower /= max;
             }
 
-            if (gamepad1.b) {
+            if (gamepad1.right_bumper) {
                 piBot.grab(GrabberSide.Both);
             }
-            if (gamepad1.x) {
-                piBot.grab(GrabberSide.Both);
-            }
-            if (gamepad1.y) {
-                piBot.drop(GrabberSide.Both);
-            }
-            if (gamepad1.a) {
+            if (gamepad1.left_bumper) {
                 piBot.drop(GrabberSide.Both);
             }
 
@@ -83,8 +78,16 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
             hw.frontRightMotor.setPower(rightFrontPower);
             hw.backRightMotor.setPower(rightBackPower);
 
-            telemetry.addData("pos intake left", hw.intakeLeft.getPosition());
-            telemetry.update();
+            if (gamepad2.left_bumper) {
+                hw.intakeSwingLeft.setPosition(0.2);
+                hw.intakeSwingRight.setPosition(0.8);
+                piBot.grab(GrabberSide.Both);
+            }
+            if (gamepad2.right_bumper) {
+                hw.intakeSwingLeft.setPosition(1);
+                hw.intakeSwingRight.setPosition(0);
+                piBot.grab(GrabberSide.Both);
+            }
         }
     }
 }
