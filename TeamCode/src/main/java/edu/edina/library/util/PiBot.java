@@ -238,6 +238,7 @@ public class PiBot {
     }
 
     public void launch() {
-        //happy presidents day weekend
+        if (DroneLauncher == DroneLauncher.Idle)
+            hw.droneLauncher.setPower()
     }
 }

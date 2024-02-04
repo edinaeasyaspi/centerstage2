@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -30,6 +31,7 @@ public class RobotHardware {
     //public final CRServo leftIntakeServo, rightIntakeServo;
 
     public final DcMotorEx liftMotor;
+    public final CRServo droneLauncher;
 
     public final WebcamName webcam;
 
@@ -83,6 +85,7 @@ public class RobotHardware {
         intakeRight = hardwareMap.get(Servo.class, "intakeRight");
         intakeSwingRight = hardwareMap.get(Servo.class, "intakeSwingRight");
         intakeSwingLeft = hardwareMap.get(Servo.class, "intakeSwingLeft");
+        droneLauncher = hardwareMap.get(CRServo.class, "droneLauncher");
 
 
         //distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
