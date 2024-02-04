@@ -187,23 +187,23 @@ public class PiBot {
 
     public void grab(GrabberSide grabberSide) {
         if (grabberSide == GrabberSide.Right)
-            hw.intakeRight.setPosition(0.4);
+            hw.intakeRight.setPosition(0.6);
         if (grabberSide == GrabberSide.Left)
-            hw.intakeLeft.setPosition(0.6);
+            hw.intakeLeft.setPosition(0);
         if (grabberSide == GrabberSide.Both) {
-            hw.intakeLeft.setPosition(0.6);
-            hw.intakeRight.setPosition(0.4);
+            hw.intakeLeft.setPosition(0);
+            hw.intakeRight.setPosition(0.6);
         }
     }
 
     public void drop(GrabberSide grabberSide) {
         if (grabberSide == GrabberSide.Right)
-            hw.intakeRight.setPosition(0.6);
+            hw.intakeRight.setPosition(0.4);
         if (grabberSide == GrabberSide.Left)
-            hw.intakeLeft.setPosition(0.4);
+            hw.intakeLeft.setPosition(0.2);
         if (grabberSide == GrabberSide.Both) {
-            hw.intakeLeft.setPosition(0.4);
-            hw.intakeRight.setPosition(0.6);
+            hw.intakeLeft.setPosition(0.2);
+            hw.intakeRight.setPosition(0.4);
         }
     }
 

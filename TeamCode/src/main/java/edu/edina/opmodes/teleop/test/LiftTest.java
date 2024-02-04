@@ -22,7 +22,7 @@ public class LiftTest extends LinearOpMode {
         while (opModeIsActive()) {
             if (gamepad2.right_bumper) {
                liftMotor.setPower(0.5);
-                liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+               liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             } else {
                liftMotor.setPower(0);
             }

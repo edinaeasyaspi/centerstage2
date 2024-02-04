@@ -51,6 +51,13 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
 
+            if (gamepad1.dpad_up)
+                hw.liftMotor.setPower(0.5);
+            else if (gamepad1.dpad_down)
+                hw.liftMotor.setPower(-0.4);
+            else
+                hw.liftMotor.setPower(0);
+
             if (max > 1.0) {
                 leftFrontPower /= max;
                 rightFrontPower /= max;
@@ -59,21 +66,15 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
             }
 
             if (gamepad1.b) {
-                piBot.grab(GrabberSide.Right);
-            }
-            if (gamepad1.x) {
-                piBot.grab(GrabberSide.Left);
-            }
-            if (gamepad1.right_bumper) {
                 piBot.grab(GrabberSide.Both);
             }
-            if (gamepad1.right_trigger > 0.8 && gamepad1.b) {
-                piBot.drop(GrabberSide.Right);
+            if (gamepad1.x) {
+                piBot.grab(GrabberSide.Both);
             }
-            if (gamepad1.right_trigger > 0.8 && gamepad1.x) {
-                piBot.drop(GrabberSide.Left);
+            if (gamepad1.y) {
+                piBot.drop(GrabberSide.Both);
             }
-            if (gamepad1.left_trigger > 0.8) {
+            if (gamepad1.a) {
                 piBot.drop(GrabberSide.Both);
             }
 
@@ -81,6 +82,9 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
             hw.backLeftMotor.setPower(leftBackPower);
             hw.frontRightMotor.setPower(rightFrontPower);
             hw.backRightMotor.setPower(rightBackPower);
+
+            telemetry.addData("pos intake left", hw.intakeLeft.getPosition());
+            telemetry.update();
         }
     }
 }
