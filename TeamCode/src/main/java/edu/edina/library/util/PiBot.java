@@ -219,7 +219,7 @@ public class PiBot {
 
 
     public void retractHooks(Hanging hanging) {
-        if (hanging == hanging.Retract) ;
+        if (hanging == Hanging.Retract) ;
         hw.hangLeft.setPosition(Servo.MIN_POSITION + 0.05);
         hw.hangRight.setPosition(Servo.MAX_POSITION - 0.05);
         hw.hangLiftLeft.setPosition(0.2);
