@@ -1,6 +1,6 @@
 package edu.edina.opmodes.autonomous;
 
-import static edu.edina.opmodes.teleop.test.ImageProcessor.Selected;
+import static edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor.Selected;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -14,7 +14,7 @@ import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.drivecontrol.DriveDirection;
 
 public abstract class AutoMode extends LinearOpMode {
-    protected static final boolean testMode = true;
+    protected static final boolean testMode = false;
     private final boolean invert;
     protected PiBot piBot;
 
@@ -26,8 +26,9 @@ public abstract class AutoMode extends LinearOpMode {
         this.startingPos = startingPos;
     }
 
+    @Override
     public void runOpMode() {
-        RobotHardware hw = new RobotHardware(hardwareMap);
+        RobotHardware hw = new RobotHardware(hardwareMap, telemetry);
         piBot = new PiBot(hw);
 
         while (opModeInInit()) {
@@ -39,11 +40,9 @@ public abstract class AutoMode extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive()) {
-            piBot.grab(GrabberSide.Both);
-            runMainPath();
-            // todo place on backboard
-        }
+        piBot.grab(GrabberSide.Both);
+        runMainPath();
+        // todo place on backboard
     }
 
     protected abstract void runMainPath();
@@ -52,12 +51,16 @@ public abstract class AutoMode extends LinearOpMode {
         if (invert)
             x = 144 - x;
 
+        // double initHeading = piBot.getPositioning().readHeading(true);
+
         piBot.planDriveToClosestPoint(new Point(x, y), driveDirection);
         while (opModeIsActive()) {
             if (piBot.runDrive() == DriveStatus.Done) break;
         }
 
         pauseOnTest();
+
+//        rotateToHeading(initHeading);
     }
 
     protected void rotateToHeading(double targetHeading) {
