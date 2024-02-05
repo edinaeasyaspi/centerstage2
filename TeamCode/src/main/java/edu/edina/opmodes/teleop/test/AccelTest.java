@@ -1,6 +1,7 @@
 package edu.edina.opmodes.teleop.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -9,6 +10,7 @@ import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.drivecontrol.Accelerometer;
 import edu.edina.library.util.drivecontrol.PiMotor;
 
+@Disabled
 @Autonomous
 public class AccelTest extends LinearOpMode {
     @Override

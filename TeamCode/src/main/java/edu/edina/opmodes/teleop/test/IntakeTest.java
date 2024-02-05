@@ -1,9 +1,11 @@
 package edu.edina.opmodes.teleop.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@Disabled
 @TeleOp
 public class IntakeTest extends LinearOpMode {
     Servo intakeLeft = hardwareMap.get(Servo.class, "intakeLeft");

@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -22,13 +23,14 @@ import android.content.Context;
 import android.util.Size;
 
 
+@Disabled
 @Autonomous(name = "auto")
 public class PropDetectionThroughWebcam extends OpMode {
     MecanumDrive drive;
-    private ImageProcessor imageProcessor;
+    private PropDetectingVisionProcessor imageProcessor;
     private VisionPortal.Builder visionPortalBuilder;
     private VisionPortal visionPortal;
-    private ImageProcessor.Selected selectedSpike;
+    private PropDetectingVisionProcessor.Selected selectedSpike;
     private Telemetry.Item teleSelected;
     private Pose2d startPose;
     private Context context;
@@ -43,7 +45,7 @@ public class PropDetectionThroughWebcam extends OpMode {
     public void init() {
         RobotHardware hw = new RobotHardware(hardwareMap);
         gamepad = new GamepadEx(gamepad1);
-        imageProcessor = new ImageProcessor(telemetry);
+        imageProcessor = new PropDetectingVisionProcessor(telemetry);
         aprilTagPos = new Positioning(hw);
         visionPortalBuilder = new VisionPortal.Builder();
         visionPortal = visionPortalBuilder

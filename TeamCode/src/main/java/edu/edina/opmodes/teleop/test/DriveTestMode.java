@@ -1,6 +1,7 @@
 package edu.edina.opmodes.teleop.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import edu.edina.library.util.Positioning;
@@ -8,6 +9,7 @@ import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.drivecontrol.DriveDirection;
 import edu.edina.library.util.drivecontrol.PiDrive;;
 
+@Disabled
 @Autonomous
 public class DriveTestMode extends LinearOpMode {
     public DriveTestMode() {
