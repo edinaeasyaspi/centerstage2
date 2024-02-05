@@ -126,9 +126,9 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
             }
 
             if (gamepad1.x && gamepad1.b) {
-                hw.launch.setPower(0.2);
+                hw.droneLauncher.setPower(0.2);
             } else {
-                hw.launch.setPower(0);
+                hw.droneLauncher.setPower(0);
             }
         }
     }
