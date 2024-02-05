@@ -5,6 +5,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -25,6 +26,7 @@ public class RobotHardware {
     public final IMU imu;
 
     public final Servo hangRight, hangLeft, hangLiftLeft, hangLiftRight, intakeLeft, intakeRight, intakeSwingLeft, intakeSwingRight;
+    public final CRServo launch;
 
 
     //public final CRServo leftIntakeServo, rightIntakeServo;
@@ -83,6 +85,7 @@ public class RobotHardware {
         intakeRight = hardwareMap.get(Servo.class, "intakeRight");
         intakeSwingRight = hardwareMap.get(Servo.class, "intakeSwingRight");
         intakeSwingLeft = hardwareMap.get(Servo.class, "intakeSwingLeft");
+        launch = hardwareMap.get(CRServo.class, "launch");
 
 
         //distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");

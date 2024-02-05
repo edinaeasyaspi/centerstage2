@@ -2,20 +2,14 @@ package edu.edina.opmodes.teleop.test;
 
 import static edu.edina.library.util.drivecontrol.DriveDirection.Axial;
 import static edu.edina.library.util.drivecontrol.DriveDirection.Lateral;
-import static edu.edina.opmodes.teleop.test.ImageProcessor.Selected;
-import static edu.edina.opmodes.teleop.test.ImageProcessor.Selected.LEFT;
-import static edu.edina.opmodes.teleop.test.ImageProcessor.Selected.MIDDLE;
-import static edu.edina.opmodes.teleop.test.ImageProcessor.Selected.RIGHT;
-
-import android.util.Size;
+import static edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor.Selected;
+import static edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor.Selected.LEFT;
+import static edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor.Selected.MIDDLE;
+import static edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor.Selected.RIGHT;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.vision.VisionPortal;
 
 import edu.edina.library.util.DriveStatus;
 import edu.edina.library.util.GrabberSide;

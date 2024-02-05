@@ -2,31 +2,30 @@ package edu.edina.library.util;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_TO_POSITION;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import android.util.Size;
+
+import androidx.annotation.NonNull;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import edu.edina.library.util.drivecontrol.DriveDirection;
 import edu.edina.library.util.drivecontrol.PiDrive;
-import edu.edina.opmodes.teleop.test.ImageProcessor;
+import edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor;
 
 public class PiBot {
     private final RobotHardware hw;
     private final Positioning posn;
-    private final ImageProcessor imageProcessor;
+    private final PropDetectingVisionProcessor imageProcessor;
 
     //rotation
     private double targetHeading;
     private DcMotor[] motors;
     private DcMotor.RunMode preRotateRunMode;
+    private boolean firstRotate;
 
     //Driving
     private Position stoppingPoint;
@@ -39,7 +38,7 @@ public class PiBot {
         motors = new DcMotor[]{hw.frontLeftMotor, hw.backLeftMotor, hw.frontRightMotor, hw.backRightMotor};
         drive = new PiDrive(hw, posn);
 
-        imageProcessor = new ImageProcessor(telemetry);
+        imageProcessor = new PropDetectingVisionProcessor();
 
         VisionPortal.Builder visionPortalBuilder = new VisionPortal.Builder();
         visionPortalBuilder.enableLiveView(true)
@@ -50,12 +49,12 @@ public class PiBot {
                 .build();
     }
 
-    public ImageProcessor.Selected getSelection() {
-        ImageProcessor.Selected position = imageProcessor.getSelection();
+    public PropDetectingVisionProcessor.Selected getSelection() {
+        PropDetectingVisionProcessor.Selected position = imageProcessor.getSelection();
 
         if (hw.telemetry != null) {
-            telemetry.addData("Selected value", position);
-            telemetry.addData("diag", imageProcessor.getDiagString());
+            hw.telemetry.addData("Selected value", position);
+            hw.telemetry.addData("diag", imageProcessor.getDiagString());
         }
 
         return position;
@@ -102,8 +101,9 @@ public class PiBot {
     }
 
     public void planRotateToHeading(double targetHeading) {
-        preRotateRunMode = hw.frontLeftMotor.getMode();
         this.targetHeading = targetHeading;
+        preRotateRunMode = hw.frontLeftMotor.getMode();
+        firstRotate = true;
     }
 
     public void planRotateToPoint(Point p) {
@@ -116,8 +116,6 @@ public class PiBot {
 
         planRotateToHeading(Math.toDegrees(angle));
     }
-
-    int xz;
 
     public DriveStatus runRotate() {
         double ppd = 537.0 / 63.15;
@@ -132,10 +130,12 @@ public class PiBot {
             targetAngle = targetAngle - 360;
         }
 
+        if (firstRotate && targetAngle == 0)
+            return doneWithRotate();
+
         if (hw.telemetry != null) {
             hw.telemetry.addData("heading", "%.1f", posn.readHeading(false));
             hw.telemetry.addData("target", "%.1f", targetAngle);
-            hw.telemetry.addData("xz", xz++);
             hw.telemetry.update();
         }
 
@@ -157,15 +157,19 @@ public class PiBot {
         }
 
         if (areIdle()) {
-            for (DcMotor m : motors) {
-                m.setPower(0);
-                m.setMode(preRotateRunMode);
-            }
-
-            return DriveStatus.Done;
+            return doneWithRotate();
         } else {
             return DriveStatus.Driving;
         }
+    }
+
+    private DriveStatus doneWithRotate() {
+        for (DcMotor m : motors) {
+            m.setPower(0);
+            m.setMode(preRotateRunMode);
+        }
+
+        return DriveStatus.Done;
     }
 
     private boolean areIdle() {

@@ -4,10 +4,14 @@ import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.FORWARD;
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 
+import android.media.tv.TvView;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import edu.edina.library.util.GrabberSide;
 import edu.edina.library.util.PiBot;
@@ -34,7 +38,19 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
         hw.backRightMotor.setZeroPowerBehavior(BRAKE);
         hw.liftMotor.setZeroPowerBehavior(BRAKE);
 
+//        hw.hangRight.setPosition(Servo.MIN_POSITION + 0.05);
+//        hw.hangLeft.setPosition(Servo.MAX_POSITION - 0.05);
+//        hw.hangLiftLeft.setPosition(0.2);
+//        hw.hangLiftRight.setPosition(0.8);
+
         waitForStart();
+
+        double noLift = hw.liftMotor.getCurrentPosition();
+
+        double powerLimit = 1;
+        double liftPosition = noLift;
+
+        ElapsedTime dropTimer = null;
 
         while (opModeIsActive()) {
             double max;
@@ -52,12 +68,18 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
 
-            if (gamepad2.dpad_up)
-                hw.liftMotor.setPower(0.5);
-            else if (gamepad2.dpad_down)
+            if (gamepad1.dpad_up) {
+                if (hw.liftMotor.getCurrentPosition() < noLift + 750) {
+                    hw.liftMotor.setPower(0.4);
+                    liftPosition = hw.liftMotor.getCurrentPosition();
+                }
+            } else if (gamepad1.dpad_down) {
                 hw.liftMotor.setPower(-0.4);
-            else
-                hw.liftMotor.setPower(0);
+                liftPosition = hw.liftMotor.getCurrentPosition();
+            } else {
+                double y = hw.liftMotor.getCurrentPosition() - liftPosition;
+                hw.liftMotor.setPower(y / 100);
+            }
 
             if (max > 1.0) {
                 leftFrontPower /= max;
@@ -73,20 +95,38 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
                 piBot.drop(GrabberSide.Both);
             }
 
-            hw.frontLeftMotor.setPower(leftFrontPower);
-            hw.backLeftMotor.setPower(leftBackPower);
-            hw.frontRightMotor.setPower(rightFrontPower);
-            hw.backRightMotor.setPower(rightBackPower);
+            if (gamepad1.a)
+                powerLimit = 1;
+            else
+                powerLimit = 0.5;
 
-            if (gamepad2.left_bumper) {
+            hw.frontLeftMotor.setPower(leftFrontPower * powerLimit);
+            hw.backLeftMotor.setPower(leftBackPower * powerLimit);
+            hw.frontRightMotor.setPower(rightFrontPower * powerLimit);
+            hw.backRightMotor.setPower(rightBackPower * powerLimit);
+
+            if (gamepad1.left_trigger > 0.8) {
                 hw.intakeSwingLeft.setPosition(0.2);
                 hw.intakeSwingRight.setPosition(0.8);
                 piBot.grab(GrabberSide.Both);
+                dropTimer = new ElapsedTime();
             }
-            if (gamepad2.right_bumper) {
+
+            if (dropTimer != null && dropTimer.seconds() > 1.6) {
+                piBot.drop(GrabberSide.Both);
+                dropTimer = null;
+            }
+
+            if (gamepad1.right_trigger > 0.8) {
                 hw.intakeSwingLeft.setPosition(1);
                 hw.intakeSwingRight.setPosition(0);
                 piBot.grab(GrabberSide.Both);
+            }
+
+            if (gamepad1.x && gamepad1.b) {
+                hw.launch.setPower(0.2);
+            } else {
+                hw.launch.setPower(0);
             }
         }
     }
