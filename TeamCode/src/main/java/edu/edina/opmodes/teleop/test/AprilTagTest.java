@@ -25,7 +25,7 @@ public class AprilTagTest extends LinearOpMode {
     public void runOpMode(){
         RobotHardware hw = new RobotHardware(hardwareMap);
 
-        imageProcessor = new PropDetectingVisionProcessor(telemetry);
+        imageProcessor = new PropDetectingVisionProcessor();
 
         aprilTagPos = new Positioning(hw);
         visionPortalBuilder = new VisionPortal.Builder();

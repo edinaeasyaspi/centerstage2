@@ -33,6 +33,7 @@ public abstract class AutoMode extends LinearOpMode {
 
         while (opModeInInit()) {
             position = piBot.getSelection();
+            telemetry.update();
         }
 
         Positioning posn = piBot.getPositioning();
@@ -56,6 +57,7 @@ public abstract class AutoMode extends LinearOpMode {
         piBot.planDriveToClosestPoint(new Point(x, y), driveDirection);
         while (opModeIsActive()) {
             if (piBot.runDrive() == DriveStatus.Done) break;
+            telemetry.update();
         }
 
         pauseOnTest();
@@ -70,6 +72,7 @@ public abstract class AutoMode extends LinearOpMode {
         piBot.planRotateToHeading(targetHeading);
         while (opModeIsActive()) {
             if (piBot.runRotate() == DriveStatus.Done) break;
+            telemetry.update();
         }
 
         pauseOnTest();
@@ -82,12 +85,14 @@ public abstract class AutoMode extends LinearOpMode {
         piBot.planRotateToPoint(new Point(x, y));
         while (opModeIsActive()) {
             if ((piBot.runRotate() == DriveStatus.Done)) break;
+            telemetry.update();
         }
 
         pauseOnTest();
     }
 
     private void pauseOnTest() {
+        telemetry.update();
         if (opModeIsActive() && testMode)
             sleep(1000);
     }
