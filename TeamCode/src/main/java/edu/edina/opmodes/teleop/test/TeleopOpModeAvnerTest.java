@@ -8,8 +8,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
+import edu.edina.library.util.DroneLauncher;
 import edu.edina.library.util.GrabberSide;
+import edu.edina.library.util.Hanging;
 import edu.edina.library.util.PiBot;
 import edu.edina.library.util.RobotHardware;
 
@@ -51,9 +52,9 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
 
-            if (gamepad1.dpad_up)
+            if (gamepad2.dpad_up)
                 hw.liftMotor.setPower(0.5);
-            else if (gamepad1.dpad_down)
+            else if (gamepad2.dpad_down)
                 hw.liftMotor.setPower(-0.4);
             else
                 hw.liftMotor.setPower(0);
@@ -77,7 +78,15 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
             if (gamepad1.a) {
                 piBot.drop(GrabberSide.Both);
             }
-
+            if (gamepad2.a && gamepad2.b) {
+                piBot.launch(DroneLauncher.Expel);
+            }
+            if (gamepad1.dpad_down){
+                piBot.positionHooks(Hanging.Extend);
+            }
+            if (gamepad1.dpad_up) {
+                piBot.retractHooks(Hanging.Retract);
+            }
             hw.frontLeftMotor.setPower(leftFrontPower);
             hw.backLeftMotor.setPower(leftBackPower);
             hw.frontRightMotor.setPower(rightFrontPower);
