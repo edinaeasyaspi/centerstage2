@@ -1,40 +1,27 @@
 package edu.edina.opmodes.teleop;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.Servo;
-
-@Disabled
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="DroneLauncherServoTest", group="TeleOp")
-public class DroneLauncherServoTest extends LinearOpMode {
-
-    private Servo leftLiftServo;
+@TeleOp
+public class DroneLauncherServoTest extends OpMode {
+    public CRServo leftIntakeServo = null;
 
     @Override
-    public void runOpMode() {
-
-        leftLiftServo = hardwareMap.get(Servo.class, "S1");
-
-        waitForStart();
-
-        while (opModeIsActive()) {
-
-            double leftTriggerValue = gamepad1.left_trigger;
-            double rightTriggerValue = gamepad1.right_trigger;
-
-
-            if (leftTriggerValue > 0.5) {
-                leftLiftServo.setPosition(1.0);
-            }
-            
-            else if (rightTriggerValue > 0.5) {
-                leftLiftServo.setPosition(0.0);
-            }
-
-            telemetry.addData("Servo Position", leftLiftServo.getPosition());
-            telemetry.update();
-
-            idle();
-        }
+    public void init() {
+        leftIntakeServo = hardwareMap.get(CRServo.class, "F1");
     }
+
+    @Override
+    public void loop() {
+        droneLauncherServoTest();
+    }
+
+    public void droneLauncherServoTest() {
+        if (gamepad2.back && gamepad2.start) {
+            leftIntakeServo.setPower(-1);
+        }  else leftIntakeServo.setPower(0);
+    }
+
 }
+

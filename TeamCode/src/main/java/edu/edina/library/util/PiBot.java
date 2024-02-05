@@ -2,6 +2,10 @@ package edu.edina.library.util;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_TO_POSITION;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
+import android.annotation.SuppressLint;
 import android.util.Size;
 
 import androidx.annotation.NonNull;
@@ -211,17 +215,22 @@ public class PiBot {
         }
     }
 
-    public void positionHooks() {
-        hw.hangRight.setPosition(Servo.MAX_POSITION);
-        hw.hangLeft.setPosition(Servo.MIN_POSITION);
-        hw.hangLiftLeft.setPosition(0.8);
-        hw.hangLiftRight.setPosition(0.2);
+    public void positionHooks(Hanging hanging) {
+       if(hanging == Hanging.Extend);
+       hw.hangLeft.setPosition(Servo.MIN_POSITION +0.05);
+       hw.hangRight.setPosition(Servo.MAX_POSITION -0.05);
+       hw.hangLiftLeft.setPosition(0.8);
+       hw.hangLiftRight.setPosition(0.2);
     }
     //merry summer
 
 
-    public boolean hooksInPosition() {
-        throw new RuntimeException();
+    public void retractHooks(Hanging hanging) {
+        if (hanging == Hanging.Retract) ;
+        hw.hangLeft.setPosition(Servo.MIN_POSITION + 0.05);
+        hw.hangRight.setPosition(Servo.MAX_POSITION - 0.05);
+        hw.hangLiftLeft.setPosition(0.2);
+        hw.hangLiftRight.setPosition(0.8);
     }
 
     public void planLatchOnBackboard() {
@@ -241,7 +250,12 @@ public class PiBot {
         //happy memorial day
     }
 
-    public void launch() {
-        //happy presidents day weekend
+
+    public void launch(DroneLauncher droneLauncher) {
+        if (droneLauncher == DroneLauncher.Idle)
+            hw.droneLauncher.setPower(0);
+        if (droneLauncher == DroneLauncher.Expel) {
+            hw.droneLauncher.setPower(-1);
+        }
     }
 }
