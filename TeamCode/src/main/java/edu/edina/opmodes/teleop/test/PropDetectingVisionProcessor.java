@@ -12,8 +12,8 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
-    public static ImageProcessor.Selected Selected;
+public class PropDetectingVisionProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
+    public static PropDetectingVisionProcessor.Selected Selected;
     private int rectY = 160;
     //    public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
 //    public Rect rectMiddle = new Rect(460, rectY, 40, 40);
@@ -30,14 +30,9 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
 
     public double scoreRectMiddle;
     public double scoreRectRight;
-    Telemetry telemetry;
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
     private String diagString;
-
-    public ImageProcessor(Telemetry telemetry) {
-        this.telemetry = telemetry;
-    }
 
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
