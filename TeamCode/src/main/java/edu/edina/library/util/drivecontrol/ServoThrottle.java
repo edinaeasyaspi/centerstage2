@@ -1,4 +1,4 @@
-package edu.edina.opmodes.teleop.test;
+package edu.edina.library.util.drivecontrol;
 
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -19,7 +19,10 @@ public class ServoThrottle {
     }
 
     public void setTargetPos(double pos) {
-
+startTime = timer.seconds();
+startPos = getPosEstimate();
+stopPos = pos;
+stopTime = (stopPos - startPos) / rate + startTime;
     }
 
     public void run() {
