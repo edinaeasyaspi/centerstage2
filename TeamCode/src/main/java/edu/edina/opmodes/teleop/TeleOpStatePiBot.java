@@ -1,26 +1,19 @@
-package edu.edina.opmodes.teleop.test;
+package edu.edina.opmodes.teleop;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.FORWARD;
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 
-import android.media.tv.TvView;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import edu.edina.library.util.DroneLauncher;
 import edu.edina.library.util.GrabberSide;
-import edu.edina.library.util.Hanging;
 import edu.edina.library.util.PiBot;
 import edu.edina.library.util.RobotHardware;
 
-@TeleOp
-public class TeleopOpModeAvnerTest extends LinearOpMode {
+@TeleOp (name= "TeleOp 😀" )
+public class TeleOpStatePiBot extends LinearOpMode {
 
     private PiBot piBot;
 
@@ -46,6 +39,8 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
 //        hw.hangLiftRight.setPosition(0.8);
 
         waitForStart();
+
+        ElapsedTime startTime = new ElapsedTime();
 
         double noLift = hw.liftMotor.getCurrentPosition();
 
@@ -124,11 +119,14 @@ public class TeleopOpModeAvnerTest extends LinearOpMode {
                 hw.intakeSwingRight.setPosition(0);
                 piBot.grab(GrabberSide.Both);
             }
+            if (startTime.seconds() > 120) {
 
-            if (gamepad1.x && gamepad1.b) {
-                hw.droneLauncher.setPower(0.2);
-            } else {
-                hw.droneLauncher.setPower(0);
+
+                if (gamepad2.x && gamepad2.b) {
+                    hw.droneLauncher.setPower(0.2);
+                } else {
+                    hw.droneLauncher.setPower(0);
+                }
             }
         }
     }
