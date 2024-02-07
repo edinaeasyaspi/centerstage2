@@ -1,7 +1,5 @@
 package edu.edina.opmodes.autonomous;
 
-import static edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor.Selected;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import edu.edina.library.util.DriveStatus;
@@ -12,13 +10,16 @@ import edu.edina.library.util.Position;
 import edu.edina.library.util.Positioning;
 import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.drivecontrol.DriveDirection;
+import edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor;
 
 public abstract class AutoMode extends LinearOpMode {
     protected static final boolean testMode = false;
     private final boolean invert;
     protected PiBot piBot;
+    protected RobotHardware hw;
 
-    protected Selected position;
+    protected SelectedSpike position;
+
     private final Position startingPos;
 
     protected AutoMode(boolean invert, Position startingPos) {
@@ -28,11 +29,20 @@ public abstract class AutoMode extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        RobotHardware hw = new RobotHardware(hardwareMap, telemetry);
+        hw = new RobotHardware(hardwareMap, telemetry);
         piBot = new PiBot(hw);
 
         while (opModeInInit()) {
-            position = piBot.getSelection();
+            PropDetectingVisionProcessor.Selected s = piBot.getSelection();
+            if (s == PropDetectingVisionProcessor.Selected.LEFT) {
+                position = invert ? SelectedSpike.AUDIENCE : SelectedSpike.BACKSTAGE;
+            } else if (s == PropDetectingVisionProcessor.Selected.MIDDLE) {
+                position = SelectedSpike.MIDDLE;
+            } else if (s == PropDetectingVisionProcessor.Selected.RIGHT) {
+                position = invert ? SelectedSpike.BACKSTAGE : SelectedSpike.AUDIENCE;
+            }
+
+            telemetry.addData("selected", position);
             telemetry.update();
         }
 
@@ -95,5 +105,11 @@ public abstract class AutoMode extends LinearOpMode {
         telemetry.update();
         if (opModeIsActive() && testMode)
             sleep(1000);
+    }
+
+    protected enum SelectedSpike {
+        AUDIENCE,
+        MIDDLE,
+        BACKSTAGE
     }
 }

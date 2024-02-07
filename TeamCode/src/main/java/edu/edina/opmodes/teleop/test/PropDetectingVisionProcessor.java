@@ -50,12 +50,14 @@ public class PropDetectingVisionProcessor implements org.firstinspires.ftc.visio
         diagString = String.format("scores: middle=%.3f, right=%.3f", scoreRectMiddle, scoreRectRight);
 
         if (scoreRectRight > scoreRectMiddle && scoreRectRight > SCORE_THRESHOLD) {
-            return Selected.RIGHT;
+            selection = Selected.RIGHT;
+        } else if (scoreRectMiddle > scoreRectRight && scoreRectMiddle > SCORE_THRESHOLD) {
+            selection = Selected.MIDDLE;
+        } else {
+            selection = Selected.LEFT;
         }
-        if (scoreRectMiddle > scoreRectRight && scoreRectMiddle > SCORE_THRESHOLD) {
-            return Selected.MIDDLE;
-        }
-        return Selected.LEFT;
+
+        return selection;
     }
 
 
@@ -109,7 +111,6 @@ public class PropDetectingVisionProcessor implements org.firstinspires.ftc.visio
         android.graphics.Rect drawRectangleRight = makeGraphicsRect(rectRight,
                 scaleBmpPxToCanvasPx);
 
-        selection = (Selected) userContext;
         switch (selection) {
             case LEFT:
                 //              canvas.drawRect(drawRectangleLeft, selectedPaint);
