@@ -19,7 +19,7 @@ public abstract class AutoFrontMode extends AutoMode {
         if (position == BACKSTAGE) {
             driveToClosestPoint(24, 36, Axial);
             rotateToHeading(-45);
-            driveToClosestPoint(32,39.5, Axial);
+            driveToClosestPoint(32, 39.5, Axial);
             piBot.drop(GrabberSide.Left);
             driveToClosestPoint(30, 24, Axial);
         } else if (position == MIDDLE) {
@@ -29,10 +29,10 @@ public abstract class AutoFrontMode extends AutoMode {
         } else if (position == AUDIENCE) {
             driveToClosestPoint(18, 36, Axial);
             rotateToHeading(-135);
-            driveToClosestPoint(33,33.5, Axial);
+            driveToClosestPoint(33, 33.5, Axial);
             piBot.drop(GrabberSide.Left);
             driveToClosestPoint(18, 36, Axial);
-//            driveToClosestPoint();
+            driveToClosestPoint(12, 30, Lateral);
         } else {
             driveToClosestPoint(24, 36, Axial);
             driveToClosestPoint(24, 46, Lateral);

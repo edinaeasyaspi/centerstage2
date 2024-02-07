@@ -19,7 +19,7 @@ public class ServoTest extends LinearOpMode {
 
         hw.hangRight.setPosition(Servo.MIN_POSITION + 0.05);
         hw.hangLeft.setPosition(Servo.MAX_POSITION - 0.05);
-        hw.hangLiftLeft.setPosition(0.6);
+        hw.hangLiftLeft.setPosition(1);
         hw.hangLiftRight.setPosition(0.4);
 
         while (opModeIsActive()) {
@@ -29,9 +29,10 @@ public class ServoTest extends LinearOpMode {
 
                 hw.hangRight.setPosition(Servo.MAX_POSITION - 0.05);
                 hw.hangLeft.setPosition(Servo.MIN_POSITION + 0.05);
-                hw.hangLiftLeft.setPosition(0.4);
+                hw.hangLiftLeft.setPosition(0.1);
                 hw.hangLiftRight.setPosition(0.6);
             }else{
+                telemetry.addData("lift","no");
                 telemetry.update();
             }
         }
