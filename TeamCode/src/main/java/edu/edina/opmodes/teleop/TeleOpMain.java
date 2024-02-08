@@ -13,7 +13,7 @@ import edu.edina.library.util.PiBot;
 import edu.edina.library.util.RobotHardware;
 
 @TeleOp (name= "TeleOp 😀" )
-public class TeleOpStatePiBot extends LinearOpMode {
+public class TeleOpMain extends LinearOpMode {
 
     private PiBot piBot;
 
