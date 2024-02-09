@@ -19,10 +19,10 @@ public class ServoThrottle {
     }
 
     public void setTargetPos(double pos) {
-startTime = timer.seconds();
-startPos = getPosEstimate();
-stopPos = pos;
-stopTime = (stopPos - startPos) / rate + startTime;
+        startTime = timer.seconds();
+        startPos = getPosEstimate();
+        stopPos = pos;
+        stopTime = (stopPos - startPos) / rate + startTime;
     }
 
     public void run() {
