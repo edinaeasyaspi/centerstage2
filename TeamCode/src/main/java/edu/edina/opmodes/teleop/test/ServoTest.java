@@ -25,14 +25,14 @@ public class ServoTest extends LinearOpMode {
                 hw.hangRight.setPosition(Servo.MAX_POSITION - 0.05);
                 hw.hangLeft.setPosition(Servo.MIN_POSITION + 0.05);
                 hw.hangLiftLeft.setPosition(0.1);
-                sleep(1000);
-                hw.hangLiftRight.setPosition(0.5);
+//                sleep(1000);
+                hw.hangLiftRight.setPosition(0.9);
             }
             if (gamepad1.left_bumper) {
                 hw.hangRight.setPosition(Servo.MIN_POSITION + 0.05);
                 hw.hangLeft.setPosition(Servo.MAX_POSITION - 0.05);
                 hw.hangLiftLeft.setPosition(1);
-                sleep(1000);
+//                sleep(1000);
                 hw.hangLiftRight.setPosition(0);
             }
         }
