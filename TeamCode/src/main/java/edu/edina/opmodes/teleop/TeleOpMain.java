@@ -12,7 +12,7 @@ import edu.edina.library.util.GrabberSide;
 import edu.edina.library.util.PiBot;
 import edu.edina.library.util.RobotHardware;
 
-@TeleOp (name= "TeleOp 😀" )
+@TeleOp (name= "TeleOp 😀🤖🥧" )
 public class TeleOpMain extends LinearOpMode {
 
     private PiBot piBot;
