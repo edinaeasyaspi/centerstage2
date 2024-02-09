@@ -18,6 +18,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 
 import edu.edina.library.util.drivecontrol.DriveDirection;
 import edu.edina.library.util.drivecontrol.PiDrive;
+import edu.edina.library.util.drivecontrol.ServoThrottle;
 import edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor;
 
 public class PiBot {
@@ -35,11 +36,14 @@ public class PiBot {
     private Position stoppingPoint;
     public final PiDrive drive;
     private double predriveHeading;
+    private ServoThrottle armSwingRight, armSwingLeft;
 
     public PiBot(RobotHardware hw) {
         this.hw = hw;
         this.posn = new Positioning(hw);
         motors = new DcMotor[]{hw.frontLeftMotor, hw.backLeftMotor, hw.frontRightMotor, hw.backRightMotor};
+        armSwingRight = new ServoThrottle(hw.intakeSwingRight, 1, 0);
+        armSwingLeft = new ServoThrottle(hw.intakeSwingLeft, 1, 1);
         drive = new PiDrive(hw, posn);
 
         imageProcessor = new PropDetectingVisionProcessor();
@@ -185,8 +189,14 @@ public class PiBot {
         return true;
     }
 
-    public void positionGrabber(/*GrabberPosition*/) {
-        //happy halloween
+    public void positionGrabber(double targetPosition) {
+        armSwingRight.setTargetPos(targetPosition);
+        armSwingLeft.setTargetPos(1 - targetPosition);
+    }
+
+    public void runGrabber() {
+        armSwingLeft.run();
+        armSwingRight.run();
     }
 
     public boolean grabberInPosition() {
@@ -216,11 +226,11 @@ public class PiBot {
     }
 
     public void positionHooks(Hanging hanging) {
-       if(hanging == Hanging.Extend);
-       hw.hangLeft.setPosition(Servo.MIN_POSITION +0.05);
-       hw.hangRight.setPosition(Servo.MAX_POSITION -0.05);
-       hw.hangLiftLeft.setPosition(0.8);
-       hw.hangLiftRight.setPosition(0.2);
+        if (hanging == Hanging.Extend) ;
+        hw.hangLeft.setPosition(Servo.MIN_POSITION + 0.05);
+        hw.hangRight.setPosition(Servo.MAX_POSITION - 0.05);
+        hw.hangLiftLeft.setPosition(0.8);
+        hw.hangLiftRight.setPosition(0.2);
     }
     //merry summer
 
