@@ -127,8 +127,6 @@ public class TeleOpMain extends LinearOpMode {
             piBot.runGrabber();
 
             if (startTime.seconds() > 120) {
-
-
                 if (gamepad2.x && gamepad2.b) {
                     hw.droneLauncher.setPower(0.2);
                 } else {
