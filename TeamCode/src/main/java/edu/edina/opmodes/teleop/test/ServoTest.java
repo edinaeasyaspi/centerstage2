@@ -17,24 +17,25 @@ public class ServoTest extends LinearOpMode {
 
         waitForStart();
 
-        hw.hangRight.setPosition(Servo.MIN_POSITION + 0.05);
-        hw.hangLeft.setPosition(Servo.MAX_POSITION - 0.05);
-        hw.hangLiftLeft.setPosition(1);
-        hw.hangLiftRight.setPosition(0.4);
-
         while (opModeIsActive()) {
             if (gamepad1.right_bumper) {
-                telemetry.addData("lift","raise");
+                telemetry.addData("lift", "raise");
                 telemetry.update();
 
                 hw.hangRight.setPosition(Servo.MAX_POSITION - 0.05);
                 hw.hangLeft.setPosition(Servo.MIN_POSITION + 0.05);
                 hw.hangLiftLeft.setPosition(0.1);
-                hw.hangLiftRight.setPosition(0.6);
-            }else{
-                telemetry.addData("lift","no");
-                telemetry.update();
+                sleep(1000);
+                hw.hangLiftRight.setPosition(0.5);
+            }
+            if (gamepad1.left_bumper) {
+                hw.hangRight.setPosition(Servo.MIN_POSITION + 0.05);
+                hw.hangLeft.setPosition(Servo.MAX_POSITION - 0.05);
+                hw.hangLiftLeft.setPosition(1);
+                sleep(1000);
+                hw.hangLiftRight.setPosition(0);
             }
         }
     }
 }
+
