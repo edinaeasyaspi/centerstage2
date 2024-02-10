@@ -86,7 +86,7 @@ public class TeleOpMain extends LinearOpMode {
                 liftPosition = hw.liftMotor.getCurrentPosition();
             } else {
                 double y = hw.liftMotor.getCurrentPosition() - liftPosition;
-                hw.liftMotor.setPower(y / 100);
+                hw.liftMotor.setPower(y / 20);
             }
 
             if (max > 1.0) {
@@ -104,9 +104,9 @@ public class TeleOpMain extends LinearOpMode {
             }
 
             if (gamepad1.a)
-                powerLimit = 1;
-            else
                 powerLimit = 0.5;
+            else
+                powerLimit = 1.0;
 
             hw.frontLeftMotor.setPower(leftFrontPower * powerLimit);
             hw.backLeftMotor.setPower(leftBackPower * powerLimit);
