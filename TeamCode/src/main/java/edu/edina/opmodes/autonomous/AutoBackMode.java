@@ -46,7 +46,6 @@ public abstract class AutoBackMode extends AutoMode {
         rotateToHeading(180);
         driveToClosestPoint(37, 116, Lateral);
         driveToClosestPoint(36, 13, Axial);
-        //flip arm over
         piBot.drop(GrabberSide.Right);
         rotateToPoint(67, 85);
         driveToClosestPoint(67, 85, Axial);

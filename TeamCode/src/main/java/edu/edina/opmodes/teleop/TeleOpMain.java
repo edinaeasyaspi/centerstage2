@@ -14,7 +14,7 @@ import edu.edina.library.util.GrabberSide;
 import edu.edina.library.util.PiBot;
 import edu.edina.library.util.RobotHardware;
 
-@TeleOp(name = "TeleOpMain 😀🤖🥧☠️🍀🤣")
+@TeleOp(name = "TeleOpMain 🥧")
 public class TeleOpMain extends LinearOpMode {
     protected int endGameTime=90;
 
@@ -109,6 +109,13 @@ public class TeleOpMain extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 piBot.drop(GrabberSide.Both);
             }
+            if (gamepad1.left_bumper && gamepad1.b) {
+                piBot.grab(GrabberSide.Left);
+            }
+            if(gamepad1.right_bumper && gamepad1.b) {
+                piBot.grab(GrabberSide.Right);
+            }
+
 
             if (gamepad1.a)
                 powerLimit = 1.0;
