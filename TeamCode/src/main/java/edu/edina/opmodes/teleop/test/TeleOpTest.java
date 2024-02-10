@@ -14,9 +14,8 @@ import edu.edina.library.util.GrabberSide;
 import edu.edina.library.util.PiBot;
 import edu.edina.library.util.RobotHardware;
 
-@TeleOp(name = "TeleOpMain 😀🤖🥧☠️🍀🤣")
-public class TeleOpMain extends LinearOpMode {
-    protected int endGameTime=90;
+@TeleOp(name = "TeleOp TEST TEST TEST")
+public class TeleOpTest extends LinearOpMode {
 
     private PiBot piBot;
 
@@ -85,7 +84,7 @@ public class TeleOpMain extends LinearOpMode {
             max = Math.max(max, Math.abs(rightBackPower));
 
             int currPos = hw.liftMotor.getCurrentPosition();
-            if (gamepad2.dpad_up && currPos < noLift + 1500) {
+            if (gamepad2.dpad_up && currPos < noLift +1500) {
                 hw.liftMotor.setPower(0.7);
                 liftPosition = currPos;
             } else if (gamepad2.dpad_down && currPos > noLift) {
@@ -141,7 +140,7 @@ public class TeleOpMain extends LinearOpMode {
 
             piBot.runGrabber();
 
-            if (startTime.seconds() > 90) {
+            if (startTime.seconds() > 5) {
                 if (gamepad2.x && gamepad2.y && gamepad2.dpad_left) {
                     hw.droneLauncher.setPower(-1);
 //                } else {
@@ -149,7 +148,7 @@ public class TeleOpMain extends LinearOpMode {
                 }
             }
 
-            if (startTime.seconds() > 90) {
+            if (startTime.seconds() > 5) {
                 if (gamepad2.a) {
                     for (PwmControl c : otherServos) {
                         c.setPwmDisable();
