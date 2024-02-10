@@ -16,21 +16,25 @@ public abstract class AutoFrontMode extends AutoMode {
 
     @Override
     protected void runMainPath() {
+        piBot.grab(GrabberSide.Both);
         if (position == BACKSTAGE) {
             driveToClosestPoint(31, 36, Axial);
             rotateToHeading(-45);
             driveToClosestPoint(37, 44.5, Axial);
             piBot.drop(GrabberSide.Left);
+            piBot.grab(GrabberSide.Right);
             driveToClosestPoint(31, 36, Axial);
         } else if (position == MIDDLE) {
             driveToClosestPoint(40, 36, Axial);
             piBot.drop(GrabberSide.Left);
+            piBot.grab(GrabberSide.Right);
             driveToClosestPoint(23, 36, Axial);
         } else if (position == AUDIENCE) {
             driveToClosestPoint(25, 36, Axial);
             rotateToHeading(-135);
             driveToClosestPoint(38, 38.5, Axial);
             piBot.drop(GrabberSide.Left);
+            piBot.grab(GrabberSide.Right);
             driveToClosestPoint(25, 36, Axial);
             driveToClosestPoint(15, 33, Lateral);
         } else {
@@ -48,6 +52,8 @@ public abstract class AutoFrontMode extends AutoMode {
         driveToClosestPoint(47, 6, Axial);
         driveToClosestPoint(47, 12, Axial);
         piBot.grab(GrabberSide.Right);
+        hw.intakeSwingRight.setPosition(0.1);
+        hw.intakeSwingLeft.setPosition(0.9);
         rotateToPoint(64, 48);
         driveToClosestPoint(64, 48, Axial);
         rotateToPoint(68, 100);
