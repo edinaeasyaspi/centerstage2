@@ -17,22 +17,22 @@ public abstract class AutoFrontMode extends AutoMode {
     @Override
     protected void runMainPath() {
         if (position == BACKSTAGE) {
-            driveToClosestPoint(24, 36, Axial);
+            driveToClosestPoint(31, 36, Axial);
             rotateToHeading(-45);
-            driveToClosestPoint(32, 39.5, Axial);
+            driveToClosestPoint(37, 44.5, Axial);
             piBot.drop(GrabberSide.Left);
-            driveToClosestPoint(30, 24, Axial);
+            driveToClosestPoint(31, 36, Axial);
         } else if (position == MIDDLE) {
-            driveToClosestPoint(33, 36, Axial);
+            driveToClosestPoint(40, 36, Axial);
             piBot.drop(GrabberSide.Left);
-            driveToClosestPoint(16, 36, Axial);
+            driveToClosestPoint(23, 36, Axial);
         } else if (position == AUDIENCE) {
-            driveToClosestPoint(18, 36, Axial);
+            driveToClosestPoint(25, 36, Axial);
             rotateToHeading(-135);
-            driveToClosestPoint(33, 33.5, Axial);
+            driveToClosestPoint(38, 38.5, Axial);
             piBot.drop(GrabberSide.Left);
-            driveToClosestPoint(18, 36, Axial);
-            driveToClosestPoint(12, 30, Lateral);
+            driveToClosestPoint(25, 36, Axial);
+            driveToClosestPoint(15, 33, Lateral);
         } else {
             driveToClosestPoint(24, 36, Axial);
             rotateToHeading(-45);
@@ -42,21 +42,22 @@ public abstract class AutoFrontMode extends AutoMode {
         }
 
         rotateToPoint(24, 18);
-        driveToClosestPoint(24, 18, Axial);
+        driveToClosestPoint(24, 12, Axial);
         rotateToHeading(180);
-        driveToClosestPoint(36, 18, Lateral);
-        driveToClosestPoint(36, 13, Axial);
+        driveToClosestPoint(47, 12, Lateral);
+        driveToClosestPoint(47, 6, Axial);
+        driveToClosestPoint(47, 12, Axial);
         piBot.grab(GrabberSide.Right);
-        rotateToPoint(58, 21);
-        driveToClosestPoint(58, 21, Axial);
-        rotateToPoint(66, 50);
-        driveToClosestPoint(66, 50, Axial);
+        rotateToPoint(64, 48);
+        driveToClosestPoint(64, 48, Axial);
+        rotateToPoint(68, 100);
+        driveToClosestPoint(68, 100, Axial);
         rotateToHeading(0);
-        driveToClosestPoint(66, 110, Axial);
+        driveToClosestPoint(68, 120, Axial);
         rotateToHeading(180);
-        driveToClosestPoint(42, 110, Lateral);
+        driveToClosestPoint(36, 120, Lateral);
 
         //drop pixel
-        driveToClosestPoint(10, 110, Lateral);
+        driveToClosestPoint(10, 120, Lateral);
     }
 }
