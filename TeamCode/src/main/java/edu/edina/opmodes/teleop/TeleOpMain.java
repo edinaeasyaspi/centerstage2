@@ -6,13 +6,15 @@ import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.PwmControl;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import edu.edina.library.util.GrabberSide;
 import edu.edina.library.util.PiBot;
 import edu.edina.library.util.RobotHardware;
 
-@TeleOp (name= "TeleOpMain 😀🤖🥧☠️🍀🤣" )
+@TeleOp(name = "TeleOpMain 😀🤖🥧☠️🍀🤣")
 public class TeleOpMain extends LinearOpMode {
 
     private PiBot piBot;
@@ -33,7 +35,14 @@ public class TeleOpMain extends LinearOpMode {
         hw.backRightMotor.setZeroPowerBehavior(BRAKE);
         hw.liftMotor.setZeroPowerBehavior(BRAKE);
 
-
+        PwmControl[] otherServos = new PwmControl[]{
+                ((PwmControl) hw.intakeSwingLeft),
+                ((PwmControl) hw.intakeSwingRight),
+                ((PwmControl) hw.intakeLeft),
+                ((PwmControl) hw.intakeRight),
+                ((PwmControl) hw.hangLeft),
+                ((PwmControl) hw.hangRight)
+        };
 
 //        hw.hangRight.setPosition(Servo.MIN_POSITION + 0.05);
 //        hw.hangLeft.setPosition(Servo.MAX_POSITION - 0.05);
@@ -67,13 +76,13 @@ public class TeleOpMain extends LinearOpMode {
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
 
-            if (gamepad1.dpad_up) {
+            if (gamepad2.dpad_up) {
                 if (hw.liftMotor.getCurrentPosition() < noLift + 750) {
-                    hw.liftMotor.setPower(0.4);
+                    hw.liftMotor.setPower(0.7);
                     liftPosition = hw.liftMotor.getCurrentPosition();
                 }
-            } else if (gamepad1.dpad_down) {
-                hw.liftMotor.setPower(-0.4);
+            } else if (gamepad2.dpad_down) {
+                hw.liftMotor.setPower(-0.7);
                 liftPosition = hw.liftMotor.getCurrentPosition();
             } else {
                 double y = hw.liftMotor.getCurrentPosition() - liftPosition;
@@ -110,10 +119,10 @@ public class TeleOpMain extends LinearOpMode {
                 dropTimer = new ElapsedTime();
             }
 
-            if (dropTimer != null && dropTimer.seconds() > 1.6) {
-                piBot.drop(GrabberSide.Both);
-                dropTimer = null;
-            }
+       //     if (dropTimer != null && dropTimer.seconds() > 1.6) {
+       //         piBot.drop(GrabberSide.Both);
+        //         dropTimer = null;
+            //}
 
             if (gamepad1.right_trigger > 0.8) {
                 piBot.positionGrabber(0);
@@ -122,11 +131,35 @@ public class TeleOpMain extends LinearOpMode {
 
             piBot.runGrabber();
 
-            if (startTime.seconds() > 120) {
-                if (gamepad2.x && gamepad2.b) {
-                    hw.droneLauncher.setPower(0.2);
+            if (startTime.seconds() > 12) {
+                if (gamepad2.x && gamepad2.y && gamepad2.dpad_left) {
+                    hw.droneLauncher.setPower(1);
                 } else {
                     hw.droneLauncher.setPower(0);
+                }
+            }
+
+            if (startTime.seconds() > 7) {
+                if (gamepad2.a) {
+                    for (PwmControl c : otherServos) {
+                        c.setPwmDisable();
+                    }
+
+                    hw.hangLiftLeft.setPosition(0.1);
+                    hw.hangLiftRight.setPosition(0.9);
+                    sleep(200);
+
+                    for (PwmControl c : otherServos) {
+                        c.setPwmEnable();
+                    }
+
+                    hw.hangRight.setPosition(Servo.MAX_POSITION - 0.05);
+                    hw.hangLeft.setPosition(Servo.MIN_POSITION + 0.05);
+                }
+
+                if (gamepad2.y) {
+                    hw.hangRight.setPosition(Servo.MIN_POSITION + 0.05);
+                    hw.hangLeft.setPosition(Servo.MAX_POSITION - 0.05);
                 }
             }
         }

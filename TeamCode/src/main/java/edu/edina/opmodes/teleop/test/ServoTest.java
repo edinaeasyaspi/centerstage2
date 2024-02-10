@@ -26,6 +26,7 @@ public class ServoTest extends LinearOpMode {
                 ((PwmControl)hw.intakeSwingLeft).setPwmDisable();
                 ((PwmControl)hw.intakeSwingRight).setPwmDisable();
                 ((PwmControl)hw.intakeLeft).setPwmDisable();
+                ((PwmControl)hw.intakeRight).setPwmDisable();
                 ((PwmControl)hw.hangLeft).setPwmDisable();
                 ((PwmControl)hw.hangRight).setPwmDisable();
                 // ((PwmControl)hw.droneLauncher).setPwmDisable();
