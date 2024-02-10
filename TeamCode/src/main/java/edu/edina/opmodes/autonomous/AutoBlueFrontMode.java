@@ -7,6 +7,6 @@ import edu.edina.library.util.Position;
 @Autonomous
 public class AutoBlueFrontMode extends AutoFrontMode {
     public AutoBlueFrontMode() {
-        super(false, new Position(0, 36, -90));
+        super(false, new Position(7, 36, -90));
     }
 }

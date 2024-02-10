@@ -134,8 +134,8 @@ public class TeleOpMain extends LinearOpMode {
             if (startTime.seconds() > 12) {
                 if (gamepad2.x && gamepad2.y && gamepad2.dpad_left) {
                     hw.droneLauncher.setPower(1);
-                } else {
-                    hw.droneLauncher.setPower(0);
+//                } else {
+//                    hw.droneLauncher.setPower(0);
                 }
             }
 
