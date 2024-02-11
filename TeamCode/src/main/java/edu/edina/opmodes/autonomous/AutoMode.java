@@ -1,6 +1,7 @@
 package edu.edina.opmodes.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import edu.edina.library.util.DriveStatus;
 import edu.edina.library.util.GrabberSide;
@@ -13,9 +14,10 @@ import edu.edina.library.util.drivecontrol.DriveDirection;
 import edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor;
 
 public abstract class AutoMode extends LinearOpMode {
-    protected static final boolean testMode = false;
+    protected static final boolean testMode = true;
     private final boolean invert;
     protected PiBot piBot;
+
     protected RobotHardware hw;
 
     protected SelectedSpike position;
@@ -59,14 +61,24 @@ public abstract class AutoMode extends LinearOpMode {
     protected abstract void runMainPath();
 
     protected void driveToClosestPoint(double x, double y, DriveDirection driveDirection) {
-        if (invert)
-            x = 144 - x;
+        if (invert) x = 144 - x;
 
         // double initHeading = piBot.getPositioning().readHeading(true);
 
         piBot.planDriveToClosestPoint(new Point(x, y), driveDirection);
         while (opModeIsActive()) {
-            if (piBot.runDrive() == DriveStatus.Done) break;
+            String pre = piBot.getPositioning().getCurrPos().toString();
+
+            if (piBot.runDrive() == DriveStatus.Done) {
+                String post = piBot.getPositioning().getCurrPos().toString();
+                telemetry.addData("pre", pre);
+                telemetry.addData("post", post);
+                telemetry.update();
+
+                sleep(10000);
+
+                break;
+            }
             telemetry.update();
         }
 
@@ -76,8 +88,7 @@ public abstract class AutoMode extends LinearOpMode {
     }
 
     protected void rotateToHeading(double targetHeading) {
-        if (invert)
-            targetHeading = -targetHeading;
+        if (invert) targetHeading = -targetHeading;
 
         piBot.planRotateToHeading(targetHeading);
         while (opModeIsActive()) {
@@ -88,9 +99,13 @@ public abstract class AutoMode extends LinearOpMode {
         pauseOnTest();
     }
 
+    protected void rotateAndDriveToPoint(double x, double y, DriveDirection direction) {
+        rotateToPoint(x, y);
+        driveToClosestPoint(x, y, DriveDirection.Axial);
+    }
+
     protected void rotateToPoint(double x, double y) {
-        if (invert)
-            x = 144 - x;
+        if (invert) x = 144 - x;
 
         piBot.planRotateToPoint(new Point(x, y));
         while (opModeIsActive()) {
@@ -102,14 +117,20 @@ public abstract class AutoMode extends LinearOpMode {
     }
 
     private void pauseOnTest() {
-        telemetry.update();
-        if (opModeIsActive() && testMode)
-            sleep(1000);
+        if (testMode) {
+            ElapsedTime time = new ElapsedTime();
+
+            while (opModeIsActive() && time.seconds() < 3) {
+                telemetry.addData("gyro heading", piBot.getPositioning().readHeading(false));
+                telemetry.addData("pos", piBot.getPositioning().getCurrPos());
+                telemetry.update();
+            }
+        } else {
+            telemetry.update();
+        }
     }
 
     protected enum SelectedSpike {
-        AUDIENCE,
-        MIDDLE,
-        BACKSTAGE
+        AUDIENCE, MIDDLE, BACKSTAGE
     }
 }

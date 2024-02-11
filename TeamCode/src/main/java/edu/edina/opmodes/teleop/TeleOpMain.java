@@ -132,22 +132,14 @@ public class TeleOpMain extends LinearOpMode {
             hw.backRightMotor.setPower(rightBackPower * powerLimit);
 
             if (gamepad2.left_trigger > 0.8) {
-                piBot.positionGrabber(0.9);
-                piBot.grab(GrabberSide.Both);
-                dropTimer = new ElapsedTime();
+                piBot.positionGrabber(0.9, false);
                 invertSteering = true;
             }
 
-            //     if (dropTimer != null && dropTimer.seconds() > 1.6) {
-            //         piBot.drop(GrabberSide.Both);
-            //         dropTimer = null;
-            //}
-
             if (gamepad2.right_trigger > 0.8) {
-                piBot.positionGrabber(0);
+                piBot.positionGrabber(0, true);
                 piBot.grab(GrabberSide.Both);
                 invertSteering = false;
-
             }
 
             piBot.runGrabber();
@@ -176,7 +168,6 @@ public class TeleOpMain extends LinearOpMode {
 
                     hw.hangRight.setPosition(Servo.MAX_POSITION - 0.05);
                     hw.hangLeft.setPosition(Servo.MIN_POSITION + 0.05);
-                    piBot.positionGrabber(0.2);
                 }
 
                 if (gamepad2.y) {

@@ -18,7 +18,7 @@ public class PiDrive {
     private final PiMotor[] motors;
 
     //for 20:1
-    private static final double ROTATE_MULT = 2.0 / 0.003;
+    private static final double ROTATE_MULT = 5.0 / 0.003;
     private static final MoveCal driveCal = new MoveCal(2 * 360.0 / 24.125, -1600);
     private static final MoveCal strafeCal = new MoveCal(360 / 12.25, -3100);
     private static final MoveCal diagonalCal = new MoveCal(360 / 12.25, -3100);

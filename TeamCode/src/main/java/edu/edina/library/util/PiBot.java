@@ -189,9 +189,14 @@ public class PiBot {
         return true;
     }
 
-    public void positionGrabber(double targetPosition) {
+    public void positionGrabber(double targetPosition, boolean fullClose) {
         armSwingRight.setTargetPos(targetPosition);
         armSwingLeft.setTargetPos(1 - targetPosition);
+
+        if (fullClose) {
+            hw.intakeLeft.setPosition(0);
+            hw.intakeRight.setPosition(0.6);
+        }
     }
 
     public void runGrabber() {
@@ -205,12 +210,12 @@ public class PiBot {
 
     public void grab(GrabberSide grabberSide) {
         if (grabberSide == GrabberSide.Right)
-            hw.intakeRight.setPosition(0.6);
+            hw.intakeRight.setPosition(0.5);
         if (grabberSide == GrabberSide.Left)
-            hw.intakeLeft.setPosition(0);
+            hw.intakeLeft.setPosition(0.1);
         if (grabberSide == GrabberSide.Both) {
-            hw.intakeLeft.setPosition(0);
-            hw.intakeRight.setPosition(0.6);
+            hw.intakeLeft.setPosition(0.1);
+            hw.intakeRight.setPosition(0.5);
         }
     }
 
