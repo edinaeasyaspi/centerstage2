@@ -16,7 +16,11 @@ import edu.edina.library.util.RobotHardware;
 
 @TeleOp(name = "TeleOpMain 🥧")
 public class TeleOpMain extends LinearOpMode {
-    protected int endGameTime=90;
+    protected int endGameTime;
+
+    public TeleOpMain() {
+        endGameTime = 90;
+    }
 
     private PiBot piBot;
 
@@ -112,7 +116,7 @@ public class TeleOpMain extends LinearOpMode {
             if (gamepad1.left_bumper && gamepad1.b) {
                 piBot.grab(GrabberSide.Left);
             }
-            if(gamepad1.right_bumper && gamepad1.b) {
+            if (gamepad1.right_bumper && gamepad1.b) {
                 piBot.grab(GrabberSide.Right);
             }
 
@@ -148,7 +152,7 @@ public class TeleOpMain extends LinearOpMode {
 
             piBot.runGrabber();
 
-            if (startTime.seconds() > 90) {
+            if (startTime.seconds() > endGameTime) {
                 if (gamepad2.x && gamepad2.y && gamepad2.dpad_left) {
                     hw.droneLauncher.setPower(-1);
 //                } else {
@@ -156,7 +160,7 @@ public class TeleOpMain extends LinearOpMode {
                 }
             }
 
-            if (startTime.seconds() > 90) {
+            if (startTime.seconds() > endGameTime) {
                 if (gamepad2.a) {
                     for (PwmControl c : otherServos) {
                         c.setPwmDisable();
