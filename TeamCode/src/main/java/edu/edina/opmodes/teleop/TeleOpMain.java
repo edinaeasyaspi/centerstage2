@@ -65,7 +65,7 @@ public class TeleOpMain extends LinearOpMode {
         double liftPosition = noLift;
 
         ElapsedTime dropTimer = null;
-        boolean invertSteering = false;
+        boolean invertStrafe = false;
 
         while (opModeIsActive()) {
             double max;
@@ -74,7 +74,7 @@ public class TeleOpMain extends LinearOpMode {
             double lateral = gamepad1.left_stick_x;
             double yaw = gamepad1.right_stick_x;
 
-            if (invertSteering) {
+            if (invertStrafe) {
                 lateral = -lateral;
 //                yaw = -yaw;
             }
@@ -133,13 +133,12 @@ public class TeleOpMain extends LinearOpMode {
 
             if (gamepad2.left_trigger > 0.8) {
                 piBot.positionGrabber(0.9, false);
-                invertSteering = true;
+                invertStrafe = true;
             }
 
             if (gamepad2.right_trigger > 0.8) {
                 piBot.positionGrabber(0, true);
-                piBot.grab(GrabberSide.Both);
-                invertSteering = false;
+                invertStrafe = false;
             }
 
             piBot.runGrabber();
