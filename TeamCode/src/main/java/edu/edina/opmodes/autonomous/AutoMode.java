@@ -14,7 +14,7 @@ import edu.edina.library.util.drivecontrol.DriveDirection;
 import edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor;
 
 public abstract class AutoMode extends LinearOpMode {
-    protected static final boolean testMode = true;
+    protected static final boolean testMode = false;
     private final boolean invert;
     protected PiBot piBot;
 
@@ -106,15 +106,17 @@ public abstract class AutoMode extends LinearOpMode {
     }
 
     private void pauseOnTest() {
-        if (testMode) {
-            ElapsedTime time = new ElapsedTime();
+        double delay;
+        if (testMode)
+            delay = 3;
+        else
+            delay = 0.1;
 
-            while (opModeIsActive() && time.seconds() < 3) {
-                telemetry.addData("gyro heading", piBot.getPositioning().readHeading(false));
-                telemetry.addData("pos", piBot.getPositioning().getCurrPos());
-                telemetry.update();
-            }
-        } else {
+        ElapsedTime time = new ElapsedTime();
+
+        while (opModeIsActive() && time.seconds() < delay) {
+            telemetry.addData("gyro heading", piBot.getPositioning().readHeading(false));
+            telemetry.addData("pos", piBot.getPositioning().getCurrPos());
             telemetry.update();
         }
     }
