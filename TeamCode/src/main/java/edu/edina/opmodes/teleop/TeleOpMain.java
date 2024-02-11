@@ -72,7 +72,6 @@ public class TeleOpMain extends LinearOpMode {
 
             if (invertSteering) {
                 lateral = -lateral;
-//                yaw = -yaw;
             }
 
             double leftFrontPower = axial + lateral + yaw;
@@ -149,7 +148,7 @@ public class TeleOpMain extends LinearOpMode {
 
             piBot.runGrabber();
 
-            if (startTime.seconds() > 2) {
+            if (startTime.seconds() > 90) {
                 if (gamepad2.x && gamepad2.y && gamepad2.dpad_left) {
                     hw.droneLauncher.setPower(-1);
 //                } else {
