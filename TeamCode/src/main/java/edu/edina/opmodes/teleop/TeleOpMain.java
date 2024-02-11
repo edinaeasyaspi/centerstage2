@@ -85,7 +85,7 @@ public class TeleOpMain extends LinearOpMode {
             max = Math.max(max, Math.abs(rightBackPower));
 
             int currPos = hw.liftMotor.getCurrentPosition();
-            if (gamepad2.dpad_up && currPos < noLift + 1500) {
+            if (gamepad2. dpad_up && currPos < 1.5 * 1500) {
                 hw.liftMotor.setPower(0.7);
                 liftPosition = currPos;
             } else if (gamepad2.dpad_down && currPos > noLift) {
@@ -109,11 +109,12 @@ public class TeleOpMain extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 piBot.drop(GrabberSide.Both);
             }
-            if (gamepad1.left_bumper && gamepad1.b) {
-                piBot.grab(GrabberSide.Left);
+            if (gamepad1.dpad_right) {
+//                hw.intakeRight.setPosition(0.6);
+                piBot.drop(GrabberSide.Right);
             }
-            if(gamepad1.right_bumper && gamepad1.b) {
-                piBot.grab(GrabberSide.Right);
+            if(gamepad1.dpad_left) {
+                piBot.drop(GrabberSide.Left);
             }
 
 
@@ -148,7 +149,7 @@ public class TeleOpMain extends LinearOpMode {
 
             piBot.runGrabber();
 
-            if (startTime.seconds() > 90) {
+            if (startTime.seconds() > 2) {
                 if (gamepad2.x && gamepad2.y && gamepad2.dpad_left) {
                     hw.droneLauncher.setPower(-1);
 //                } else {
