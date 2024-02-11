@@ -67,18 +67,7 @@ public abstract class AutoMode extends LinearOpMode {
 
         piBot.planDriveToClosestPoint(new Point(x, y), driveDirection);
         while (opModeIsActive()) {
-            String pre = piBot.getPositioning().getCurrPos().toString();
-
-            if (piBot.runDrive() == DriveStatus.Done) {
-                String post = piBot.getPositioning().getCurrPos().toString();
-                telemetry.addData("pre", pre);
-                telemetry.addData("post", post);
-                telemetry.update();
-
-                sleep(10000);
-
-                break;
-            }
+            if (piBot.runDrive() == DriveStatus.Done) break;
             telemetry.update();
         }
 
