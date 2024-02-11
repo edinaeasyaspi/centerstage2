@@ -48,7 +48,7 @@ public abstract class AutoFrontMode extends AutoMode {
         rotateAndDriveToPoint(24, 18, Axial);
         rotateToHeading(180);
         driveToClosestPoint(47, 20, Lateral);
-        rotateAndDriveToPoint(64, 48, Axial);
+        rotateAndDriveToPoint(60, 48, Axial);
         rotateAndDriveToPoint(56, 100, Axial);
         rotateToHeading(0);
         driveToClosestPoint(68, 120, Axial);
