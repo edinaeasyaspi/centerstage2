@@ -34,19 +34,21 @@ public class DualWebcamTest extends LinearOpMode {
                 .build();
 
         VisionPortal frontView = new VisionPortal.Builder()
-                .setLiveViewContainerId(viewportIds[0])
-                .enableLiveView(true)
-                .addProcessor(frontAprilTagProc)
                 .setCamera(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI"))
                 .setCameraResolution(new Size(640, 480))
+                .enableLiveView(true)
+                .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
+                .addProcessor(frontAprilTagProc)
+                .setLiveViewContainerId(viewportIds[0])
                 .build();
 
         VisionPortal rearView = new VisionPortal.Builder()
-                .setLiveViewContainerId(viewportIds[1])
-                .enableLiveView(true)
-                .addProcessor(rearAprilTagProc)
                 .setCamera(hardwareMap.get(WebcamName.class, "LogitechC270_8034PI_Rear"))
                 .setCameraResolution(new Size(640, 480))
+                .enableLiveView(true)
+                .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
+                .addProcessor(rearAprilTagProc)
+                .setLiveViewContainerId(viewportIds[1])
                 .build();
 
         waitForStart();

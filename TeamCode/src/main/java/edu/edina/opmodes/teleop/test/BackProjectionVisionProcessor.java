@@ -31,42 +31,71 @@ public class BackProjectionVisionProcessor implements org.firstinspires.ftc.visi
         points = new Point[4];
     }
 
+    public String getDiagString() {
+        return diagString;
+    }
+
+    public Point getPoint(int i) {
+        return points[0];
+    }
+
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
-        if (width != 640)
-            throw new RuntimeException("width != 640");
-        if (height != 480)
-            throw new RuntimeException("height != 480");
-        xList = new ArrayList<>();
-        yList = new ArrayList<>();
-        proj = new Projector(0, 640, 480);
+        try {
+            if (width != 640)
+                throw new RuntimeException("width != 640");
+            if (height != 480)
+                throw new RuntimeException("height != 480");
+            xList = new ArrayList<>();
+            yList = new ArrayList<>();
+            proj = new Projector(0.49976, 640, 480);
+        } catch (Exception e) {
+            diagString = String.format("error during init: %s", toString(e));
+        }
     }
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
-        Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
+        try {
+            Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV_FULL);
 
-        points[0] = hueMedian(frame, 60);
-        points[1] = hueMedian(frame, 120);
-        points[2] = hueMedian(frame, 180);
-        points[3] = hueMedian(frame, 300);
+            byte[] pix = new byte[3];
+            hsvMat.get(320, 280, pix);
+            diagString = String.format("hsv=%d %d %d", pix[0], pix[1], pix[2]);
 
-        for (Point p : points)
-            if (p == null)
-                return null;
+            points[0] = hueMedian(hsvMat, 60);
+            points[1] = hueMedian(hsvMat, 120);
+            points[2] = hueMedian(hsvMat, 180);
+            points[3] = hueMedian(hsvMat, 300);
 
-        Vec[] v = proj.backProjectSquare(points);
+            for (Point p : points)
+                if (p == null)
+                    return null;
 
+            Vec[] v = proj.backProjectSquare(points);
 
-        return points;
+            return points;
+        } catch (Exception e) {
+            diagString = String.format("error processing frame: %s", toString(e));
+            return null;
+        }
+    }
+
+    private static String toString(Exception x) {
+        String s = x.toString();
+        for (StackTraceElement e : x.getStackTrace())
+            s += "\n" + e;
+        return s;
     }
 
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
         Paint paint = new Paint();
-        paint.setColor(Color.YELLOW);
+        paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(scaleCanvasDensity * 4);
+
+        int halfWidth = 5;
 
         for (Point p : points) {
             if (p == null)
@@ -74,23 +103,27 @@ public class BackProjectionVisionProcessor implements org.firstinspires.ftc.visi
 
             float x = (float) (p.x * scaleBmpPxToCanvasPx);
             float y = (float) (p.y * scaleBmpPxToCanvasPx);
-            canvas.drawLine(x, y - 3, x, y + 3, paint);
-            canvas.drawLine(x - 3, y, x + 3, y, paint);
+            canvas.drawLine(x, y - halfWidth, x, y + halfWidth, paint);
+            canvas.drawLine(x - halfWidth, y, x + halfWidth, y, paint);
         }
     }
 
     private Point hueMedian(Mat frame, int hue360) {
-        int hueMin = (hue360 - 30) / 2;
-        int hueMax = (hue360 + 30) / 2;
+        int hueMin = (hue360 - 30)*360/256;
+        int hueMax = (hue360 + 30)*360/256;
 
         xList.clear();
         yList.clear();
 
-        double[] pix = new double[3];
+        byte[] pix = new byte[3];
         for (int i = 0; i < frame.height(); i++) {
             for (int j = 0; j < frame.width(); j++) {
+                int hue = (int) pix[0];
+                if (hue < 0)
+                    hue += 360;
+
                 frame.get(i, j, pix);
-                if (hueMin <= pix[0] && pix[0] <= hueMax) {
+                if (hueMin <= hue && hue <= hueMax) {
                     xList.add(j);
                     yList.add(i);
                 }

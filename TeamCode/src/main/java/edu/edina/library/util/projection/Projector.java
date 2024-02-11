@@ -4,21 +4,26 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Projector {
-    public final double fovDiag, pixWidth, pixHeight;
+    public final double pixWidth, pixHeight;
     public final double aspect, fovX, fovY, pixDepth;
 
-    public Projector(double fovDiag, double pixWidth, double pixHeight) {
-        this.fovDiag = fovDiag;
+    public Projector(double fovY, double pixWidth, double pixHeight) {
+        this.fovY = fovY;
         this.pixWidth = pixWidth;
         this.pixHeight = pixHeight;
 
         aspect = pixWidth / pixHeight;
 
-        double z = Math.sqrt(1 + aspect * aspect) / (2 * Math.tan(fovDiag / 2));
+        double z = 1 / (2 * Math.tan(fovY / 2));
         pixDepth = z * pixHeight;
 
-        fovY = 2 * Math.atan(1 / (2 * z));
         fovX = 2 * Math.atan(aspect / (2 * z));
+    }
+
+    public Point project(Vec v) {
+        return new Point(
+                pixWidth / 2 + v.x / v.z * pixDepth,
+                pixHeight / 2 - v.y / v.z * pixDepth);
     }
 
     public Vec[] backProjectSquare(Point[] points) {
@@ -37,7 +42,7 @@ public class Projector {
             for (Vec c1 : cvecs.get(1))
                 for (Vec c2 : cvecs.get(2))
                     for (Vec c3 : cvecs.get(3))
-                        shapes.add(new SquareShape(new Vec[] { c0, c1, c2, c3 }));
+                        shapes.add(new SquareShape(new Vec[]{c0, c1, c2, c3}));
 
         shapes.sort(Comparator.comparing((SquareShape c) -> c.score()));
 
@@ -85,7 +90,7 @@ public class Projector {
         if (n == 0)
             return null;
         else if (n == 1)
-            return new double[] { d[0] };
+            return new double[]{d[0]};
         else
             return d;
     }
@@ -123,7 +128,7 @@ public class Projector {
         double C = x0 * x0 + y0 * y0 + z0 * z0 - 1;
 
         double[] z = QuadraticRoots.realRoots(A, B, C);
-        return new Vec[] {
+        return new Vec[]{
                 a.at(z[0]),
                 a.at(z[1])
         };
