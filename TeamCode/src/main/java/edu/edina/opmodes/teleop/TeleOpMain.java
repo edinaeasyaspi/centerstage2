@@ -67,7 +67,6 @@ public class TeleOpMain extends LinearOpMode {
         double powerLimit = 1;
         double liftPosition = noLift;
 
-        ElapsedTime dropTimer = null;
         boolean invertStrafe = false;
 
         while (opModeIsActive()) {
@@ -119,7 +118,7 @@ public class TeleOpMain extends LinearOpMode {
 //                hw.intakeRight.setPosition(0.6);
                 piBot.drop(GrabberSide.Right);
             }
-            if(gamepad1.dpad_left) {
+            if (gamepad1.dpad_left) {
                 piBot.drop(GrabberSide.Left);
             }
 
@@ -178,7 +177,13 @@ public class TeleOpMain extends LinearOpMode {
                 }
             }
 
-            telemetry.addData("timer", startTime.seconds());
+            telemetry.addData("timer", "%.1f", startTime.seconds());
+            telemetry.addData("power limit", "%.1f", powerLimit);
+            telemetry.addData("lift pos/tgt/lim", "%.1f/%.1f/%.1f",
+                    hw.liftMotor.getCurrentPosition(),
+                    liftPosition,
+                    liftLimit);
+            telemetry.addData("invert", invertStrafe);
             telemetry.update();
         }
     }
