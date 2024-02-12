@@ -5,30 +5,28 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 
 import edu.edina.library.util.projection.Point;
 import edu.edina.library.util.projection.Projector;
 import edu.edina.library.util.projection.Vec;
 
-public class BackProjectionVisionProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
-    private Mat hsvMat;
-    private double fovDiag;
+public class VisionCalProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
     private String diagString;
     private Point[] points;
-    private ArrayList<Integer> xList, yList;
+    private Vec[] vectors;
     private Projector proj;
 
-    public BackProjectionVisionProcessor() {
-        hsvMat = new Mat();
-        points = new Point[4];
+    private final AprilTagProcessor aprilTagProc;
+
+    public VisionCalProcessor(AprilTagProcessor aprilTagProc) {
+        this.aprilTagProc = aprilTagProc;
     }
 
     public String getDiagString() {
@@ -46,8 +44,6 @@ public class BackProjectionVisionProcessor implements org.firstinspires.ftc.visi
                 throw new RuntimeException("width != 640");
             if (height != 480)
                 throw new RuntimeException("height != 480");
-            xList = new ArrayList<>();
-            yList = new ArrayList<>();
             proj = new Projector(0.49976, 640, 480);
         } catch (Exception e) {
             diagString = String.format("error during init: %s", toString(e));
@@ -57,24 +53,33 @@ public class BackProjectionVisionProcessor implements org.firstinspires.ftc.visi
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         try {
-            Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV_FULL);
+            points = new Point[4];
+            vectors = null;
 
-            byte[] pix = new byte[3];
-            hsvMat.get(320, 280, pix);
-            diagString = String.format("hsv=%d %d %d", pix[0], pix[1], pix[2]);
+            String s = "";
 
-            points[0] = hueMedian(hsvMat, 60);
-            points[1] = hueMedian(hsvMat, 120);
-            points[2] = hueMedian(hsvMat, 180);
-            points[3] = hueMedian(hsvMat, 300);
+            for (AprilTagDetection det : aprilTagProc.getDetections()) {
+                for (int i = 0; i < 4; i++) {
+                    points[i] = new Point(det.corners[i].x, det.corners[i].y);
+                    if (!s.isEmpty())
+                        s += ",";
+                    s += points[i];
+                }
 
-            for (Point p : points)
-                if (p == null)
-                    return null;
+                break;
+            }
 
-            Vec[] v = proj.backProjectSquare(points);
+            if (points[0] == null)
+                return null;
 
-            return points;
+            vectors = proj.backProjectSquare(points);
+            for (Vec v : vectors) {
+                s += "\n" + v;
+            }
+
+            diagString = s;
+
+            return vectors;
         } catch (Exception e) {
             diagString = String.format("error processing frame: %s", toString(e));
             return null;
@@ -90,54 +95,29 @@ public class BackProjectionVisionProcessor implements org.firstinspires.ftc.visi
 
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
-        Paint paint = new Paint();
-        paint.setColor(Color.BLUE);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(scaleCanvasDensity * 4);
+        int[] colors = new int[]{
+                Color.RED,
+                Color.GREEN,
+                Color.BLUE,
+                Color.CYAN
+        };
 
         int halfWidth = 5;
 
-        for (Point p : points) {
+        for (int i = 0; i < points.length; i++) {
+            Point p = points[i];
             if (p == null)
                 continue;
+
+            Paint paint = new Paint();
+            paint.setColor(colors[i]);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(scaleCanvasDensity * 4);
 
             float x = (float) (p.x * scaleBmpPxToCanvasPx);
             float y = (float) (p.y * scaleBmpPxToCanvasPx);
             canvas.drawLine(x, y - halfWidth, x, y + halfWidth, paint);
             canvas.drawLine(x - halfWidth, y, x + halfWidth, y, paint);
         }
-    }
-
-    private Point hueMedian(Mat frame, int hue360) {
-        int hueMin = (hue360 - 30)*360/256;
-        int hueMax = (hue360 + 30)*360/256;
-
-        xList.clear();
-        yList.clear();
-
-        byte[] pix = new byte[3];
-        for (int i = 0; i < frame.height(); i++) {
-            for (int j = 0; j < frame.width(); j++) {
-                int hue = (int) pix[0];
-                if (hue < 0)
-                    hue += 360;
-
-                frame.get(i, j, pix);
-                if (hueMin <= hue && hue <= hueMax) {
-                    xList.add(j);
-                    yList.add(i);
-                }
-            }
-        }
-
-        if (xList.size() == 0)
-            return null;
-
-        return new Point(median(xList), median(yList));
-    }
-
-    private static int median(ArrayList<Integer> list) {
-        Collections.sort(list);
-        return list.get(list.size() / 2);
     }
 }
