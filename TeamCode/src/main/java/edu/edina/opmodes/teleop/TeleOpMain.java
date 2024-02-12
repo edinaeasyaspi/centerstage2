@@ -18,8 +18,11 @@ import edu.edina.library.util.RobotHardware;
 public class TeleOpMain extends LinearOpMode {
     protected int endGameTime;
 
+    protected int liftLimit;
+
     public TeleOpMain() {
         endGameTime = 90;
+        liftLimit = 2500;
     }
 
     private PiBot piBot;
@@ -89,7 +92,7 @@ public class TeleOpMain extends LinearOpMode {
             max = Math.max(max, Math.abs(rightBackPower));
 
             int currPos = hw.liftMotor.getCurrentPosition();
-            if (gamepad2.dpad_up && currPos < noLift + 1500) {
+            if (gamepad2.dpad_up && currPos < noLift + liftLimit) {
                 hw.liftMotor.setPower(0.7);
                 liftPosition = currPos;
             } else if (gamepad2.dpad_down && currPos > noLift) {
@@ -144,7 +147,7 @@ public class TeleOpMain extends LinearOpMode {
             piBot.runGrabber();
 
             if (startTime.seconds() > endGameTime) {
-                if (gamepad2.x && gamepad2.y && gamepad2.dpad_left) {
+                if (gamepad2.left_stick_button && gamepad2.right_stick_button) {
                     hw.droneLauncher.setPower(-1);
 //                } else {
 //                    hw.droneLauncher.setPower(0);
