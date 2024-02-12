@@ -1,6 +1,7 @@
 package edu.edina.library.util;
 
 import com.acmerobotics.roadrunner.ftc.LynxFirmware;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -64,7 +65,7 @@ public class RobotHardware {
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
 
-        gyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "mrGyro");
+        gyro = hardwareMap.get(ModernRoboticsI2cGyro.class, " mrGyro");
         gyro.calibrate();
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();

@@ -1,5 +1,7 @@
 package edu.edina.library.util;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
@@ -9,6 +11,8 @@ import com.qualcomm.robotcore.hardware.IMU;
 import java.util.List;
 
 public class Positioning {
+    private static final boolean useGyro = false;
+
     public AprilTagProcessor getMyAprilTagProc() {
         return myAprilTagProc;
     }
@@ -27,12 +31,9 @@ public class Positioning {
 
     public Positioning(RobotHardware hw) {
         this.gyro = hw.gyro;
+        this.imu = hw.imu;
 
-        AprilTagProcessor.Builder myAprilTagProcBuilder = new AprilTagProcessor.Builder()
-                .setDrawTagID(true)
-                .setDrawTagOutline(true)
-                .setDrawAxes(true)
-                .setDrawCubeProjection(true);
+        AprilTagProcessor.Builder myAprilTagProcBuilder = new AprilTagProcessor.Builder().setDrawTagID(true).setDrawTagOutline(true).setDrawAxes(true).setDrawCubeProjection(true);
 
         myAprilTagProc = myAprilTagProcBuilder.build();
 
@@ -45,7 +46,13 @@ public class Positioning {
 
     public void setCurrPos(Position newPos) {
         currPos = newPos;
-        initialHeading = gyro.getHeading() - newPos.a;
+
+        if (useGyro) {
+            initialHeading = gyro.getHeading() - newPos.a;
+        } else {
+            YawPitchRollAngles robotOrientation = imu.getRobotYawPitchRollAngles();
+            initialHeading = robotOrientation.getYaw(AngleUnit.DEGREES) - newPos.a;
+        }
     }
 
     // todo: actually update position
@@ -75,7 +82,7 @@ public class Positioning {
 
                 Position p = new Position(rx, ry, a);
 
-                if(updatePosition) {
+                if (updatePosition) {
                     currPos = p;
                 }
 
@@ -87,7 +94,14 @@ public class Positioning {
     }
 
     public double readHeading(boolean updatePosition) {
-        double zAxis = gyro.getHeading();
+        double zAxis;
+
+        if (useGyro) {
+            zAxis = gyro.getHeading();
+        } else {
+            YawPitchRollAngles robotOrientation = imu.getRobotYawPitchRollAngles();
+            zAxis = robotOrientation.getYaw(AngleUnit.DEGREES);
+        }
 
         double heading = zAxis - initialHeading;
 

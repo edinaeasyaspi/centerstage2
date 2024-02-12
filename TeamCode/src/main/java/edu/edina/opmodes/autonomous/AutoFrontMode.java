@@ -20,6 +20,7 @@ public abstract class AutoFrontMode extends AutoMode {
 
     @Override
     protected void runMainPath() {
+        hw.liftMotor.setTargetPosition(hw.liftMotor.getCurrentPosition());
         hw.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         piBot.grab(GrabberSide.Both);
@@ -75,7 +76,7 @@ public abstract class AutoFrontMode extends AutoMode {
         driveToClosestPoint(aprilTagPosX, 122, Axial);
         hw.liftMotor.setTargetPosition(0);
         piBot.positionGrabber(0, true);
-        
+
         driveToClosestPoint(10, 120, Lateral);
     }
 }

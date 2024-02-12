@@ -179,7 +179,7 @@ public class TeleOpMain extends LinearOpMode {
 
             telemetry.addData("timer", "%.1f", startTime.seconds());
             telemetry.addData("power limit", "%.1f", powerLimit);
-            telemetry.addData("lift pos/tgt/lim", "%.1f/%.1f/%.1f",
+            telemetry.addData("lift pos/tgt/lim", "%d/%.1f/%d",
                     hw.liftMotor.getCurrentPosition(),
                     liftPosition,
                     liftLimit);
