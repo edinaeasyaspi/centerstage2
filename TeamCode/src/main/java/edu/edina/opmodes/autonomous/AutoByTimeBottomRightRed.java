@@ -109,7 +109,7 @@ public class AutoByTimeBottomRightRed extends LinearOpMode {
         backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
 
-    };
+    }
 
 
     private void extendLiftMotor(short duration) {

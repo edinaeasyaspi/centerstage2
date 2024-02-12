@@ -221,12 +221,12 @@ public class PiBot {
 
     public void drop(GrabberSide grabberSide) {
         if (grabberSide == GrabberSide.Right)
-            hw.intakeRight.setPosition(0.4);
+            hw.intakeRight.setPosition(0.45);
         if (grabberSide == GrabberSide.Left)
-            hw.intakeLeft.setPosition(0.2);
+            hw.intakeLeft.setPosition(0.15);
         if (grabberSide == GrabberSide.Both) {
-            hw.intakeLeft.setPosition(0.2);
-            hw.intakeRight.setPosition(0.4);
+            hw.intakeLeft.setPosition(0.15);
+            hw.intakeRight.setPosition(0.45);
         }
     }
 

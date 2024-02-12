@@ -63,7 +63,7 @@ public abstract class AutoMode extends LinearOpMode {
     protected void driveToClosestPoint(double x, double y, DriveDirection driveDirection) {
         if (invert) x = 144 - x;
 
-        // double initHeading = piBot.getPositioning().readHeading(true);
+      //   double initHeading = piBot.getPositioning().readHeading(true);
 
         piBot.planDriveToClosestPoint(new Point(x, y), driveDirection);
         while (opModeIsActive()) {
@@ -73,7 +73,7 @@ public abstract class AutoMode extends LinearOpMode {
 
         pauseOnTest();
 
-//        rotateToHeading(initHeading);
+//       rotateToHeading(initHeading);
     }
 
     protected void rotateToHeading(double targetHeading) {

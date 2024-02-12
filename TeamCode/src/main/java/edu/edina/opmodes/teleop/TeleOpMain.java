@@ -79,7 +79,6 @@ public class TeleOpMain extends LinearOpMode {
 
             if (invertStrafe) {
                 lateral = -lateral;
-//                yaw = -yaw;
             }
 
             double leftFrontPower = axial + lateral + yaw;
@@ -116,11 +115,12 @@ public class TeleOpMain extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 piBot.drop(GrabberSide.Both);
             }
-            if (gamepad1.left_bumper && gamepad1.b) {
-                piBot.grab(GrabberSide.Left);
+            if (gamepad1.dpad_right) {
+//                hw.intakeRight.setPosition(0.6);
+                piBot.drop(GrabberSide.Right);
             }
-            if (gamepad1.right_bumper && gamepad1.b) {
-                piBot.grab(GrabberSide.Right);
+            if(gamepad1.dpad_left) {
+                piBot.drop(GrabberSide.Left);
             }
 
 
