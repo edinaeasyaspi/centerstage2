@@ -6,6 +6,8 @@ import static edu.edina.opmodes.autonomous.AutoMode.SelectedSpike.BACKSTAGE;
 import static edu.edina.opmodes.autonomous.AutoMode.SelectedSpike.MIDDLE;
 import static edu.edina.opmodes.autonomous.AutoMode.SelectedSpike.AUDIENCE;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 import edu.edina.library.util.GrabberSide;
 import edu.edina.library.util.Position;
 
@@ -14,8 +16,12 @@ public abstract class AutoFrontMode extends AutoMode {
         super(invert, startingPos);
     }
 
+    private double aprilTagPosX;
+
     @Override
     protected void runMainPath() {
+        hw.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         piBot.grab(GrabberSide.Both);
         if (position == BACKSTAGE) {
             driveToClosestPoint(31, 36, Axial);
@@ -43,18 +49,33 @@ public abstract class AutoFrontMode extends AutoMode {
             driveToClosestPoint(37, 44.5, Axial);
             piBot.drop(GrabberSide.Left);
             piBot.grab(GrabberSide.Right);
-        }
+        } //purple pixel. it works well
 
         rotateAndDriveToPoint(24, 18, Axial);
         rotateToHeading(180);
-        driveToClosestPoint(47, 20, Lateral);
-        rotateAndDriveToPoint(60, 48, Axial);
-        rotateAndDriveToPoint(56, 100, Axial);
+        driveToClosestPoint(60, 18, Lateral);
+        driveToClosestPoint(60, 118, Axial);
         rotateToHeading(0);
-        driveToClosestPoint(68, 120, Axial);
+
+        if (position == AUDIENCE) {
+            aprilTagPosX = 42;
+            driveToClosestPoint(aprilTagPosX, 118, Lateral);
+        } else if (position == MIDDLE) {
+            aprilTagPosX = 36;
+            driveToClosestPoint(aprilTagPosX, 118, Lateral);
+        } else if(position == BACKSTAGE) {
+            aprilTagPosX = 30;
+            driveToClosestPoint(aprilTagPosX, 118, Lateral);
+        }
+
+        piBot.positionGrabber(0.9, false);
+        hw.liftMotor.setTargetPosition(500);
+
         rotateToHeading(180);
-        driveToClosestPoint(36, 120, Lateral);
-        //drop pixel
+        driveToClosestPoint(aprilTagPosX, 122, Axial);
+        hw.liftMotor.setTargetPosition(0);
+        piBot.positionGrabber(0, true);
+        
         driveToClosestPoint(10, 120, Lateral);
     }
 }

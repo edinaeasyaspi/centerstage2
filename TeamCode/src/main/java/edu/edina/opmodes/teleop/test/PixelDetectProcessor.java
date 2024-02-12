@@ -16,6 +16,7 @@ import edu.edina.library.util.projection.Vec;
 public class PixelDetectProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
     private final Vec[] vectors;
     private Point[][] points;
+    private boolean[][] mask;
     private String diagString;
     private Projector proj;
     private Mat hsvMat;
@@ -39,6 +40,7 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
             proj = new Projector(0.49976, 640, 480);
             hsvMat = new Mat();
             points = new Point[9][];
+            mask = new boolean[9][];
 
             Vec a = vectors[0];
             Vec b = vectors[1].sub(vectors[0]);
@@ -46,6 +48,7 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
 
             for (int i = 0; i < 9; i++) {
                 points[i] = new Point[9];
+                mask[i] = new boolean[9];
                 for (int j = 0; j < 9; j++) {
                     Vec v = b.mul(i / 8.0).add(c.mul(j / 8.0)).add(a);
                     points[i][j] = proj.project(v);
@@ -74,10 +77,13 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
                     return new RuntimeException("bad x");
                 if (p.x < 0 || p.x >= 480)
                     return new RuntimeException("bad y");
-                if (pix[1] > SAT_THRESHOLD || pix[2] > VAL_THRESHOLD)
+                if (pix[1] > SAT_THRESHOLD || pix[2] > VAL_THRESHOLD) {
+                    mask[i][j] = true;
                     diagString += "1";
-                else
+                } else {
+                    mask[i][j] = false;
                     diagString += "0";
+                }
             }
         }
 
@@ -86,17 +92,23 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
 
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
-        Paint paint = new Paint();
-        paint.setColor(Color.CYAN);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(scaleCanvasDensity * 4);
+        Paint selPaint = new Paint();
+        selPaint.setColor(Color.CYAN);
+        selPaint.setStyle(Paint.Style.STROKE);
+        selPaint.setStrokeWidth(scaleCanvasDensity * 4);
+
+        Paint desPaint = new Paint();
+        desPaint.setColor(Color.RED);
+        desPaint.setStyle(Paint.Style.STROKE);
+        desPaint.setStrokeWidth(scaleCanvasDensity * 4);
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 Point p = points[i][j];
                 int x = (int) (p.x * scaleBmpPxToCanvasPx);
                 int y = (int) (p.y * scaleBmpPxToCanvasPx);
-                canvas.drawRect(new Rect(x, y, x + 1, y + 1), paint);
+                Paint pt = mask[i][j] ? selPaint : desPaint;
+                canvas.drawRect(new Rect(x, y, x + 1, y + 1), pt);
             }
         }
     }
