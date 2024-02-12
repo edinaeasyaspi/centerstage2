@@ -2,7 +2,7 @@ package edu.edina.library.util.projection;
 
 public class RootFinding {
     public interface ScalarFunc {
-        double Eval(double x);
+        double Eval(double x) throws RootNotFound;
     }
 
     private static final double XTOL = 1e-6;

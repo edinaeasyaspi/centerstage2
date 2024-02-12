@@ -66,7 +66,9 @@ public class Projector {
     }
 
     private static double[] backProjectB(Ray a, Ray b, Ray c) {
-        RootFinding.ScalarFunc f = z -> minDotAdjacentPoints(a, b.at(z), c);
+        RootFinding.ScalarFunc f = z -> {
+            return minDotAdjacentPoints(a, b.at(z), c);
+        };
 
         double maxZ = maxZUnit(a, b, c);
 
@@ -95,7 +97,7 @@ public class Projector {
             return d;
     }
 
-    private static double minDotAdjacentPoints(Ray a, Vec b, Ray c) {
+    private static double minDotAdjacentPoints(Ray a, Vec b, Ray c) throws RootNotFound {
         Vec[] upa = adjacentPoints(a, b);
         Vec[] upc = adjacentPoints(c, b);
 
@@ -116,7 +118,7 @@ public class Projector {
         return bestA.sub(b).dot(bestC.sub(b));
     }
 
-    private static Vec[] adjacentPoints(Ray a, Vec b) {
+    private static Vec[] adjacentPoints(Ray a, Vec b) throws RootNotFound {
         double x = a.x,
                 y = a.y,
                 x0 = b.x,
@@ -128,6 +130,10 @@ public class Projector {
         double C = x0 * x0 + y0 * y0 + z0 * z0 - 1;
 
         double[] z = QuadraticRoots.realRoots(A, B, C);
+
+        if (z.length == 0)
+            return null;
+
         return new Vec[]{
                 a.at(z[0]),
                 a.at(z[1])

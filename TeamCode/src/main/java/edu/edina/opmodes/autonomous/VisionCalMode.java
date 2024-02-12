@@ -59,9 +59,9 @@ public class VisionCalMode extends LinearOpMode {
             }
 
             if (xc != null) {
-                telemetry.addData("exposure", "%dms, supported? %d-%dms, %d auto? %s, manual? %s",
-                        xc.getExposure(TimeUnit.MILLISECONDS),
+                telemetry.addData("exposure", "supported? %s, %d[%d-%d]dms, auto? %s, manual? %s",
                         xc.isExposureSupported(),
+                        xc.getExposure(TimeUnit.MILLISECONDS),
                         xc.getMinExposure(TimeUnit.MILLISECONDS),
                         xc.getMaxExposure(TimeUnit.MILLISECONDS),
                         xc.isModeSupported(ExposureControl.Mode.Auto),

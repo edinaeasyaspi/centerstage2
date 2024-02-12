@@ -61,9 +61,7 @@ public class VisionCalProcessor implements org.firstinspires.ftc.vision.VisionPr
             for (AprilTagDetection det : aprilTagProc.getDetections()) {
                 for (int i = 0; i < 4; i++) {
                     points[i] = new Point(det.corners[i].x, det.corners[i].y);
-                    if (!s.isEmpty())
-                        s += ",";
-                    s += points[i];
+                    s += String.format("%s%s", i == 0 ? "" : ", ", points[i]);
                 }
 
                 break;
