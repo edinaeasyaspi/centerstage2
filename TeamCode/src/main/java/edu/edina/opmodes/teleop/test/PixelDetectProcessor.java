@@ -6,7 +6,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfInt;
 import org.opencv.imgproc.Imgproc;
 
 import edu.edina.library.util.projection.Point;
@@ -14,12 +16,14 @@ import edu.edina.library.util.projection.Projector;
 import edu.edina.library.util.projection.Vec;
 
 public class PixelDetectProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
+    private static final int SAMPLE_COLS = 16;
+    private static final int SAMPLE_ROWS = 16;
     private final Vec[] vectors;
     private Point[][] points;
     private boolean[][] mask;
     private String diagString;
     private Projector proj;
-    private Mat hsvMat;
+    private Mat hsvMat, hsvSampleMat;
     private final double SAT_THRESHOLD = 75;
 
     private final double VAL_THRESHOLD = 80;
@@ -39,22 +43,22 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
             if (height != 480) throw new RuntimeException("height != 480");
             proj = new Projector(0.49976, 640, 480);
             hsvMat = new Mat();
-            points = new Point[9][];
-            mask = new boolean[9][];
+            hsvSampleMat = new Mat(SAMPLE_ROWS, SAMPLE_COLS, CvType.CV_32S);
+            points = new Point[SAMPLE_ROWS][];
+            mask = new boolean[SAMPLE_ROWS][];
 
             Vec a = vectors[0];
             Vec b = vectors[1].sub(vectors[0]);
             Vec c = vectors[3].sub(vectors[0]);
 
-            for (int i = 0; i < 9; i++) {
-                points[i] = new Point[9];
-                mask[i] = new boolean[9];
-                for (int j = 0; j < 9; j++) {
-                    Vec v = b.mul(i / 8.0).add(c.mul(j / 8.0)).add(a);
+            for (int i = 0; i < SAMPLE_ROWS; i++) {
+                points[i] = new Point[SAMPLE_COLS];
+                mask[i] = new boolean[SAMPLE_COLS];
+                for (int j = 0; j < SAMPLE_COLS; j++) {
+                    Vec v = b.mul((double) i / (SAMPLE_ROWS - 1))
+                            .add(c.mul((double) j / (SAMPLE_COLS - 1)))
+                            .add(a);
                     points[i][j] = proj.project(v);
-
-                    if (i == 0 && j == 0)
-                        diagString = String.format("v=%s, p=%s", v, points[i][j]);
                 }
             }
         } catch (Exception e) {
@@ -66,28 +70,18 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
 
-        diagString = "";
-        for (int i = 0; i < 9; i++) {
-            diagString += "\n";
+        int[] pix = new int[3];
 
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < SAMPLE_ROWS; i++) {
+            for (int j = 0; j < SAMPLE_COLS; j++) {
                 Point p = points[i][j];
-                double[] pix = hsvMat.get((int) p.x, (int) p.y);
-                if (p.x < 0 || p.x >= 640)
-                    return new RuntimeException("bad x");
-                if (p.x < 0 || p.x >= 480)
-                    return new RuntimeException("bad y");
-                if (pix[1] > SAT_THRESHOLD || pix[2] > VAL_THRESHOLD) {
-                    mask[i][j] = true;
-                    diagString += "1";
-                } else {
-                    mask[i][j] = false;
-                    diagString += "0";
-                }
+                hsvMat.get((int) p.y, (int) p.x, pix);
             }
         }
 
-        return diagString;
+        diagString = String.format("%d,%d,%d", pix[0], pix[1], pix[2]);
+
+        return null;
     }
 
     @Override
