@@ -6,18 +6,25 @@ import edu.edina.library.util.drivecontrol.LinearFunc;
 import edu.edina.library.util.drivecontrol.LinearFuncFitter;
 
 public class PixelDetect {
-    private final Mat mat;
+    private final int[][][] sample;
+    private final boolean[][] mask;
 
-    public PixelDetect(Mat mat) {
-        this.mat = mat;
+    public PixelDetect(int[][][] sample, boolean[][] mask) {
+        this.sample = sample;
+        this.mask = mask;
     }
 
     public void detect() {
-        LinearFuncFitter fitter = new LinearFuncFitter(mat.rows() * mat.cols());
-        for (int row = 1; row + 1 < mat.rows(); row++) {
-            for (int col = 1; col + 1 < mat.cols(); col++) {
+        int rows = sample.length, cols = sample[0].length;
+
+        LinearFuncFitter fitter = new LinearFuncFitter(rows * cols);
+        for (int row = 1; row + 1 < rows; row++) {
+            for (int col = 1; col + 1 < cols; col++) {
                 if (detect(row, col)) {
                     fitter.sample(col, row);
+                    mask[row][col] = true;
+                } else {
+                    mask[row][col] = false;
                 }
             }
         }
@@ -30,49 +37,49 @@ public class PixelDetect {
 
         int[] pix = new int[3];
 
-        mat.get(row - 1, col - 1, pix);
+        pix = sample[row - 1][col - 1];
         w += isWhite(pix);
         p += isPurple(pix);
         o += isOrange(pix);
         g += isGreen(pix);
 
-        mat.get(row, col - 1, pix);
+        pix = sample[row][col - 1];
         w += isWhite(pix);
         p += isPurple(pix);
         o += isOrange(pix);
         g += isGreen(pix);
 
-        mat.get(row + 1, col - 1, pix);
+        pix = sample[row + 1][col - 1];
         w += isWhite(pix);
         p += isPurple(pix);
         o += isOrange(pix);
         g += isGreen(pix);
 
-        mat.get(row + 1, col, pix);
+        pix = sample[row + 1][col];
         w += isWhite(pix);
         p += isPurple(pix);
         o += isOrange(pix);
         g += isGreen(pix);
 
-        mat.get(row + 1, col + 1, pix);
+        pix = sample[row + 1][col + 1];
         w += isWhite(pix);
         p += isPurple(pix);
         o += isOrange(pix);
         g += isGreen(pix);
 
-        mat.get(row, col + 1, pix);
+        pix = sample[row][col + 1];
         w += isWhite(pix);
         p += isPurple(pix);
         o += isOrange(pix);
         g += isGreen(pix);
 
-        mat.get(row - 1, col + 1, pix);
+        pix = sample[row - 1][col + 1];
         w += isWhite(pix);
         p += isPurple(pix);
         o += isOrange(pix);
         g += isGreen(pix);
 
-        mat.get(row - 1, col, pix);
+        pix = sample[row - 1][col];
         w += isWhite(pix);
         p += isPurple(pix);
         o += isOrange(pix);
@@ -81,20 +88,20 @@ public class PixelDetect {
         return w > 2 || p > 2 || o > 2 || g > 2;
     }
 
-    private static int isWhite(int[] hsv) {
-        return hsv[1] < 50 && hsv[2] > 200 ? 1 : 0;
+    public static int isWhite(int[] hsv) {
+        return hsv[1] < 50 && hsv[2] > 150 ? 1 : 0;
     }
 
-    private static int isPurple(int[] hsv) {
-        return nearHue(hsv, 185) && hsv[1] + hsv[2] > 255 ? 1 : 0;
+    public static int isPurple(int[] hsv) {
+        return nearHue(hsv, 185) && hsv[1] + hsv[2] > 180 ? 1 : 0;
     }
 
-    private static int isOrange(int[] hsv) {
-        return nearHue(hsv, 30) && hsv[1] + hsv[2] > 350 ? 1 : 0;
+    public static int isOrange(int[] hsv) {
+        return nearHue(hsv, 30) && hsv[1] + hsv[2] > 250 ? 1 : 0;
     }
 
-    private static int isGreen(int[] hsv) {
-        return nearHue(hsv, 70) && hsv[1] + hsv[2] > 300 ? 1 : 0;
+    public static int isGreen(int[] hsv) {
+        return nearHue(hsv, 70) && hsv[1] + hsv[2] > 200 ? 1 : 0;
     }
 
     private static boolean nearHue(int[] hsv, int hue) {
