@@ -24,9 +24,6 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
     private String diagString;
     private Projector proj;
     private Mat hsvMat, hsvSampleMat;
-    private final double SAT_THRESHOLD = 75;
-
-    private final double VAL_THRESHOLD = 80;
 
     public PixelDetectProcessor(Vec[] vectors) {
         this.vectors = vectors;
@@ -43,45 +40,57 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
             if (height != 480) throw new RuntimeException("height != 480");
             proj = new Projector(0.49976, 640, 480);
             hsvMat = new Mat();
-            hsvSampleMat = new Mat(SAMPLE_ROWS, SAMPLE_COLS, CvType.CV_32S);
+            hsvSampleMat = new Mat(SAMPLE_ROWS, SAMPLE_COLS, CvType.CV_32F);
             points = new Point[SAMPLE_ROWS][];
             mask = new boolean[SAMPLE_ROWS][];
 
             Vec a = vectors[0];
-            Vec b = vectors[1].sub(vectors[0]);
-            Vec c = vectors[3].sub(vectors[0]);
+            Vec b = vectors[3].sub(vectors[0]);
+            Vec c = vectors[1].sub(vectors[0]);
 
             for (int i = 0; i < SAMPLE_ROWS; i++) {
                 points[i] = new Point[SAMPLE_COLS];
                 mask[i] = new boolean[SAMPLE_COLS];
                 for (int j = 0; j < SAMPLE_COLS; j++) {
-                    Vec v = b.mul((double) i / (SAMPLE_ROWS - 1))
-                            .add(c.mul((double) j / (SAMPLE_COLS - 1)))
+                    double dx = (double) j / (SAMPLE_COLS - 1);
+                    double dy = (double) i / (SAMPLE_ROWS - 1);
+
+                    dx = 2 * dx - 0.84;
+                    dy = 2 * dy + 0.15;
+
+                    Vec v = b.mul(dy)
+                            .add(c.mul(dx))
                             .add(a);
                     points[i][j] = proj.project(v);
                 }
             }
+
         } catch (Exception e) {
-            diagString = String.format("error during init: %s", e.toString());
+            diagString = String.format("error during init: %s", toString(e));
         }
     }
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
-        Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
+        try {
+            Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV_FULL);
 
-        int[] pix = new int[3];
-
-        for (int i = 0; i < SAMPLE_ROWS; i++) {
-            for (int j = 0; j < SAMPLE_COLS; j++) {
-                Point p = points[i][j];
-                hsvMat.get((int) p.y, (int) p.x, pix);
+            double[] pix = null;
+            for (int i = 0; i < SAMPLE_ROWS; i++) {
+                for (int j = 0; j < SAMPLE_COLS; j++) {
+                    Point p = points[i][j];
+                    pix = hsvMat.get((int) p.y, (int) p.x);
+                    hsvSampleMat.put((int) p.y, (int) p.x, pix);
+                }
             }
+
+            diagString = String.format("%f,%f,%f", pix[0], pix[1], pix[2]);
+
+            return null;
+        } catch (Exception e) {
+            diagString = String.format("error during init: %s", toString(e));
+            return diagString;
         }
-
-        diagString = String.format("%d,%d,%d", pix[0], pix[1], pix[2]);
-
-        return null;
     }
 
     @Override
@@ -96,8 +105,8 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
         desPaint.setStyle(Paint.Style.STROKE);
         desPaint.setStrokeWidth(scaleCanvasDensity * 4);
 
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < SAMPLE_ROWS; i++) {
+            for (int j = 0; j < SAMPLE_COLS; j++) {
                 Point p = points[i][j];
                 int x = (int) (p.x * scaleBmpPxToCanvasPx);
                 int y = (int) (p.y * scaleBmpPxToCanvasPx);
@@ -105,5 +114,12 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
                 canvas.drawRect(new Rect(x, y, x + 1, y + 1), pt);
             }
         }
+    }
+
+    private static String toString(Exception x) {
+        String s = x.toString();
+        for (StackTraceElement e : x.getStackTrace())
+            s += "\n" + e;
+        return s;
     }
 }

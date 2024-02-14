@@ -22,9 +22,7 @@ public class AutoSetup extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            piBot.drop(Both);
-            sleep(3000);
-            piBot.grab(Both);
+            piBot.positionGrabber(0, true);
         }
     }
 }
