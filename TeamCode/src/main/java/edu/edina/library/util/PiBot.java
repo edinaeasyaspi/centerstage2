@@ -28,7 +28,7 @@ public class PiBot {
     private final PropDetectingVisionProcessor propDetImageProc;
     private final PixelDetectProcessor pixDetProc;
     private final VisionPortal visionPortal;
-    private static final double PIXEL_DET_SCALE = 2;
+    private static final double PIXEL_DET_SCALE = 0.5;
     private boolean isVisionPortalSetup;
 
     //rotation
@@ -42,6 +42,7 @@ public class PiBot {
     public final PiDrive drive;
     private double predriveHeading;
     private ServoThrottle armSwingRight, armSwingLeft;
+    private DcMotor.ZeroPowerBehavior preRotateZeroPowerMode;
 
     public PiBot(RobotHardware hw) {
         this.hw = hw;
@@ -106,13 +107,16 @@ public class PiBot {
         PixelDetect.Result r = pixDetProc.getLastResult();
 
         if (r == null) return null;
+        if (r.count < 40) return null;
 
         r = new PixelDetect.Result(
                 r.x0 * PIXEL_DET_SCALE,
                 r.y0 * PIXEL_DET_SCALE,
                 r.angleDeg,
                 r.s * PIXEL_DET_SCALE,
-                new LinearFunc(r.f.beta, r.f.alpha * PIXEL_DET_SCALE, r.f.R2)
+                r.d * PIXEL_DET_SCALE,
+                new LinearFunc(r.f.beta, r.f.alpha * PIXEL_DET_SCALE, r.f.R2),
+                r.count
         );
 
         if (hw.telemetry != null) {
@@ -124,6 +128,19 @@ public class PiBot {
 
     public Positioning getPositioning() {
         return posn;
+    }
+
+    public void planRelativeDrive(double dist, DriveDirection direction) {
+        Point rel;
+        if (direction == DriveDirection.Axial)
+            rel = new Point(0, dist);
+        else
+            rel = new Point(dist, 0);
+
+        posn.readHeading(true);
+
+        Point tgt = getPositioning().getCurrPos().addRobotRel(rel).toPoint();
+        planDriveToClosestPoint(tgt, direction);
     }
 
     public void planDriveToClosestPoint(Point target, DriveDirection direction) {
@@ -162,10 +179,9 @@ public class PiBot {
         }
     }
 
-    public void planRotateToHeading(double targetHeading) {
-        this.targetHeading = targetHeading;
-        preRotateRunMode = hw.frontLeftMotor.getMode();
-        firstRotate = true;
+    public void planRelativeRotate(double angle) {
+        double h = posn.readHeading(true);
+        planRotateToHeading(h + angle);
     }
 
     public void planRotateToPoint(Point p) {
@@ -177,6 +193,13 @@ public class PiBot {
         double angle = Math.atan2(-x, y);
 
         planRotateToHeading(Math.toDegrees(angle));
+    }
+
+    public void planRotateToHeading(double targetHeading) {
+        this.targetHeading = targetHeading;
+        preRotateRunMode = hw.frontLeftMotor.getMode();
+        preRotateZeroPowerMode = hw.frontLeftMotor.getZeroPowerBehavior();
+        firstRotate = true;
     }
 
     public DriveStatus runRotate() {
@@ -229,9 +252,16 @@ public class PiBot {
         for (DcMotor m : motors) {
             m.setPower(0);
             m.setMode(preRotateRunMode);
+            m.setZeroPowerBehavior(preRotateZeroPowerMode);
         }
 
         return DriveStatus.Done;
+    }
+
+    public void setZeroPowerBrake() {
+        for (DcMotor m : motors) {
+            m.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
     }
 
     private boolean areIdle() {

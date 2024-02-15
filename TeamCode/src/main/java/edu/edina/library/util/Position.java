@@ -20,6 +20,10 @@ public final class Position {
         return String.format("x=%.2f, y=%.2f heading=%.2f", x, y, a);
     }
 
+    public Point toPoint() {
+        return new Point(x, y);
+    }
+
     public double dist(Position p) {
         double x = this.x - p.x;
         double y = this.y - p.y;

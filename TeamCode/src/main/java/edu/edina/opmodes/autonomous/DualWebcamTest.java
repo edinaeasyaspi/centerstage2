@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor;
@@ -55,7 +56,9 @@ public class DualWebcamTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("front", frontView.getCameraState());
+            telemetry.addData("front det", getDet(frontAprilTagProc));
             telemetry.addData("rear", rearView.getCameraState());
+            telemetry.addData("rear det", getDet(rearAprilTagProc));
             telemetry.update();
 
             if (gamepad1.a) {
@@ -72,5 +75,14 @@ public class DualWebcamTest extends LinearOpMode {
                     rearView.resumeStreaming();
             }
         }
+    }
+
+    private String getDet(AprilTagProcessor atProc) {
+        String s = "";
+        for (AprilTagDetection x : atProc.getDetections()) {
+            s += x.metadata.id;
+        }
+
+        return s;
     }
 }

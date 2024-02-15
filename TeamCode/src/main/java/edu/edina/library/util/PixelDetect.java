@@ -45,31 +45,31 @@ public class PixelDetect {
         double y0 = f.eval(x0);
         double angle = Math.tan(f.beta);
         double q = Math.cos(angle) * f.alpha;
-        double s = Math.sqrt((x0 * x0 + y0 * y0) - (q * q));
+        double s = f.alpha * Math.sin(angle) + f.beta * x0 / Math.sin(angle);
 
-        if (f.beta < 0)
-            s = -s;
-
-        return new Result(x0, y0, Math.toDegrees(angle), s, f);
+        return new Result(x0, y0, Math.toDegrees(angle), s, q, f, xCount);
     }
 
     public static class Result {
-        public final double x0, y0, angleDeg, s;
+        public final double x0, y0, angleDeg, s, d;
         public final LinearFunc f;
+        public final int count;
 
-        public Result(double x0, double y0, double angleDeg, double s, LinearFunc f) {
+        public Result(double x0, double y0, double angleDeg, double s, double d, LinearFunc f, int count) {
             this.x0 = x0;
             this.y0 = y0;
             this.angleDeg = angleDeg;
             this.s = s;
+            this.d = d;
             this.f = f;
+            this.count = count;
         }
     }
 
     private boolean detect(int row, int col) {
         int w = 0, p = 0, o = 0, g = 0;
 
-        int[] pix = new int[3];
+        int[] pix;
 
         pix = sample[row - 1][col - 1];
         w += isWhite(pix);

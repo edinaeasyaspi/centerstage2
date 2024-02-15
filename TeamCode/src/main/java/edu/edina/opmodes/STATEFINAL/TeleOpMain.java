@@ -14,7 +14,11 @@ import edu.edina.library.util.DriveStatus;
 import edu.edina.library.util.GrabberSide;
 import edu.edina.library.util.PiBot;
 import edu.edina.library.util.PixelDetect;
+import edu.edina.library.util.Point;
+import edu.edina.library.util.Position;
+import edu.edina.library.util.Positioning;
 import edu.edina.library.util.RobotHardware;
+import edu.edina.library.util.drivecontrol.DriveDirection;
 
 @TeleOp(name = "TeleOpMain 🥧")
 public class TeleOpMain extends LinearOpMode {
@@ -75,6 +79,8 @@ public class TeleOpMain extends LinearOpMode {
         boolean invertStrafe = false;
 
         while (opModeIsActive()) {
+            piBot.setupVision(false, true);
+
             double max;
 
             double axial = -gamepad1.left_stick_y;
@@ -185,20 +191,37 @@ public class TeleOpMain extends LinearOpMode {
             PixelDetect.Result r = piBot.detectPixel();
             if (gamepad1.x && gamepad1.b) {
                 if (r != null) {
-                    double h = piBot.getPositioning().readHeading(true);
-                    double dest = h + r.angleDeg;
-                    telemetry.addData("pixel alignment", "heading=%.1f", h);
-                    telemetry.addData("angleDeg", "dest=%.1f", dest);
+                    telemetry.addData("pixel detected", "yes");
+                    telemetry.addData("angleDeg", "dest=%.1f", r.angleDeg);
                     telemetry.addData("lateral", "%.1fin", r.s);
                     telemetry.update();
-                    piBot.planRotateToHeading(dest);
+
+                    piBot.planRelativeRotate(r.angleDeg);
                     while (opModeIsActive()) {
                         if (piBot.runRotate() == DriveStatus.Done) {
                             break;
                         }
                     }
 
-                    sleep(1000);
+                    sleep(100);
+
+                    piBot.planRelativeDrive(r.s, DriveDirection.Lateral);
+                    while (opModeIsActive()) {
+                        if (piBot.runDrive() == DriveStatus.Done) {
+                            break;
+                        }
+                    }
+
+                    sleep(100);
+
+                    piBot.planRelativeDrive(r.d / 2, DriveDirection.Axial);
+                    while (opModeIsActive()) {
+                        if (piBot.runDrive() == DriveStatus.Done) {
+                            break;
+                        }
+                    }
+
+                    piBot.setZeroPowerBrake();
                 }
             }
 
@@ -209,7 +232,10 @@ public class TeleOpMain extends LinearOpMode {
                     liftPosition,
                     liftLimit);
             telemetry.addData("invert", invertStrafe);
-            telemetry.addData("pixel detected", r != null ? "yes" : "no");
+            if (r != null)
+                telemetry.addData("pixel detected", "yes @ %.1f", r.s);
+            else
+                telemetry.addData("pixel detected", "no");
             telemetry.update();
         }
     }

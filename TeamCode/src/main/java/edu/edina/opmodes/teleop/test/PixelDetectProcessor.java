@@ -96,8 +96,12 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
             for (int i = 0; i < SAMPLE_ROWS; i++) {
                 for (int j = 0; j < SAMPLE_COLS; j++) {
                     Point p = points[i][j];
-                    double[] pix = hsvMat.get((int) p.y, (int) p.x);
-                    if (pix != null) {
+
+                    int hi = (int) p.y;
+                    int hj = (int) p.x;
+
+                    if (0 <= hi && hi < hsvMat.rows() && 0 <= hj && hj < hsvMat.cols()) {
+                        double[] pix = hsvMat.get(hi, hj);
                         hsvSample[i][j] = new int[]{(int) pix[0], (int) pix[1], (int) pix[2]};
                     } else {
                         hsvSample[i][j] = black;
