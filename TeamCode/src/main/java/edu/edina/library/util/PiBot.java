@@ -2,29 +2,30 @@ package edu.edina.library.util;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_TO_POSITION;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import android.annotation.SuppressLint;
 import android.util.Size;
-
-import androidx.annotation.NonNull;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.WhiteBalanceControl;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import edu.edina.library.util.drivecontrol.DriveDirection;
 import edu.edina.library.util.drivecontrol.PiDrive;
 import edu.edina.library.util.drivecontrol.ServoThrottle;
+import edu.edina.library.util.projection.Vec;
+import edu.edina.opmodes.teleop.test.PixelDetectProcessor;
 import edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor;
 
 public class PiBot {
+    //main fields
     private final RobotHardware hw;
     private final Positioning posn;
-    private final PropDetectingVisionProcessor imageProcessor;
+    private final PropDetectingVisionProcessor propDetImageProc;
+    private final PixelDetectProcessor pixDetProc;
+    private final VisionPortal visionPortal;
+    private boolean isVisionPortalSetup;
 
     //rotation
     private double targetHeading;
@@ -46,26 +47,57 @@ public class PiBot {
         armSwingLeft = new ServoThrottle(hw.intakeSwingLeft, 0.7, 1);
         drive = new PiDrive(hw, posn);
 
-        imageProcessor = new PropDetectingVisionProcessor();
+        propDetImageProc = new PropDetectingVisionProcessor();
+        pixDetProc = new PixelDetectProcessor(
+                new Vec[]{
+                        new Vec(-0.1677, -.4518, 2.8624),
+                        new Vec(.8298, -.4965, 2.8070),
+                        new Vec(.8922, -.3197, 3.7893),
+                        new Vec(-.1053, -.2750, 3.8446),
+                },
+                -6,
+                -32);
 
         VisionPortal.Builder visionPortalBuilder = new VisionPortal.Builder();
-        visionPortalBuilder.enableLiveView(true)
-                .addProcessor(imageProcessor)
-                .addProcessor(posn.getMyAprilTagProc())
+        visionPortal = visionPortalBuilder
+                .enableLiveView(true)
+                .addProcessor(propDetImageProc)
+                .addProcessor(pixDetProc)
+                .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
                 .setCamera(hw.webcam)
                 .setCameraResolution(new Size(640, 480))
                 .build();
     }
 
     public PropDetectingVisionProcessor.Selected getSelection() {
-        PropDetectingVisionProcessor.Selected position = imageProcessor.getSelection();
+        PropDetectingVisionProcessor.Selected position = propDetImageProc.getSelection();
 
         if (hw.telemetry != null) {
             hw.telemetry.addData("Selected value", position);
-            hw.telemetry.addData("diag", imageProcessor.getDiagString());
+            hw.telemetry.addData("diag", propDetImageProc.getDiagString());
         }
 
         return position;
+    }
+
+    public void setupVision(boolean enablePropDet, boolean enablePixDet) {
+        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
+            if (!isVisionPortalSetup) {
+                WhiteBalanceControl wb = visionPortal.getCameraControl(WhiteBalanceControl.class);
+                wb.setMode(WhiteBalanceControl.Mode.MANUAL);
+                wb.setWhiteBalanceTemperature(3000);
+                isVisionPortalSetup = true;
+            }
+        }
+
+        visionPortal.setProcessorEnabled(propDetImageProc, enablePropDet);
+        visionPortal.setProcessorEnabled(pixDetProc, enablePixDet);
+    }
+
+    public void detectPixel() {
+        if (hw.telemetry != null) {
+            hw.telemetry.addData("diag", pixDetProc.getDiagString());
+        }
     }
 
     public Positioning getPositioning() {

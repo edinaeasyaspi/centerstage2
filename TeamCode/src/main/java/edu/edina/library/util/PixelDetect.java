@@ -6,23 +6,33 @@ import edu.edina.library.util.drivecontrol.LinearFunc;
 import edu.edina.library.util.drivecontrol.LinearFuncFitter;
 
 public class PixelDetect {
+    private final double xOrigin, yOrigin;
     private final int[][][] sample;
     private final boolean[][] mask;
 
-    public PixelDetect(int[][][] sample, boolean[][] mask) {
+    public PixelDetect(int[][][] sample, boolean[][] mask, double xOrigin, double yOrigin) {
         this.sample = sample;
         this.mask = mask;
+        this.xOrigin = xOrigin;
+        this.yOrigin = yOrigin;
     }
 
-    public void detect() {
+    public Result detect() {
         int rows = sample.length, cols = sample[0].length;
+        double xSum = 0;
+        int xCount = 0;
 
         LinearFuncFitter fitter = new LinearFuncFitter(rows * cols);
         for (int row = 1; row + 1 < rows; row++) {
             for (int col = 1; col + 1 < cols; col++) {
+                double x = col - xOrigin;
+                double y = row - yOrigin;
+
                 if (detect(row, col)) {
-                    fitter.sample(col, row);
+                    fitter.sample(x, y);
                     mask[row][col] = true;
+                    xSum = xSum + x;
+                    xCount = xCount + 1;
                 } else {
                     mask[row][col] = false;
                 }
@@ -30,6 +40,30 @@ public class PixelDetect {
         }
 
         LinearFunc f = fitter.fit();
+
+        double x0 = xSum / xCount;
+        double y0 = f.eval(x0);
+        double angle = Math.tan(f.beta);
+        double q = Math.cos(angle) * f.alpha;
+        double s = Math.sqrt((x0 * x0 + y0 * y0) - (q * q));
+
+        if (f.beta < 0)
+            s = -s;
+
+        return new Result(x0, y0, Math.toDegrees(angle), s, f);
+    }
+
+    public class Result {
+        public final double x0, y0, angleDeg, s;
+        public final LinearFunc f;
+
+        public Result(double x0, double y0, double angleDeg, double s, LinearFunc f) {
+            this.x0 = x0;
+            this.y0 = y0;
+            this.angleDeg = angleDeg;
+            this.s = s;
+            this.f = f;
+        }
     }
 
     private boolean detect(int row, int col) {
@@ -89,7 +123,7 @@ public class PixelDetect {
     }
 
     public static int isWhite(int[] hsv) {
-        return hsv[1] < 50 && hsv[2] > 150 ? 1 : 0;
+        return hsv[1] < 50 && hsv[2] > 200 ? 1 : 0;
     }
 
     public static int isPurple(int[] hsv) {

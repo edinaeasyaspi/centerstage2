@@ -18,8 +18,9 @@ import edu.edina.library.util.projection.Projector;
 import edu.edina.library.util.projection.Vec;
 
 public class PixelDetectProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
-    private static final int SAMPLE_COLS = 16;
-    private static final int SAMPLE_ROWS = 16;
+    private static final int SAMPLE_COLS = 24;
+    private static final int SAMPLE_ROWS = 24;
+    private final double xOrigin, yOrigin;
     private final Vec[] vectors;
     private Point[][] points;
     private boolean[][] mask;
@@ -29,8 +30,10 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
     private int[][][] hsvSample;
     private PixelDetect pixDet;
 
-    public PixelDetectProcessor(Vec[] vectors) {
+    public PixelDetectProcessor(Vec[] vectors, double xOrigin, double yOrigin) {
         this.vectors = vectors;
+        this.xOrigin = xOrigin;
+        this.yOrigin = yOrigin;
     }
 
     public String getDiagString() {
@@ -48,7 +51,7 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
             points = new Point[SAMPLE_ROWS][];
             mask = new boolean[SAMPLE_ROWS][];
 
-            pixDet = new PixelDetect(hsvSample, mask);
+            pixDet = new PixelDetect(hsvSample, mask, xOrigin, yOrigin);
 
             Vec a = vectors[0];
             Vec b = vectors[3].sub(vectors[0]);
@@ -62,8 +65,8 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
                     double dx = (double) j / (SAMPLE_COLS - 1);
                     double dy = (double) i / (SAMPLE_ROWS - 1);
 
-                    dx = 2 * dx - 0.84;
-                    dy = 2 * dy + 0.15;
+                    dx = 3.5 * (dx - 0.5);
+                    dy = 3.5 * (dy - 0.1);
 
                     Vec v = b.mul(dy)
                             .add(c.mul(dx))
@@ -83,23 +86,24 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
         try {
             Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV_FULL);
 
+            int[] black = new int[]{0, 0, 0};
+
             for (int i = 0; i < SAMPLE_ROWS; i++) {
                 for (int j = 0; j < SAMPLE_COLS; j++) {
                     Point p = points[i][j];
                     double[] pix = hsvMat.get((int) p.y, (int) p.x);
-                    hsvSample[i][j] = new int[]{(int) pix[0], (int) pix[1], (int) pix[2]};
+                    if (pix != null) {
+                        hsvSample[i][j] = new int[]{(int) pix[0], (int) pix[1], (int) pix[2]};
+                    } else {
+                        hsvSample[i][j] = black;
+                    }
                 }
             }
 
-            pixDet.detect();
+            PixelDetect.Result r = pixDet.detect();
 
-            int[] iPix = hsvSample[SAMPLE_ROWS/2][SAMPLE_COLS/2];
-            diagString = String.format("[0][0] = %d,%d,%d %s %s %s %s",
-                    iPix[0], iPix[1], iPix[2],
-                    PixelDetect.isWhite(iPix) > 0 ? "w" : " ",
-                    PixelDetect.isPurple(iPix) > 0 ? "p" : " ",
-                    PixelDetect.isOrange(iPix) > 0 ? "o" : " ",
-                    PixelDetect.isGreen(iPix) > 0 ? "g" : " ");
+            diagString = String.format("%.2fx + %.2f x0 = %.2f y0 = %.2f     angleDeg = %.2f strafe = %.2f",
+                    r.f.beta, r.f.alpha, r.x0, r.y0, r.angleDeg, r.s);
 
             return null;
         } catch (Exception e) {
