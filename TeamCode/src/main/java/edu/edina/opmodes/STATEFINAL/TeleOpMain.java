@@ -10,8 +10,10 @@ import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import edu.edina.library.util.DriveStatus;
 import edu.edina.library.util.GrabberSide;
 import edu.edina.library.util.PiBot;
+import edu.edina.library.util.PixelDetect;
 import edu.edina.library.util.RobotHardware;
 
 @TeleOp(name = "TeleOpMain 🥧")
@@ -57,7 +59,10 @@ public class TeleOpMain extends LinearOpMode {
 //        hw.hangLiftLeft.setPosition(0.2);
 //        hw.hangLiftRight.setPosition(0.8);
 
-        waitForStart();
+        while (opModeInInit()) {
+            piBot.setupVision(false, true);
+        }
+
         hw.hangRight.setPosition(Servo.MIN_POSITION + 0.05);
         hw.hangLeft.setPosition(Servo.MAX_POSITION - 0.05);
         ElapsedTime startTime = new ElapsedTime();
@@ -177,6 +182,26 @@ public class TeleOpMain extends LinearOpMode {
                 }
             }
 
+            PixelDetect.Result r = piBot.detectPixel();
+            if (gamepad1.x && gamepad1.b) {
+                if (r != null) {
+                    double h = piBot.getPositioning().readHeading(true);
+                    double dest = h + r.angleDeg;
+                    telemetry.addData("pixel alignment", "heading=%.1f", h);
+                    telemetry.addData("angleDeg", "dest=%.1f", dest);
+                    telemetry.addData("lateral", "%.1fin", r.s);
+                    telemetry.update();
+                    piBot.planRotateToHeading(dest);
+                    while (opModeIsActive()) {
+                        if (piBot.runRotate() == DriveStatus.Done) {
+                            break;
+                        }
+                    }
+
+                    sleep(1000);
+                }
+            }
+
             telemetry.addData("timer", "%.1f", startTime.seconds());
             telemetry.addData("power limit", "%.1f", powerLimit);
             telemetry.addData("lift pos/tgt/lim", "%d/%.1f/%d",
@@ -184,6 +209,7 @@ public class TeleOpMain extends LinearOpMode {
                     liftPosition,
                     liftLimit);
             telemetry.addData("invert", invertStrafe);
+            telemetry.addData("pixel detected", r != null ? "yes" : "no");
             telemetry.update();
         }
     }

@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.WhiteBa
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import edu.edina.library.util.drivecontrol.DriveDirection;
+import edu.edina.library.util.drivecontrol.LinearFunc;
 import edu.edina.library.util.drivecontrol.PiDrive;
 import edu.edina.library.util.drivecontrol.ServoThrottle;
 import edu.edina.library.util.projection.Vec;
@@ -21,10 +22,13 @@ import edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor;
 public class PiBot {
     //main fields
     private final RobotHardware hw;
+
+    //vision
     private final Positioning posn;
     private final PropDetectingVisionProcessor propDetImageProc;
     private final PixelDetectProcessor pixDetProc;
     private final VisionPortal visionPortal;
+    private static final double PIXEL_DET_SCALE = 2;
     private boolean isVisionPortalSetup;
 
     //rotation
@@ -94,10 +98,28 @@ public class PiBot {
         visionPortal.setProcessorEnabled(pixDetProc, enablePixDet);
     }
 
-    public void detectPixel() {
+    public PixelDetect.Result detectPixel() {
         if (hw.telemetry != null) {
             hw.telemetry.addData("diag", pixDetProc.getDiagString());
         }
+
+        PixelDetect.Result r = pixDetProc.getLastResult();
+
+        if (r == null) return null;
+
+        r = new PixelDetect.Result(
+                r.x0 * PIXEL_DET_SCALE,
+                r.y0 * PIXEL_DET_SCALE,
+                r.angleDeg,
+                r.s * PIXEL_DET_SCALE,
+                new LinearFunc(r.f.beta, r.f.alpha * PIXEL_DET_SCALE, r.f.R2)
+        );
+
+        if (hw.telemetry != null) {
+            hw.telemetry.addData("detect", "angleDeg=%.1f strafe=%.2f", r.angleDeg, r.s);
+        }
+
+        return r;
     }
 
     public Positioning getPositioning() {

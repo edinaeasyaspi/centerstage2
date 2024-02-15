@@ -53,7 +53,7 @@ public class PixelDetect {
         return new Result(x0, y0, Math.toDegrees(angle), s, f);
     }
 
-    public class Result {
+    public static class Result {
         public final double x0, y0, angleDeg, s;
         public final LinearFunc f;
 

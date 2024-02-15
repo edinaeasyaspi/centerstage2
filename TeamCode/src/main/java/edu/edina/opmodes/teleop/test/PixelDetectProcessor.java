@@ -29,6 +29,7 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
     private Mat hsvMat;
     private int[][][] hsvSample;
     private PixelDetect pixDet;
+    private volatile PixelDetect.Result lastResult;
 
     public PixelDetectProcessor(Vec[] vectors, double xOrigin, double yOrigin) {
         this.vectors = vectors;
@@ -38,6 +39,10 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
 
     public String getDiagString() {
         return diagString;
+    }
+
+    public PixelDetect.Result getLastResult() {
+        return lastResult;
     }
 
     @Override
@@ -100,10 +105,10 @@ public class PixelDetectProcessor implements org.firstinspires.ftc.vision.Vision
                 }
             }
 
-            PixelDetect.Result r = pixDet.detect();
+            lastResult = pixDet.detect();
 
             diagString = String.format("%.2fx + %.2f x0 = %.2f y0 = %.2f     angleDeg = %.2f strafe = %.2f",
-                    r.f.beta, r.f.alpha, r.x0, r.y0, r.angleDeg, r.s);
+                    lastResult.f.beta, lastResult.f.alpha, lastResult.x0, lastResult.y0, lastResult.angleDeg, lastResult.s);
 
             return null;
         } catch (Exception e) {
