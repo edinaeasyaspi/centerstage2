@@ -14,7 +14,7 @@ import edu.edina.library.util.drivecontrol.DriveDirection;
 import edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor;
 
 public abstract class AutoMode extends LinearOpMode {
-    protected static final boolean testMode = false;
+    protected static final boolean testMode = true;
     private final boolean invert;
     protected PiBot piBot;
 
@@ -35,6 +35,8 @@ public abstract class AutoMode extends LinearOpMode {
         piBot = new PiBot(hw);
 
         while (opModeInInit()) {
+            piBot.setup(true, false, true);
+
             PropDetectingVisionProcessor.Selected s = piBot.getSelection();
             if (s == PropDetectingVisionProcessor.Selected.LEFT) {
                 position = invert ? SelectedSpike.AUDIENCE : SelectedSpike.BACKSTAGE;
@@ -60,28 +62,67 @@ public abstract class AutoMode extends LinearOpMode {
 
     protected abstract void runMainPath();
 
-    protected abstract int backboardX();
+    private int backboardX() {
+        if (position == SelectedSpike.AUDIENCE)
+            return 40;
+        else if (position == SelectedSpike.MIDDLE)
+            return 36;
+        else
+            return 32;
+    }
 
     protected void dropPixelOnBackboard() {
         Positioning posn = piBot.getPositioning();
-        posn.readHeading(true);
-        Position p = posn.readAprilTagPosition(true);
+
+        ElapsedTime t = new ElapsedTime();
+
+        while (opModeIsActive()) {
+            posn.readHeading(true);
+            Position p = posn.readAprilTagPosition(true);
+
+            if (p != null) {
+                telemetry.addData("detected april tag", p);
+                break;
+            } else if (t.seconds() > 0.5) {
+                telemetry.addData("detected april tag", "");
+                break;
+            }
+        }
+
+        pauseOnTest();
+
         double x = backboardX();
         rotateToHeading(180);
-        driveToClosestPoint(x, 120, DriveDirection.Lateral);
-        driveToClosestPoint(x, 120, DriveDirection.Axial);
+        driveToClosestPoint(x, 115, DriveDirection.Lateral);
+        driveToClosestPoint(x, 115, DriveDirection.Axial);
 
-        piBot.positionGrabber(0.9, false);
-        hw.liftMotor.setTargetPosition(500);
+        piBot.positionGrabber(PiBot.GrabberPosition.Backboard);
+        sleep(300);
 
-        hw.liftMotor.setTargetPosition(0);
-        piBot.positionGrabber(0, true);
+        while (opModeIsActive()) {
+            int liftPos = piBot.runLift(1);
+            if (liftPos > 1000) break;
+        }
+
+        piBot.drop(GrabberSide.Both);
+
+        t = new ElapsedTime();
+        while (opModeIsActive()) {
+            piBot.runLift(0);
+            if (t.seconds() > 2)
+                break;
+        }
+
+        piBot.positionGrabber(PiBot.GrabberPosition.Ground);
+
+        while (opModeIsActive()) {
+            int liftPos = piBot.runLift(-1);
+            if (liftPos < 2) break;
+        }
     }
 
     protected void driveToClosestPoint(double x, double y, DriveDirection driveDirection) {
         if (invert) x = 144 - x;
-
-        //   double initHeading = piBot.getPositioning().readHeading(true);
 
         piBot.planDriveToClosestPoint(new Point(x, y), driveDirection);
         while (opModeIsActive()) {
@@ -90,8 +131,6 @@ public abstract class AutoMode extends LinearOpMode {
         }
 
         pauseOnTest();
-
-//       rotateToHeading(initHeading);
     }
 
     protected void rotateToHeading(double targetHeading) {

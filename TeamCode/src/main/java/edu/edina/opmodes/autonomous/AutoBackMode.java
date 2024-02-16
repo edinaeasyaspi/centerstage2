@@ -17,14 +17,14 @@ public abstract class AutoBackMode extends AutoMode {
     @Override
     protected void runMainPath() {
         if (position == BACKSTAGE) {
-            driveToClosestPoint(24, 84, Axial);
+            driveToClosestPoint(28, 84, Axial);
             rotateToHeading(-45);
             driveToClosestPoint(32, 87.5, Axial);
             piBot.drop(GrabberSide.Left);
             driveToClosestPoint(24, 84, Axial);
             this.position = BACKSTAGE;
         } else if (position == MIDDLE) {
-            driveToClosestPoint(33, 84, Axial);
+            driveToClosestPoint(40, 84, Axial);
             piBot.drop(GrabberSide.Left);
             driveToClosestPoint(16, 84, Axial);
             this.position = MIDDLE;

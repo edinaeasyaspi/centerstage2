@@ -27,7 +27,7 @@ public class PiBot {
     private final Positioning posn;
     private final PropDetectingVisionProcessor propDetImageProc;
     private final PixelDetectProcessor pixDetProc;
-    private final VisionPortal visionPortal;
+    private final VisionPortal frontVisionPortal, rearVisionPortal;
     private static final double PIXEL_DET_SCALE = 0.5;
     private boolean isVisionPortalSetup;
 
@@ -43,6 +43,9 @@ public class PiBot {
     private double predriveHeading;
     private ServoThrottle armSwingRight, armSwingLeft;
     private DcMotor.ZeroPowerBehavior preRotateZeroPowerMode;
+
+    //Lift Motor
+    private int noLift, liftPosition, liftLimit;
 
     public PiBot(RobotHardware hw) {
         this.hw = hw;
@@ -97,18 +100,23 @@ public class PiBot {
         return position;
     }
 
-    public void setupVision(boolean enablePropDet, boolean enablePixDet) {
-        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
+    public void setup(boolean enablePropDet, boolean enablePixDet, boolean enableAprilTags) {
+        if (frontVisionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
             if (!isVisionPortalSetup) {
-                WhiteBalanceControl wb = visionPortal.getCameraControl(WhiteBalanceControl.class);
+                WhiteBalanceControl wb = frontVisionPortal.getCameraControl(WhiteBalanceControl.class);
                 wb.setMode(WhiteBalanceControl.Mode.MANUAL);
                 wb.setWhiteBalanceTemperature(3000);
                 isVisionPortalSetup = true;
             }
         }
 
-        visionPortal.setProcessorEnabled(propDetImageProc, enablePropDet);
-        visionPortal.setProcessorEnabled(pixDetProc, enablePixDet);
+        frontVisionPortal.setProcessorEnabled(propDetImageProc, enablePropDet);
+        frontVisionPortal.setProcessorEnabled(pixDetProc, enablePixDet);
+        rearVisionPortal.setProcessorEnabled(getPositioning().getMyAprilTagProc(), enableAprilTags);
+
+        noLift = hw.liftMotor.getCurrentPosition();
+        liftPosition = noLift;
+        liftLimit = 2500;
     }
 
     public PixelDetect.Result detectPixel() {
@@ -285,6 +293,18 @@ public class PiBot {
         return true;
     }
 
+    public enum GrabberPosition {
+        Ground, Backboard
+    }
+
+    public void positionGrabber(GrabberPosition p) {
+        if (p == GrabberPosition.Backboard) {
+            positionGrabber(0.9, false);
+        } else if (p == GrabberPosition.Ground) {
+            positionGrabber(0, true);
+        }
+    }
+
     public void positionGrabber(double targetPosition, boolean fullClose) {
         armSwingRight.setTargetPos(targetPosition);
         armSwingLeft.setTargetPos(1 - targetPosition);
@@ -317,12 +337,12 @@ public class PiBot {
 
     public void drop(GrabberSide grabberSide) {
         if (grabberSide == GrabberSide.Right)
-            hw.intakeRight.setPosition(0.45);
+            hw.intakeRight.setPosition(0.42);
         if (grabberSide == GrabberSide.Left)
             hw.intakeLeft.setPosition(0.15);
         if (grabberSide == GrabberSide.Both) {
             hw.intakeLeft.setPosition(0.15);
-            hw.intakeRight.setPosition(0.45);
+            hw.intakeRight.setPosition(0.42);
         }
     }
 
@@ -335,6 +355,21 @@ public class PiBot {
     }
     //merry summer
 
+    public int runLift(int dir) {
+        int currPos = hw.liftMotor.getCurrentPosition();
+        if (dir > 0 && currPos < noLift + liftLimit) {
+            hw.liftMotor.setPower(0.7);
+            liftPosition = currPos;
+        } else if (dir < 0 && currPos > noLift) {
+            hw.liftMotor.setPower(-0.6);
+            liftPosition = currPos;
+        } else {
+            double y = currPos - liftPosition;
+            hw.liftMotor.setPower(-y / 100);
+        }
+
+        return currPos - noLift;
+    }
 
     public void retractHooks(Hanging hanging) {
         if (hanging == Hanging.Retract) ;

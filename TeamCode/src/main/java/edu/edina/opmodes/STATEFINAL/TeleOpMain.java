@@ -14,9 +14,6 @@ import edu.edina.library.util.DriveStatus;
 import edu.edina.library.util.GrabberSide;
 import edu.edina.library.util.PiBot;
 import edu.edina.library.util.PixelDetect;
-import edu.edina.library.util.Point;
-import edu.edina.library.util.Position;
-import edu.edina.library.util.Positioning;
 import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.drivecontrol.DriveDirection;
 
@@ -64,8 +61,9 @@ public class TeleOpMain extends LinearOpMode {
 //        hw.hangLiftRight.setPosition(0.8);
 
         while (opModeInInit()) {
-            piBot.setupVision(false, true);
+            piBot.setup(false, true, true);
         }
+
         if (gamepad2.right_trigger < 0.8) {
             hw.liftMotor.setPower(0);
         }
@@ -74,15 +72,13 @@ public class TeleOpMain extends LinearOpMode {
         ElapsedTime startTime = new ElapsedTime();
 
         double noLift = hw.liftMotor.getCurrentPosition();
+        double liftPosition = noLift;
 
         double powerLimit = 1;
-        double liftPosition = noLift;
 
         boolean invertStrafe = false;
 
         while (opModeIsActive()) {
-            piBot.setupVision(false, true);
-
             double max;
 
             double axial = -gamepad1.left_stick_y;

@@ -11,7 +11,11 @@ public class LiftAdjustmentMode extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         DcMotorEx liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
 
-        waitForStart();
+        while (opModeInInit()) {
+            telemetry.addData("motor pos", liftMotor.getCurrentPosition());
+            telemetry.update();
+        }
+
         while (opModeIsActive()) {
             if (gamepad1.dpad_up)
                 liftMotor.setPower(0.5);

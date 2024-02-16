@@ -24,7 +24,7 @@ public abstract class AutoFrontMode extends AutoMode {
         if (position == BACKSTAGE) {
             driveToClosestPoint(31, 36, Axial);
             rotateToHeading(-45);
-            driveToClosestPoint(37, 44.5, Axial);
+            driveToClosestPoint(36, 43.5, Axial);
             piBot.drop(GrabberSide.Left);
             piBot.grab(GrabberSide.Right);
             driveToClosestPoint(31, 36, Axial);
