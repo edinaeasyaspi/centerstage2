@@ -185,7 +185,6 @@ public class PiBot {
         drive.preRun(tgtDist, direction);
         if (hw.telemetry != null) {
             hw.telemetry.addData("tgtDist", "%.1fin", tgtDist);
-            hw.telemetry.update();
         }
     }
 

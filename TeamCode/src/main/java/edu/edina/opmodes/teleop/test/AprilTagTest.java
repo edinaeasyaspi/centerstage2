@@ -8,45 +8,36 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.vision.VisionPortal;
 
+import edu.edina.library.util.PiBot;
 import edu.edina.library.util.Position;
 
 import edu.edina.library.util.Positioning;
 import edu.edina.library.util.RobotHardware;
 
-@Disabled
 @Autonomous
 public class AprilTagTest extends LinearOpMode {
 
-    private PropDetectingVisionProcessor imageProcessor;
-    private VisionPortal.Builder visionPortalBuilder;
-    private VisionPortal visionPortal;
-    private Positioning aprilTagPos;
+    public void runOpMode() {
+        RobotHardware hw = new RobotHardware(hardwareMap, telemetry);
+        PiBot piBot = new PiBot(hw);
+        Positioning posn = piBot.getPositioning();
+        posn.setCurrPos(new Position(72, 72, 180));
 
-    public void runOpMode(){
-        RobotHardware hw = new RobotHardware(hardwareMap);
-
-        imageProcessor = new PropDetectingVisionProcessor();
-
-        aprilTagPos = new Positioning(hw, true);
-        visionPortalBuilder = new VisionPortal.Builder();
-        visionPortal = visionPortalBuilder
-                .enableLiveView(true)
-                .addProcessor(imageProcessor)
-                .addProcessor(aprilTagPos.getMyAprilTagProc())
-                .setCamera(hw.frontWebcam)
-                .setCameraResolution(new Size(640, 480))
-                .build();
-
-        waitForStart();
+        while (opModeInInit()) {
+            piBot.setup(false, false, true);
+            posn.readHeading(true);
+            Position p = posn.getCurrPos();
+            telemetry.addData("position", p);
+            telemetry.addData("position diag ", p.diagString);
+            telemetry.update();
+        }
 
         while (opModeIsActive()) {
-            Position p = aprilTagPos.readAprilTagPosition(false);
-
-            if (p != null) {
-                telemetry.addData("position", p);
-            }
-
-            telemetry.addData("heading", aprilTagPos.readHeading(false));
+            posn.readHeading(true);
+            posn.readAprilTagPosition(true);
+            Position p = posn.getCurrPos();
+            telemetry.addData("position", p);
+            telemetry.addData("position diag ", p.diagString);
             telemetry.update();
         }
     }

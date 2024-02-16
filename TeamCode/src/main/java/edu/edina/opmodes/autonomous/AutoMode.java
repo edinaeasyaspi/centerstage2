@@ -24,6 +24,8 @@ public abstract class AutoMode extends LinearOpMode {
 
     private final Position startingPos;
 
+    private int liftDir;
+
     protected AutoMode(boolean invert, Position startingPos) {
         this.invert = invert;
         this.startingPos = startingPos;
@@ -63,19 +65,23 @@ public abstract class AutoMode extends LinearOpMode {
     protected abstract void runMainPath();
 
     private int backboardX() {
-        if (position == SelectedSpike.AUDIENCE)
-            return 40;
-        else if (position == SelectedSpike.MIDDLE)
-            return 36;
-        else
-            return 32;
+        if (position == SelectedSpike.AUDIENCE) return 40;
+        else if (position == SelectedSpike.MIDDLE) return 36;
+        else return 32;
     }
 
     protected void dropPixelOnBackboard() {
         Positioning posn = piBot.getPositioning();
 
-        ElapsedTime t = new ElapsedTime();
+        double x = backboardX();
+        rotateToHeading(180);
+        driveToClosestPoint(x, 115, DriveDirection.Lateral);
+        driveToClosestPoint(x, 115, DriveDirection.Axial);
 
+        Position prePos = posn.getCurrPos();
+        telemetry.addData("prior position", prePos);
+
+        ElapsedTime t = new ElapsedTime();
         while (opModeIsActive()) {
             posn.readHeading(true);
             Position p = posn.readAprilTagPosition(true);
@@ -91,34 +97,45 @@ public abstract class AutoMode extends LinearOpMode {
 
         pauseOnTest();
 
-        double x = backboardX();
-        rotateToHeading(180);
         driveToClosestPoint(x, 115, DriveDirection.Lateral);
-        driveToClosestPoint(x, 115, DriveDirection.Axial);
 
         piBot.positionGrabber(PiBot.GrabberPosition.Backboard);
-        sleep(300);
-
-        while (opModeIsActive()) {
-            int liftPos = piBot.runLift(1);
-            if (liftPos > 1000) break;
-        }
-
-        piBot.drop(GrabberSide.Both);
 
         t = new ElapsedTime();
         while (opModeIsActive()) {
-            piBot.runLift(0);
-            if (t.seconds() > 2)
+            piBot.runGrabber();
+            if (t.milliseconds() > 300) {
                 break;
+            }
         }
+
+        liftDir = 1;
+        while (opModeIsActive()) {
+            piBot.runGrabber();
+            int liftPos = runLift();
+            if (liftPos > 1000) break;
+        }
+
+        liftDir = 0;
+
+        driveToClosestPoint(x, 120, DriveDirection.Axial);
+
+        piBot.drop(GrabberSide.Both);
+        sleep(400);
 
         piBot.positionGrabber(PiBot.GrabberPosition.Ground);
 
+        liftDir = -1;
         while (opModeIsActive()) {
-            int liftPos = piBot.runLift(-1);
+            piBot.runGrabber();
+            int liftPos = runLift();
             if (liftPos < 2) break;
         }
+    }
+
+    private int runLift() {
+        int liftPos = piBot.runLift(liftDir);
+        return liftPos;
     }
 
     protected void driveToClosestPoint(double x, double y, DriveDirection driveDirection) {
@@ -126,6 +143,7 @@ public abstract class AutoMode extends LinearOpMode {
 
         piBot.planDriveToClosestPoint(new Point(x, y), driveDirection);
         while (opModeIsActive()) {
+            runLift();
             if (piBot.runDrive() == DriveStatus.Done) break;
             telemetry.update();
         }
@@ -170,7 +188,7 @@ public abstract class AutoMode extends LinearOpMode {
         ElapsedTime time = new ElapsedTime();
 
         while (opModeIsActive() && time.seconds() < delay) {
-            telemetry.addData("gyro heading", piBot.getPositioning().readHeading(false));
+            telemetry.addData("gyro heading", "%.1f", piBot.getPositioning().readHeading(false));
             telemetry.addData("pos", piBot.getPositioning().getCurrPos());
             telemetry.update();
         }

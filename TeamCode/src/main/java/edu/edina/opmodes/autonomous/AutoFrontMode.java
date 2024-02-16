@@ -26,11 +26,13 @@ public abstract class AutoFrontMode extends AutoMode {
             rotateToHeading(-45);
             driveToClosestPoint(36, 43.5, Axial);
             piBot.drop(GrabberSide.Left);
+            sleep(100);
             piBot.grab(GrabberSide.Right);
             driveToClosestPoint(31, 36, Axial);
         } else if (position == MIDDLE) {
             driveToClosestPoint(40, 36, Axial);
             piBot.drop(GrabberSide.Left);
+            sleep(100);
             piBot.grab(GrabberSide.Right);
             driveToClosestPoint(23, 36, Axial);
         } else if (position == AUDIENCE) {
@@ -38,6 +40,7 @@ public abstract class AutoFrontMode extends AutoMode {
             rotateToHeading(-135);
             driveToClosestPoint(38, 38.5, Axial);
             piBot.drop(GrabberSide.Left);
+            sleep(100);
             piBot.grab(GrabberSide.Right);
             driveToClosestPoint(25, 36, Axial);
             driveToClosestPoint(15, 33, Lateral);
@@ -46,6 +49,7 @@ public abstract class AutoFrontMode extends AutoMode {
             rotateToHeading(-45);
             driveToClosestPoint(37, 44.5, Axial);
             piBot.drop(GrabberSide.Left);
+            sleep(100);
             piBot.grab(GrabberSide.Right);
         } //purple pixel. it works well
 

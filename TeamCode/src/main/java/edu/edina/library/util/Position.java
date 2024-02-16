@@ -7,11 +7,20 @@ import androidx.annotation.NonNull;
 @SuppressLint("DefaultLocale")
 public final class Position {
     public final double x, y, a;
+    public final String diagString;
+
+    public Position(double x, double y, double a, String diagString) {
+        this.x = x;
+        this.y = y;
+        this.a = a;
+        this.diagString = diagString;
+    }
 
     public Position(double x, double y, double a) {
         this.x = x;
         this.y = y;
         this.a = a;
+        diagString = null;
     }
 
     @NonNull

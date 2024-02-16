@@ -21,11 +21,13 @@ public abstract class AutoBackMode extends AutoMode {
             rotateToHeading(-45);
             driveToClosestPoint(32, 87.5, Axial);
             piBot.drop(GrabberSide.Left);
+            sleep(100);
             driveToClosestPoint(24, 84, Axial);
             this.position = BACKSTAGE;
         } else if (position == MIDDLE) {
             driveToClosestPoint(40, 84, Axial);
             piBot.drop(GrabberSide.Left);
+            sleep(100);
             driveToClosestPoint(16, 84, Axial);
             this.position = MIDDLE;
         } else if (position == AUDIENCE) {
@@ -33,6 +35,7 @@ public abstract class AutoBackMode extends AutoMode {
             rotateToHeading(-135);
             driveToClosestPoint(33, 78, Axial);
             piBot.drop(GrabberSide.Left);
+            sleep(100);
             driveToClosestPoint(27, 84, Axial);
             driveToClosestPoint(21, 90, Lateral);
             this.position = AUDIENCE;
@@ -41,6 +44,7 @@ public abstract class AutoBackMode extends AutoMode {
             rotateToHeading(-45);
             driveToClosestPoint(32, 87.5, Axial);
             piBot.drop(GrabberSide.Left);
+            sleep(100);
             driveToClosestPoint(24, 84, Axial);
             this.position = BACKSTAGE;
         }

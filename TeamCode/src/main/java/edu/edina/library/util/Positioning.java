@@ -28,7 +28,7 @@ public class Positioning {
     private double initialHeading;
     private final double[] allmx = {29.381, 35.381, 41.381, 100.0435, 106.0435, 112.0435};
     private final double[] allmy = {132.492908, 132.492908, 132.492908, 132.492908, 132.492908, 132.492908, 0, 0, 0, 0};
-    private final double camOffsetX = 5.25, camOffsetY = 8;
+    private final double camOffsetX = 1.5, camOffsetY = 7.5;
     private Position currPos;
 
     public Positioning(RobotHardware hw, boolean rearFacing) {
@@ -80,7 +80,7 @@ public class Positioning {
                 double a = readHeading(false);
                 double yaw = detection.ftcPose.yaw;
                 if (rearFacing) {
-                    yaw = yaw + 180;
+                    // yaw = yaw + 180;
                 }
                 double dx = Math.sin(Math.toRadians(yaw));
                 double dy = Math.cos(Math.toRadians(yaw));
@@ -91,7 +91,9 @@ public class Positioning {
                 double mq = dy * mc;
                 double ry = my - mq;
 
-                Position p = new Position(rx, ry, a);
+                Position p = new Position(rx, ry, a,
+                        String.format("ftcPose(x = %.1f, y = %.1f, yaw = %.1f",
+                                detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.yaw));
 
                 if (updatePosition) {
                     currPos = p;
