@@ -119,10 +119,10 @@ public class TeleOpMain extends LinearOpMode {
                 rightBackPower /= max;
             }
 
-            if (gamepad1.right_bumper) {
+            if (gamepad1.left_bumper) {
                 piBot.grab(GrabberSide.Both);
             }
-            if (gamepad1.left_bumper) {
+            if (gamepad1.right_bumper) {
                 piBot.drop(GrabberSide.Both);
             }
             if (gamepad1.dpad_right) {
@@ -214,10 +214,13 @@ public class TeleOpMain extends LinearOpMode {
 
                     sleep(100);
 
-                    piBot.planRelativeDrive(r.d / 2, DriveDirection.Axial);
-                    while (opModeIsActive()) {
-                        if (piBot.runDrive() == DriveStatus.Done) {
-                            break;
+                    double d = r.d - 10;
+                    if (d > 0) {
+                        piBot.planRelativeDrive(d, DriveDirection.Axial);
+                        while (opModeIsActive()) {
+                            if (piBot.runDrive() == DriveStatus.Done) {
+                                break;
+                            }
                         }
                     }
 

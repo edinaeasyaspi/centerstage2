@@ -33,7 +33,11 @@ public class Positioning {
         this.gyro = hw.gyro;
         this.imu = hw.imu;
 
-        AprilTagProcessor.Builder myAprilTagProcBuilder = new AprilTagProcessor.Builder().setDrawTagID(true).setDrawTagOutline(true).setDrawAxes(true).setDrawCubeProjection(true);
+        AprilTagProcessor.Builder myAprilTagProcBuilder = new AprilTagProcessor.Builder()
+                .setDrawTagID(true)
+                .setDrawTagOutline(true)
+                .setDrawAxes(true)
+                .setDrawCubeProjection(true);
 
         myAprilTagProc = myAprilTagProcBuilder.build();
 
