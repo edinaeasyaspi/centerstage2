@@ -1,7 +1,6 @@
 package edu.edina.library.util;
 
 import com.acmerobotics.roadrunner.ftc.LynxFirmware;
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -11,7 +10,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -35,7 +33,7 @@ public class RobotHardware {
     public final DcMotorEx liftMotor;
     public final CRServo droneLauncher;
 
-    public final WebcamName webcam;
+    public final WebcamName frontWebcam, rearWebcam;
 
     public final int cameraMonitorViewId;
     public final Telemetry telemetry;
@@ -92,8 +90,8 @@ public class RobotHardware {
 
         //distanceSensor = hardwareMap.get(DistanceSensor.class, "distance_sensor");
 
-        webcam = hardwareMap.get(WebcamName.class, "LogitechC270_8034PI");
+        frontWebcam = hardwareMap.get(WebcamName.class, "LogitechC270_8034PI");
+        rearWebcam = hardwareMap.get(WebcamName.class, "LogitechC270_8034PI_Rear");
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-
     }
 }

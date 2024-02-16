@@ -33,7 +33,7 @@ public class AprilTagTest extends LinearOpMode {
                 .enableLiveView(true)
                 .addProcessor(imageProcessor)
                 .addProcessor(aprilTagPos.getMyAprilTagProc())
-                .setCamera(hw.webcam)
+                .setCamera(hw.frontWebcam)
                 .setCameraResolution(new Size(640, 480))
                 .build();
 

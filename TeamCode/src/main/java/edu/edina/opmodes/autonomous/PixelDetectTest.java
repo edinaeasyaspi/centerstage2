@@ -14,7 +14,7 @@ public class PixelDetectTest extends LinearOpMode {
         PiBot piBot = new PiBot(hw);
 
         while (opModeInInit()) {
-            piBot.setupVision(false, true);
+            piBot.setup(false, true, false);
             piBot.detectPixel();
             telemetry.update();
         }

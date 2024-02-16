@@ -8,7 +8,7 @@ import edu.edina.library.util.Robot;
 import edu.edina.library.util.RobotConfiguration;
 import edu.edina.library.util.RobotHardware;
 import edu.edina.library.util.RobotState;
-import org.openftc.easyopencv.OpenCvCamera;
+
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
@@ -29,7 +29,7 @@ public class Webcam extends Subsystem{
         RobotHardware hardware = robot.RobotHardware;
         RobotConfiguration config = RobotConfiguration.getInstance();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-       webcam = OpenCvCameraFactory.getInstance().createWebcam(hardware.webcam, hardware.cameraMonitorViewId);
+       webcam = OpenCvCameraFactory.getInstance().createWebcam(hardware.frontWebcam, hardware.cameraMonitorViewId);
        webcam.openCameraDevice();
 
         // Set up image processing pipeline

@@ -63,14 +63,26 @@ public class PiBot {
                 -6,
                 -32);
 
+        int[] viewportIds = VisionPortal.makeMultiPortalView(2, VisionPortal.MultiPortalLayout.HORIZONTAL);
+
         VisionPortal.Builder visionPortalBuilder = new VisionPortal.Builder();
-        visionPortal = visionPortalBuilder
+        frontVisionPortal = visionPortalBuilder
                 .enableLiveView(true)
                 .addProcessor(propDetImageProc)
                 .addProcessor(pixDetProc)
                 .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
-                .setCamera(hw.webcam)
+                .setCamera(hw.frontWebcam)
                 .setCameraResolution(new Size(640, 480))
+                .setLiveViewContainerId(viewportIds[0])
+                .build();
+
+        rearVisionPortal = visionPortalBuilder
+                .enableLiveView(true)
+                .addProcessor(posn.getMyAprilTagProc())
+                .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
+                .setCamera(hw.rearWebcam)
+                .setCameraResolution(new Size(640, 480))
+                .setLiveViewContainerId(viewportIds[1])
                 .build();
     }
 
