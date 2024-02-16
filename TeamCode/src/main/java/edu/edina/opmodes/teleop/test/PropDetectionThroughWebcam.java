@@ -46,7 +46,7 @@ public class PropDetectionThroughWebcam extends OpMode {
         RobotHardware hw = new RobotHardware(hardwareMap);
         gamepad = new GamepadEx(gamepad1);
         imageProcessor = new PropDetectingVisionProcessor();
-        aprilTagPos = new Positioning(hw);
+        aprilTagPos = new Positioning(hw,true);
         visionPortalBuilder = new VisionPortal.Builder();
         visionPortal = visionPortalBuilder
                 .enableLiveView(true)

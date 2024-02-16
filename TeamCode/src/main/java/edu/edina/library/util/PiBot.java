@@ -46,7 +46,7 @@ public class PiBot {
 
     public PiBot(RobotHardware hw) {
         this.hw = hw;
-        this.posn = new Positioning(hw);
+        this.posn = new Positioning(hw, true);
         motors = new DcMotor[]{hw.frontLeftMotor, hw.backLeftMotor, hw.frontRightMotor, hw.backRightMotor};
         armSwingRight = new ServoThrottle(hw.intakeSwingRight, 0.7, 0);
         armSwingLeft = new ServoThrottle(hw.intakeSwingLeft, 0.7, 1);

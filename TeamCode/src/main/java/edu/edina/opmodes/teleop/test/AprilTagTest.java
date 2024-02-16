@@ -27,7 +27,7 @@ public class AprilTagTest extends LinearOpMode {
 
         imageProcessor = new PropDetectingVisionProcessor();
 
-        aprilTagPos = new Positioning(hw);
+        aprilTagPos = new Positioning(hw, true);
         visionPortalBuilder = new VisionPortal.Builder();
         visionPortal = visionPortalBuilder
                 .enableLiveView(true)

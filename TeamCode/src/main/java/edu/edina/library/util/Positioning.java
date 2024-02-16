@@ -19,6 +19,8 @@ public class Positioning {
 
     public AprilTagProcessor myAprilTagProc;
 
+    private boolean rearFacing;
+
     private IMU imu;
 
     private ModernRoboticsI2cGyro gyro;
@@ -29,7 +31,8 @@ public class Positioning {
     private final double camOffsetX = 5.25, camOffsetY = 8;
     private Position currPos;
 
-    public Positioning(RobotHardware hw) {
+    public Positioning(RobotHardware hw, boolean rearFacing) {
+        this.rearFacing = rearFacing;
         this.gyro = hw.gyro;
         this.imu = hw.imu;
 
@@ -75,6 +78,9 @@ public class Positioning {
                 double mc = Math.sqrt((px * px) + (py * py));
 
                 double a = readHeading(false);
+                if (rearFacing) {
+                    a = a+180;
+                }
                 double dx = Math.sin(Math.toRadians(detection.ftcPose.yaw));
                 double dy = Math.cos(Math.toRadians(detection.ftcPose.yaw));
 

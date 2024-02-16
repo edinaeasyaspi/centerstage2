@@ -58,25 +58,27 @@ public abstract class AutoFrontMode extends AutoMode {
         driveToClosestPoint(60, 118, Axial);
         rotateToHeading(0);
 
-        if (position == AUDIENCE) {
-            aprilTagPosX = 42;
-            driveToClosestPoint(aprilTagPosX, 118, Lateral);
-        } else if (position == MIDDLE) {
-            aprilTagPosX = 36;
-            driveToClosestPoint(aprilTagPosX, 118, Lateral);
-        } else if(position == BACKSTAGE) {
-            aprilTagPosX = 30;
-            driveToClosestPoint(aprilTagPosX, 118, Lateral);
-        }
+        dropPixelOnBackboard();
 
-        piBot.positionGrabber(0.9, false);
-        hw.liftMotor.setTargetPosition(500);
-
-        rotateToHeading(180);
-        driveToClosestPoint(aprilTagPosX, 122, Axial);
-        hw.liftMotor.setTargetPosition(0);
-        piBot.positionGrabber(0, true);
-
-        driveToClosestPoint(10, 120, Lateral);
+//        if (position == AUDIENCE) {
+//            aprilTagPosX = 42;
+//            driveToClosestPoint(aprilTagPosX, 118, Lateral);
+//        } else if (position == MIDDLE) {
+//            aprilTagPosX = 36;
+//            driveToClosestPoint(aprilTagPosX, 118, Lateral);
+//        } else if(position == BACKSTAGE) {
+//            aprilTagPosX = 30;
+//            driveToClosestPoint(aprilTagPosX, 118, Lateral);
+//        }
+//
+//        piBot.positionGrabber(0.9, false);
+//        hw.liftMotor.setTargetPosition(500);
+//
+//        rotateToHeading(180);
+//        driveToClosestPoint(aprilTagPosX, 122, Axial);
+//        hw.liftMotor.setTargetPosition(0);
+//        piBot.positionGrabber(0, true);
+//
+//        driveToClosestPoint(10, 120, Lateral);
     }
 }

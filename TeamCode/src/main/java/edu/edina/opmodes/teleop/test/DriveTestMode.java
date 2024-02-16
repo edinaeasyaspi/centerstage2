@@ -24,7 +24,7 @@ public class DriveTestMode extends LinearOpMode {
     @Override
     public void runOpMode() {
         RobotHardware hw = new RobotHardware(hardwareMap, telemetry);
-        Positioning posn = new Positioning(hw);
+        Positioning posn = new Positioning(hw, true);
 
         pd = new PiDrive(hw, posn);
         waitForStart();

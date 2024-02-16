@@ -60,6 +60,24 @@ public abstract class AutoMode extends LinearOpMode {
 
     protected abstract void runMainPath();
 
+    protected abstract int backboardX();
+
+    protected void dropPixelOnBackboard() {
+        Positioning posn = piBot.getPositioning();
+        posn.readHeading(true);
+        Position p = posn.readAprilTagPosition(true);
+        double x = backboardX();
+        rotateToHeading(180);
+        driveToClosestPoint(x, 120, DriveDirection.Lateral);
+        driveToClosestPoint(x, 120, DriveDirection.Axial);
+
+        piBot.positionGrabber(0.9, false);
+        hw.liftMotor.setTargetPosition(500);
+
+        hw.liftMotor.setTargetPosition(0);
+        piBot.positionGrabber(0, true);
+    }
+
     protected void driveToClosestPoint(double x, double y, DriveDirection driveDirection) {
         if (invert) x = 144 - x;
 
