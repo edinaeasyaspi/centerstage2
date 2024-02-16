@@ -64,11 +64,11 @@ public class TeleOpMain extends LinearOpMode {
             piBot.setup(false, true, true);
         }
 
-        if (gamepad2.right_trigger < 0.8) {
-            hw.liftMotor.setPower(0);
-        }
         hw.hangRight.setPosition(Servo.MIN_POSITION + 0.05);
         hw.hangLeft.setPosition(Servo.MAX_POSITION - 0.05);
+        hw.liftMotor.setTargetPosition(0);
+        hw.hangLiftLeft.setPosition(0.1);
+        hw.hangLiftRight.setPosition(0.9);
         ElapsedTime startTime = new ElapsedTime();
 
         double noLift = hw.liftMotor.getCurrentPosition();
