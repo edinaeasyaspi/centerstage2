@@ -61,7 +61,7 @@ public class TeleOpMain extends LinearOpMode {
 //        hw.hangLiftRight.setPosition(0.8);
 
         while (opModeInInit()) {
-            piBot.setup(false, true, true);
+            piBot.setup(false, true, false);
         }
 
         hw.hangRight.setPosition(Servo.MIN_POSITION + 0.05);
