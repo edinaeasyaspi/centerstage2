@@ -78,11 +78,12 @@ public class Positioning {
                 double mc = Math.sqrt((px * px) + (py * py));
 
                 double a = readHeading(false);
+                double yaw = detection.ftcPose.yaw;
                 if (rearFacing) {
-                    a = a+180;
+                    yaw = yaw + 180;
                 }
-                double dx = Math.sin(Math.toRadians(detection.ftcPose.yaw));
-                double dy = Math.cos(Math.toRadians(detection.ftcPose.yaw));
+                double dx = Math.sin(Math.toRadians(yaw));
+                double dy = Math.cos(Math.toRadians(yaw));
 
                 double qc = dx * mc;
                 double rx = qc + mx;
