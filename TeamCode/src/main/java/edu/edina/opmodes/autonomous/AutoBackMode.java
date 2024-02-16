@@ -22,10 +22,12 @@ public abstract class AutoBackMode extends AutoMode {
             driveToClosestPoint(32, 87.5, Axial);
             piBot.drop(GrabberSide.Left);
             driveToClosestPoint(24, 84, Axial);
+            this.position = BACKSTAGE;
         } else if (position == MIDDLE) {
             driveToClosestPoint(33, 84, Axial);
             piBot.drop(GrabberSide.Left);
             driveToClosestPoint(16, 84, Axial);
+            this.position = MIDDLE;
         } else if (position == AUDIENCE) {
             driveToClosestPoint(27, 84, Axial);
             rotateToHeading(-135);
@@ -33,30 +35,16 @@ public abstract class AutoBackMode extends AutoMode {
             piBot.drop(GrabberSide.Left);
             driveToClosestPoint(27, 84, Axial);
             driveToClosestPoint(21, 90, Lateral);
+            this.position = AUDIENCE;
         } else {
             driveToClosestPoint(24, 84, Axial);
             rotateToHeading(-45);
             driveToClosestPoint(32, 87.5, Axial);
             piBot.drop(GrabberSide.Left);
             driveToClosestPoint(24, 84, Axial);
+            this.position = BACKSTAGE;
         }
 
-        rotateToPoint(20, 116);
-        driveToClosestPoint(20, 116, Axial);
-        rotateToHeading(180);
-        driveToClosestPoint(37, 116, Lateral);
-        driveToClosestPoint(36, 13, Axial);
-        piBot.drop(GrabberSide.Right);
-        rotateToPoint(67, 85);
-        driveToClosestPoint(67, 85, Axial);
-        rotateToPoint(61, 16);
-        driveToClosestPoint(61, 21, Axial);
-        rotateToHeading(0);
-        driveToClosestPoint(61, 15, Axial);
-        piBot.grab(GrabberSide.Left);
-        //driveToClosestPoint();
-
-        //drop pixel
-        //driveToClosestPoint(10, 110, Lateral);
+        rotateAndDriveToPoint(20, 118, Axial);
     }
 }

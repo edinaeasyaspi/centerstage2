@@ -55,7 +55,7 @@ public abstract class AutoMode extends LinearOpMode {
 
         piBot.grab(GrabberSide.Both);
         runMainPath();
-        // todo place on backboard
+        dropPixelOnBackboard();
     }
 
     protected abstract void runMainPath();
@@ -126,7 +126,7 @@ public abstract class AutoMode extends LinearOpMode {
     private void pauseOnTest() {
         double delay;
         if (testMode) delay = 3;
-        else delay = 0.1;
+        else delay = 0.0;
 
         ElapsedTime time = new ElapsedTime();
 

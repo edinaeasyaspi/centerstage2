@@ -15,9 +15,6 @@ public abstract class AutoFrontMode extends AutoMode {
     protected AutoFrontMode(boolean invert, Position startingPos) {
         super(invert, startingPos);
     }
-
-    private double aprilTagPosX;
-
     @Override
     protected void runMainPath() {
         hw.liftMotor.setTargetPosition(hw.liftMotor.getCurrentPosition());
@@ -56,9 +53,6 @@ public abstract class AutoFrontMode extends AutoMode {
         rotateToHeading(180);
         driveToClosestPoint(60, 18, Lateral);
         driveToClosestPoint(60, 118, Axial);
-        rotateToHeading(0);
-
-        dropPixelOnBackboard();
 
 //        if (position == AUDIENCE) {
 //            aprilTagPosX = 42;
