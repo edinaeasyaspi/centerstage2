@@ -19,7 +19,7 @@ public class PropDetectingVisionProcessor implements org.firstinspires.ftc.visio
 //    public Rect rectMiddle = new Rect(460, rectY, 40, 40);
 //    public Rect rectRight = new Rect(440, rectY - 100, 40, 40);
 //public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
-    public Rect rectMiddle = new Rect(95, 60, 80, 160);
+    public Rect rectMiddle = new Rect(95, 60, 160, 80);
     public Rect rectRight = new Rect(490, rectY, 80, 160);
     Selected selection = Selected.NONE;
 
