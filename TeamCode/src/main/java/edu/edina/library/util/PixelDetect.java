@@ -131,7 +131,7 @@ public class PixelDetect {
     }
 
     public static int isOrange(int[] hsv) {
-        return nearHue(hsv, 30) && hsv[1] + hsv[2] > 250 ? 1 : 0;
+        return nearHue(hsv, 43) && hsv[1] + hsv[2] > 250 ? 1 : 0;
     }
 
     public static int isGreen(int[] hsv) {
