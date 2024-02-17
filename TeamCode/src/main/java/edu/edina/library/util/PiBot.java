@@ -30,6 +30,7 @@ public class PiBot {
     private final VisionPortal frontVisionPortal, rearVisionPortal;
     private static final double PIXEL_DET_SCALE = 0.5;
     private boolean isVisionPortalSetup;
+    private static final boolean manualWhiteBalance = false;
 
     //rotation
     private double targetHeading;
@@ -69,6 +70,16 @@ public class PiBot {
         int[] viewportIds = VisionPortal.makeMultiPortalView(2, VisionPortal.MultiPortalLayout.HORIZONTAL);
 
         VisionPortal.Builder visionPortalBuilder = new VisionPortal.Builder();
+
+        rearVisionPortal = visionPortalBuilder
+                .enableLiveView(true)
+                .addProcessor(posn.getMyAprilTagProc())
+                .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
+                .setCamera(hw.rearWebcam)
+                .setCameraResolution(new Size(640, 480))
+                .setLiveViewContainerId(viewportIds[1])
+                .build();
+
         frontVisionPortal = visionPortalBuilder
                 .enableLiveView(true)
                 .addProcessor(propDetImageProc)
@@ -77,15 +88,6 @@ public class PiBot {
                 .setCamera(hw.frontWebcam)
                 .setCameraResolution(new Size(640, 480))
                 .setLiveViewContainerId(viewportIds[0])
-                .build();
-
-        rearVisionPortal = visionPortalBuilder
-//                .enableLiveView(true)
-                .addProcessor(posn.getMyAprilTagProc())
-                .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
-                .setCamera(hw.rearWebcam)
-                .setCameraResolution(new Size(640, 480))
-                .setLiveViewContainerId(viewportIds[1])
                 .build();
     }
 
@@ -104,8 +106,12 @@ public class PiBot {
         if (frontVisionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
             if (!isVisionPortalSetup) {
                 WhiteBalanceControl wb = frontVisionPortal.getCameraControl(WhiteBalanceControl.class);
-                wb.setMode(WhiteBalanceControl.Mode.MANUAL);
-                wb.setWhiteBalanceTemperature(4100);
+                if (manualWhiteBalance) {
+                    wb.setMode(WhiteBalanceControl.Mode.MANUAL);
+                    wb.setWhiteBalanceTemperature(4100);
+                } else {
+                    wb.setMode(WhiteBalanceControl.Mode.AUTO);
+                }
                 isVisionPortalSetup = true;
             }
         }
