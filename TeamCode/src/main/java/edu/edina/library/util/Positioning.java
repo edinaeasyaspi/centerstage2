@@ -62,8 +62,9 @@ public class Positioning {
         }
     }
 
-    // todo: actually update position
     public Position readAprilTagPosition(boolean updatePosition) {
+        double a = readHeading(false);
+
         List<AprilTagDetection> currentDetections = myAprilTagProc.getDetections();
         for (AprilTagDetection detection : currentDetections) {
             if (detection.metadata != null && detection.id <= 6) {
@@ -75,31 +76,32 @@ public class Positioning {
                 double px = detection.ftcPose.x + camOffsetX;
                 double py = detection.ftcPose.y + camOffsetY;
 
-                double mc = Math.sqrt((px * px) + (py * py));
-
-                double a = readHeading(false);
-                double yaw = detection.ftcPose.yaw;
                 if (rearFacing) {
-                    // yaw = yaw + 180;
+                    px = -px;
+                    py = -py;
                 }
-                double dx = Math.sin(Math.toRadians(yaw));
-                double dy = Math.cos(Math.toRadians(yaw));
 
-                double qc = dx * mc;
-                double rx = qc + mx;
+                Point atDetPosRobotRel = new Point(px, py);
+                Position atDetPosFieldRel = getCurrPos().addRobotRel(atDetPosRobotRel);
 
-                double mq = dy * mc;
-                double ry = my - mq;
+                // atDetPosFieldRel is supposed to equal mx, my
+                // they will not, so calculate the difference in estimates
 
-                Position p = new Position(rx, ry, a,
+                double xCorrect = mx - atDetPosFieldRel.x;
+                double yCorrect = my - atDetPosFieldRel.y;
+
+                // then adjust the robot's position by that correction
+                // the next time, atDetPosFieldRel should equal mx, my
+
+                Position newRobotPos = new Position(currPos.x + xCorrect, currPos.y + yCorrect, a,
                         String.format("ftcPose(x = %.1f, y = %.1f, yaw = %.1f",
                                 detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.yaw));
 
                 if (updatePosition) {
-                    currPos = p;
+                    currPos = newRobotPos;
                 }
 
-                return p;
+                return newRobotPos;
             }
         }
 
