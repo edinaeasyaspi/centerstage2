@@ -7,7 +7,7 @@ import edu.edina.library.util.Position;
 @Autonomous(name = "red back")
 public class AutoRedBackMode extends AutoBackMode {
     public AutoRedBackMode() {
-        super(false, new Position(137, 84, 90));
+        super(true, new Position(137, 84, 90));
     }
 
 //    @Override
