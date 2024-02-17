@@ -12,9 +12,12 @@ import edu.edina.library.util.GrabberSide;
 import edu.edina.library.util.Position;
 
 public abstract class AutoFrontMode extends AutoMode {
+    private static final int delayMilliseconds = 0;
+
     protected AutoFrontMode(boolean invert, Position startingPos) {
         super(invert, startingPos);
     }
+
     @Override
     protected void runMainPath() {
         hw.liftMotor.setTargetPosition(hw.liftMotor.getCurrentPosition());
@@ -55,6 +58,9 @@ public abstract class AutoFrontMode extends AutoMode {
 
         rotateAndDriveToPoint(24, 18, Axial);
         rotateToHeading(180);
+
+        sleep(delayMilliseconds);
+
         driveToClosestPoint(60, 18, Lateral);
         driveToClosestPoint(60, 118, Axial);
 
