@@ -80,7 +80,7 @@ public class PiBot {
                 .build();
 
         rearVisionPortal = visionPortalBuilder
-                .enableLiveView(true)
+//                .enableLiveView(true)
                 .addProcessor(posn.getMyAprilTagProc())
                 .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
                 .setCamera(hw.rearWebcam)
@@ -234,7 +234,7 @@ public class PiBot {
             targetAngle = targetAngle - 360;
         }
 
-        if (firstRotate && targetAngle == 0)
+        if (firstRotate && Math.abs(targetAngle) < 1)
             return doneWithRotate();
 
         if (hw.telemetry != null) {
