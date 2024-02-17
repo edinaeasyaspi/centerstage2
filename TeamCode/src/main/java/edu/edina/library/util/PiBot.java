@@ -105,7 +105,7 @@ public class PiBot {
             if (!isVisionPortalSetup) {
                 WhiteBalanceControl wb = frontVisionPortal.getCameraControl(WhiteBalanceControl.class);
                 wb.setMode(WhiteBalanceControl.Mode.MANUAL);
-                wb.setWhiteBalanceTemperature(3000);
+                wb.setWhiteBalanceTemperature(4100);
                 isVisionPortalSetup = true;
             }
         }
