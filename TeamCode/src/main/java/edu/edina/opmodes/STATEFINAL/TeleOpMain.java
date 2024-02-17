@@ -189,39 +189,7 @@ public class TeleOpMain extends LinearOpMode {
             PixelDetect.Result r = piBot.detectPixel();
             if (gamepad1.x && gamepad1.b) {
                 if (r != null) {
-                    telemetry.addData("pixel detected", "yes");
-                    telemetry.addData("angleDeg", "dest=%.1f", r.angleDeg);
-                    telemetry.addData("lateral", "%.1fin", r.s);
-                    telemetry.update();
-
-                    piBot.planRelativeRotate(r.angleDeg);
-                    while (opModeIsActive()) {
-                        if (piBot.runRotate() == DriveStatus.Done) {
-                            break;
-                        }
-                    }
-
-                    sleep(100);
-
-                    piBot.planRelativeDrive(r.s, DriveDirection.Lateral);
-                    while (opModeIsActive()) {
-                        if (piBot.runDrive() == DriveStatus.Done) {
-                            break;
-                        }
-                    }
-
-                    sleep(100);
-
-                    double d = r.d - 10;
-                    if (d > 0) {
-                        piBot.planRelativeDrive(d, DriveDirection.Axial);
-                        while (opModeIsActive()) {
-                            if (piBot.runDrive() == DriveStatus.Done) {
-                                break;
-                            }
-                        }
-                    }
-
+                    autoAlign(r);
                     piBot.setZeroPowerBrake();
                 }
             }
@@ -238,6 +206,47 @@ public class TeleOpMain extends LinearOpMode {
             else
                 telemetry.addData("pixel detected", "no");
             telemetry.update();
+        }
+    }
+
+    private void autoAlign(PixelDetect.Result r) {
+        telemetry.addData("pixel detected", "yes");
+        telemetry.addData("angleDeg", "dest=%.1f", r.angleDeg);
+        telemetry.addData("lateral", "%.1fin", r.s);
+        telemetry.update();
+
+        piBot.planRelativeRotate(r.angleDeg);
+        while (opModeIsActive()) {
+            if (gamepad1.y)
+                return;
+            if (piBot.runRotate() == DriveStatus.Done) {
+                break;
+            }
+        }
+
+        sleep(100);
+
+        piBot.planRelativeDrive(r.s, DriveDirection.Lateral);
+        while (opModeIsActive()) {
+            if (gamepad1.y)
+                return;
+            if (piBot.runDrive() == DriveStatus.Done) {
+                break;
+            }
+        }
+
+        sleep(100);
+
+        double d = r.d - 10;
+        if (d > 0) {
+            piBot.planRelativeDrive(d, DriveDirection.Axial);
+            while (opModeIsActive()) {
+                if (gamepad1.y)
+                    return;
+                if (piBot.runDrive() == DriveStatus.Done) {
+                    break;
+                }
+            }
         }
     }
 }
