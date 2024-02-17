@@ -10,6 +10,8 @@ import edu.edina.library.util.GrabberSide;
 import edu.edina.library.util.Position;
 
 public abstract class AutoBackMode extends AutoMode {
+    private static final int delayMilliseconds = 0;
+
     protected AutoBackMode(boolean invert, Position startingPos) {
         super(invert, startingPos);
     }
@@ -25,7 +27,7 @@ public abstract class AutoBackMode extends AutoMode {
             driveToClosestPoint(24, 84, Axial);
             this.position = BACKSTAGE;
         } else if (position == MIDDLE) {
-            driveToClosestPoint(40, 84, Axial);
+            driveToClosestPoint(39, 84, Axial);
             piBot.drop(GrabberSide.Left);
             sleep(100);
             driveToClosestPoint(16, 84, Axial);
@@ -50,5 +52,7 @@ public abstract class AutoBackMode extends AutoMode {
         }
 
         rotateAndDriveToPoint(20, 118, Axial);
+
+        sleep(delayMilliseconds);
     }
 }
