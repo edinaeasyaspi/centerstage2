@@ -14,7 +14,7 @@ import edu.edina.library.util.drivecontrol.DriveDirection;
 import edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor;
 
 public abstract class AutoMode extends LinearOpMode {
-    protected static final boolean testMode = true;
+    protected static final boolean testMode = false;
     private final boolean invert;
     protected PiBot piBot;
 
@@ -76,7 +76,6 @@ public abstract class AutoMode extends LinearOpMode {
         double x = backboardX();
         rotateToHeading(180);
         driveToClosestPoint(x, 115, DriveDirection.Lateral);
-        driveToClosestPoint(x, 115, DriveDirection.Axial);
 
         Position prePos = posn.getCurrPos();
         telemetry.addData("prior position", prePos);
@@ -118,7 +117,7 @@ public abstract class AutoMode extends LinearOpMode {
 
         liftDir = 0;
 
-        driveToClosestPoint(x, 120, DriveDirection.Axial);
+        driveToClosestPoint(x, 121, DriveDirection.Axial);
 
         piBot.drop(GrabberSide.Both);
         sleep(400);
