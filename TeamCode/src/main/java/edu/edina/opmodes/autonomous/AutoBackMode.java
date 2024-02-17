@@ -54,6 +54,7 @@ public abstract class AutoBackMode extends AutoMode {
 
         rotateAndDriveToPoint(20, 118, Axial);
 
-        sleep(delayMilliseconds);
+        if (delayMilliseconds > 0)
+            sleep(delayMilliseconds);
     }
 }
