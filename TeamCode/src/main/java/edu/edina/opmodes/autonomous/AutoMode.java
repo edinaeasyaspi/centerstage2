@@ -15,6 +15,7 @@ import edu.edina.opmodes.teleop.test.PropDetectingVisionProcessor;
 
 public abstract class AutoMode extends LinearOpMode {
     protected static final boolean testMode = false;
+    private static final double parkX = 10;
     private final boolean invert;
     protected PiBot piBot;
 
@@ -60,6 +61,7 @@ public abstract class AutoMode extends LinearOpMode {
         piBot.grab(GrabberSide.Both);
         runMainPath();
         dropPixelOnBackboard();
+        driveToClosestPoint(parkX, 120, DriveDirection.Lateral);
     }
 
     protected abstract void runMainPath();
