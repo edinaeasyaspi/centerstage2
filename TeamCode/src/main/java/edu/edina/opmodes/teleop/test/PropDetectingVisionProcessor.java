@@ -14,13 +14,13 @@ import org.opencv.imgproc.Imgproc;
 
 public class PropDetectingVisionProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
     public static PropDetectingVisionProcessor.Selected Selected;
-    private int rectY = 160;
+    private int rectY = 90;
     //    public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
 //    public Rect rectMiddle = new Rect(460, rectY, 40, 40);
 //    public Rect rectRight = new Rect(440, rectY - 100, 40, 40);
 //public Rect rectLeft = new Rect(70, rectY + 30, 40, 40);
-    public Rect rectMiddle = new Rect(80, 200, 160, 80);
-    public Rect rectRight = new Rect(540, rectY, 80, 160);
+    public Rect rectMiddle = new Rect(95, 60, 80, 160);
+    public Rect rectRight = new Rect(490, rectY, 80, 160);
     Selected selection = Selected.NONE;
 
     private final double SAT_THRESHOLD = 75;
