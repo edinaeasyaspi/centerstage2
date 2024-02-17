@@ -33,7 +33,8 @@ public abstract class AutoFrontMode extends AutoMode {
             piBot.grab(GrabberSide.Right);
             driveToClosestPoint(31, 36, Axial);
         } else if (position == MIDDLE) {
-            driveToClosestPoint(40, 36, Axial);
+            driveToClosestPoint(36, 36, Axial);
+            driveToClosestPoint(39, 36, Axial);
             piBot.drop(GrabberSide.Left);
             sleep(100);
             piBot.grab(GrabberSide.Right);
@@ -61,8 +62,8 @@ public abstract class AutoFrontMode extends AutoMode {
 
         sleep(delayMilliseconds);
 
-        driveToClosestPoint(60, 18, Lateral);
-        driveToClosestPoint(60, 118, Axial);
+        driveToClosestPoint(61, 18, Lateral);
+        driveToClosestPoint(61, 118, Axial);
 
 //        if (position == AUDIENCE) {
 //            aprilTagPosX = 42;

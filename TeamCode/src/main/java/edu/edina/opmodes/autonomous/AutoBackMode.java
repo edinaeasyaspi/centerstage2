@@ -27,6 +27,7 @@ public abstract class AutoBackMode extends AutoMode {
             driveToClosestPoint(24, 84, Axial);
             this.position = BACKSTAGE;
         } else if (position == MIDDLE) {
+            driveToClosestPoint(36, 84, Axial);
             driveToClosestPoint(39, 84, Axial);
             piBot.drop(GrabberSide.Left);
             sleep(100);
