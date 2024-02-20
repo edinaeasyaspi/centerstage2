@@ -100,12 +100,12 @@ public abstract class AutoMode extends LinearOpMode {
 
         driveToClosestPoint(x, 115, DriveDirection.Lateral);
 
-        piBot.positionGrabber(PiBot.GrabberPosition.Backboard);
+        piBot.positionGrabber(PiBot.GrabberPosition.Backboard, false);
 
         t = new ElapsedTime();
         while (opModeIsActive()) {
             piBot.runGrabber();
-            if (t.milliseconds() > 300) {
+            if (t.milliseconds() > 600) {
                 break;
             }
         }
@@ -114,7 +114,7 @@ public abstract class AutoMode extends LinearOpMode {
         while (opModeIsActive()) {
             piBot.runGrabber();
             int liftPos = runLift();
-            if (liftPos > 1000) break;
+            if (liftPos > 800) break;
         }
 
         liftDir = 0;
@@ -124,7 +124,7 @@ public abstract class AutoMode extends LinearOpMode {
         piBot.drop(GrabberSide.Both);
         sleep(400);
 
-        piBot.positionGrabber(PiBot.GrabberPosition.Ground);
+        piBot.positionGrabber(PiBot.GrabberPosition.Ground, false);
 
         liftDir = -1;
         while (opModeIsActive()) {
@@ -136,6 +136,8 @@ public abstract class AutoMode extends LinearOpMode {
 
     private int runLift() {
         int liftPos = piBot.runLift(liftDir);
+        telemetry.addData("lift pos", liftPos);
+        telemetry.update();
         return liftPos;
     }
 

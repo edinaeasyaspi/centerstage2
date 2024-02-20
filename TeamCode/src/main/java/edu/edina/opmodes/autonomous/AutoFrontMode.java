@@ -33,11 +33,11 @@ public abstract class AutoFrontMode extends AutoMode {
             piBot.grab(GrabberSide.Right);
             driveToClosestPoint(31, 36, Axial);
         } else if (position == MIDDLE) {
-            driveToClosestPoint(38.5, 36, Axial);
+            driveToClosestPoint(38, 36, Axial);
             piBot.drop(GrabberSide.Left);
             sleep(100);
             piBot.grab(GrabberSide.Right);
-            driveToClosestPoint(24, 36, Axial);
+            driveToClosestPoint(25.5, 36, Axial);
         } else if (position == AUDIENCE) {
             driveToClosestPoint(27, 36, Axial);
             rotateToHeading(-135);
@@ -60,7 +60,7 @@ public abstract class AutoFrontMode extends AutoMode {
         rotateToHeading(180);
 
         if (delayMilliseconds > 0)
-        sleep(delayMilliseconds);
+            sleep(delayMilliseconds);
 
         driveToClosestPoint(61, 18, Lateral);
         driveToClosestPoint(61, 118, Axial);

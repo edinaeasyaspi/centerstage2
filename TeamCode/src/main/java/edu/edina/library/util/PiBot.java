@@ -240,8 +240,10 @@ public class PiBot {
             targetAngle = targetAngle - 360;
         }
 
-        if (firstRotate && Math.abs(targetAngle) < 1)
+        if (firstRotate && Math.abs(targetAngle) < 1.5)
             return doneWithRotate();
+        else
+            firstRotate = false;
 
         if (hw.telemetry != null) {
             hw.telemetry.addData("heading", "%.1f", posn.readHeading(false));
@@ -302,11 +304,11 @@ public class PiBot {
         Ground, Backboard
     }
 
-    public void positionGrabber(GrabberPosition p) {
+    public void positionGrabber(GrabberPosition p, boolean fullClose) {
         if (p == GrabberPosition.Backboard) {
-            positionGrabber(0.9, false);
+            positionGrabber(0.9, fullClose);
         } else if (p == GrabberPosition.Ground) {
-            positionGrabber(0, true);
+            positionGrabber(0, fullClose);
         }
     }
 
