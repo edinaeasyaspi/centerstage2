@@ -1,5 +1,7 @@
 package edu.edina.opmodes.teleop.test;
 
+import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.FLOAT;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,7 +11,6 @@ import edu.edina.library.util.RobotHardware;
 @TeleOp
 public class OdometryTest extends LinearOpMode {
     private RobotHardware hw;
-    private static final DcMotor.ZeroPowerBehavior FLOAT = DcMotor.ZeroPowerBehavior.FLOAT;
 
     @Override
     public void runOpMode() {
