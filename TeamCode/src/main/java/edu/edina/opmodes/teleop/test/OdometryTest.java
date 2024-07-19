@@ -16,7 +16,7 @@ public class OdometryTest extends LinearOpMode {
     public void runOpMode() {
         hw = new RobotHardware(hardwareMap);
         DcMotor[] motors = new DcMotor[]{hw.frontLeftMotor, hw.backLeftMotor, hw.frontRightMotor, hw.backRightMotor};
-
+        String[] positions = new String[]{"FL", "BL", "FR", "BR"};
         for (int i = 0; i < 4; i++) {
             motors[i].setZeroPowerBehavior(FLOAT);
             motors[i].setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -25,12 +25,10 @@ public class OdometryTest extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-
             for (int i = 0; i < 4; i++) {
-                motors[i].getCurrentPosition();
+                telemetry.addData(positions[i], "%.1d", motors[i].getCurrentPosition());
             }
 
-            telemetry.addData("a", 1);
             telemetry.update();
         }
     }
