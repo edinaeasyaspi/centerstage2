@@ -1,5 +1,6 @@
 package edu.edina.opmodes.teleop.test;
 
+import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_USING_ENCODER;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.FLOAT;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
@@ -14,23 +15,23 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
-import edu.edina.library.util.RobotHardware;
-
 @TeleOp
 public class OdometryTest extends LinearOpMode {
 
 
     @Override
     public void runOpMode() {
-        DcMotorEx frontLeftMotor = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
-        DcMotorEx backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
-        DcMotorEx backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
-        DcMotorEx frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
-        DcMotor[] motors = new DcMotor[]{frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor};
+        DcMotor[] motors = new DcMotor[]{
+                hardwareMap.get(DcMotorEx.class, "frontLeftMotor"),
+                hardwareMap.get(DcMotorEx.class, "backLeftMotor"),
+                hardwareMap.get(DcMotorEx.class, "backRightMotor"),
+                hardwareMap.get(DcMotorEx.class, "frontRightMotor")
+        };
         String[] positions = new String[]{"FL", "BL", "FR", "BR"};
+        int[] mult = new int[]{1, 1, -1, -1};
         for (int i = 0; i < 4; i++) {
             motors[i].setZeroPowerBehavior(FLOAT);
-            motors[i].setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motors[i].setMode(RUN_USING_ENCODER);
         }
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
@@ -45,8 +46,7 @@ public class OdometryTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             for (int i = 0; i < 4; i++) {
-                if (i <= 1) {telemetry.addData(positions[i], motors[i].getCurrentPosition());}
-                else {telemetry.addData(positions[i], (motors[i].getCurrentPosition() * -1));}
+                telemetry.addData(positions[i], motors[i].getCurrentPosition() * mult[i]);
             }
             YawPitchRollAngles robotOrientation = imu.getRobotYawPitchRollAngles();
             telemetry.addData("IMU", robotOrientation.getYaw(DEGREES));
