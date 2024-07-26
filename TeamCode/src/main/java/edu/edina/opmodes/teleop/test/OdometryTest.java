@@ -12,15 +12,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @TeleOp
 public class OdometryTest extends LinearOpMode {
-
-
     @Override
     public void runOpMode() {
+        double degMult = 1100.0/360.0;
+        double inchesMult = 424;
         DcMotor[] motors = new DcMotor[]{
                 hardwareMap.get(DcMotorEx.class, "frontLeftMotor"),
                 hardwareMap.get(DcMotorEx.class, "backLeftMotor"),
@@ -46,7 +45,7 @@ public class OdometryTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             for (int i = 0; i < 4; i++) {
-                telemetry.addData(positions[i], motors[i].getCurrentPosition() * mult[i]);
+                telemetry.addData(positions[i], motors[i].getCurrentPosition() * mult[i] / degMult);
             }
             YawPitchRollAngles robotOrientation = imu.getRobotYawPitchRollAngles();
             telemetry.addData("IMU", robotOrientation.getYaw(DEGREES));
