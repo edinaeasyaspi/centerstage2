@@ -1,6 +1,7 @@
 package edu.edina.opmodes.teleop.test;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_USING_ENCODER;
+import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.STOP_AND_RESET_ENCODER;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.FLOAT;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
@@ -16,10 +17,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @TeleOp
 public class OdometryTest extends LinearOpMode {
+    private double inches;
+
     @Override
     public void runOpMode() {
-        double degMult = 1100.0/360.0;
-        double inchesMult = 424;
+        double degMult = 1114.0 / 360.0;
         DcMotor[] motors = new DcMotor[]{
                 hardwareMap.get(DcMotorEx.class, "frontLeftMotor"),
                 hardwareMap.get(DcMotorEx.class, "backLeftMotor"),
@@ -30,6 +32,7 @@ public class OdometryTest extends LinearOpMode {
         int[] mult = new int[]{1, 1, -1, -1};
         for (int i = 0; i < 4; i++) {
             motors[i].setZeroPowerBehavior(FLOAT);
+            motors[i].setMode(STOP_AND_RESET_ENCODER);
             motors[i].setMode(RUN_USING_ENCODER);
         }
 
@@ -45,7 +48,8 @@ public class OdometryTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             for (int i = 0; i < 4; i++) {
-                telemetry.addData(positions[i], motors[i].getCurrentPosition() * mult[i] / degMult);
+                double inches = motors[i].getCurrentPosition() * mult[i] / degMult / 37.5;
+                telemetry.addData(positions[i], "%.2fin", inches);
             }
             YawPitchRollAngles robotOrientation = imu.getRobotYawPitchRollAngles();
             telemetry.addData("IMU", robotOrientation.getYaw(DEGREES));
