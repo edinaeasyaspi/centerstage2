@@ -16,9 +16,13 @@ public class MotorEncoderOdometry {
         startPos = motor.getCurrentPosition();
     }
 
-    public double estRadius(double yawRadians) {
+    public double motorInches() {
         double pos = startPos - motor.getCurrentPosition() * mult;
         double distance = pos / POS_TO_INCH;
-        return distance / yawRadians + offset;
+        return distance;
+    }
+
+    public double estRadius(double yawRadians) {
+        return motorInches() / yawRadians + offset;
     }
 }

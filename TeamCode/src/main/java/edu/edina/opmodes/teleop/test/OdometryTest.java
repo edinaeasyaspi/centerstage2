@@ -16,24 +16,34 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
+import edu.edina.library.util.drivecontrol.MotorEncoderOdometry;
+
+/////// 2 other comments - then test, test, test
+
 @TeleOp
 public class OdometryTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         double degMult = 1114.0 / 360.0;
         double robotWidth = 14.5;
-        DcMotor[] motors = new DcMotor[]{
-                hardwareMap.get(DcMotorEx.class, "frontLeftMotor"),
-                hardwareMap.get(DcMotorEx.class, "backLeftMotor"),
-                hardwareMap.get(DcMotorEx.class, "frontRightMotor"),
-                hardwareMap.get(DcMotorEx.class, "backRightMotor")
+        double hw = robotWidth / 2;
+        int[] mult = new int[]{1, 1, -1, -1};
+        DcMotorEx[] motors = new DcMotorEx[]{
+                    hardwareMap.get(DcMotorEx.class, "frontLeftMotor"),
+                    hardwareMap.get(DcMotorEx.class, "backLeftMotor"),
+                    hardwareMap.get(DcMotorEx.class, "frontRightMotor"),
+                    hardwareMap.get(DcMotorEx.class, "backRightMotor")
+        };
+        MotorEncoderOdometry[] motor = new MotorEncoderOdometry[]{
+                    new MotorEncoderOdometry(motors[0], mult[0], hw),
+                    new MotorEncoderOdometry(motors[1], mult[1], hw),
+                    new MotorEncoderOdometry(motors[2], mult[2], hw),
+                    new MotorEncoderOdometry(motors[3], mult[3], hw)
         };
         String[] positions = new String[]{"FL", "BL", "FR", "BR"};
-        double[] motorInches = new double[]{0, 0, 0, 0};
-        int[] mult = new int[]{1, 1, -1, -1};
         for (int i = 0; i < 4; i++) {
             motors[i].setZeroPowerBehavior(FLOAT);
-            motors[i].setMode(STOP_AND_RESET_ENCODER);
+            ////// I think this is unneeded    motors[i].setMode(STOP_AND_RESET_ENCODER);
             motors[i].setMode(RUN_USING_ENCODER);
         }
 
@@ -50,19 +60,16 @@ public class OdometryTest extends LinearOpMode {
         while (opModeIsActive()) {
             YawPitchRollAngles robotOrientation = imu.getRobotYawPitchRollAngles();
 
+            double yaw = robotOrientation.getYaw(RADIANS);
+
             for (int i = 0; i < 4; i++) {
-                motorInches[i] = motors[i].getCurrentPosition() * mult[i] / degMult / 37.5;
-                telemetry.addData(positions[i], "%.2fin", motorInches[i]);
+                telemetry.addData(positions[i], motor[i].motorInches());
+                telemetry.addData("radius", motor[i].estRadius(yaw));
+                telemetry.addData("arc length", motor[i].estRadius(yaw) * yaw); //////// is there an extra multiply here?
             }
+
             telemetry.addData("IMU", robotOrientation.getYaw(DEGREES));
 
-            double a = Math.abs(robotOrientation.getYaw(RADIANS));
-            double dInside = motorInches[2];
-            double radius = (dInside / a) + (robotWidth / 2);
-            double dCenter = a * radius;
-
-            telemetry.addData("radius", radius);
-            telemetry.addData("arc length", dCenter);
             telemetry.update();
         }
     }
