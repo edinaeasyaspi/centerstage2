@@ -3,7 +3,8 @@ package edu.edina.library.util.drivecontrol;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class MotorEncoderOdometry {
-    private static final double POS_TO_INCH = (1114.0 / 360.0) / 37.5;
+    private static final double POS_TO_DEG = 1114.0 / 360.0;
+    private static final double DEG_TO_IN = 37.5;
     private final DcMotorEx motor;
     private final double mult;
     private final double offset;
@@ -18,8 +19,7 @@ public class MotorEncoderOdometry {
 
     public double motorInches() {
         double pos = startPos - motor.getCurrentPosition() * mult;
-        double distance = pos / POS_TO_INCH;
-        return distance;
+        return pos / POS_TO_DEG / DEG_TO_IN;
     }
 
     public double estRadius(double yawRadians) {

@@ -24,7 +24,6 @@ import edu.edina.library.util.drivecontrol.MotorEncoderOdometry;
 public class OdometryTest extends LinearOpMode {
     @Override
     public void runOpMode() {
-        double degMult = 1114.0 / 360.0;
         double robotWidth = 14.5;
         double hw = robotWidth / 2;
         int[] mult = new int[]{1, 1, -1, -1};
@@ -65,12 +64,14 @@ public class OdometryTest extends LinearOpMode {
             for (int i = 0; i < 4; i++) {
                 telemetry.addData(positions[i], motor[i].motorInches());
                 telemetry.addData("radius", "%d: %.2f", i, motor[i].estRadius(yaw));
-                telemetry.addData("arc length", "%d: %.2f", i, motor[i].estRadius(yaw) * yaw); //////// is there an extra multiply here?
+                telemetry.addData("arc length", "%d: %.2f", i, motor[i].estRadius(yaw) * yaw); //angle * radius = arc length////// is there an extra multiply here?
             }
 
             telemetry.addData("IMU", robotOrientation.getYaw(DEGREES));
 
             telemetry.update();
+
+            //robotodometry
         }
     }
 }
